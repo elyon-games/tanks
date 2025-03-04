@@ -1,0 +1,13 @@
+all:
+  screen:
+    width: 800
+    height: 600
+
+dev:
+  server: 
+    host: "127.0.0.1:3300"
+    # host: "play.elyon.younity-mc.fr"
+
+prod:
+  server:
+    host: "play.elyon.younity-mc.fr"

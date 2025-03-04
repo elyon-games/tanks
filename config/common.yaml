@@ -1,0 +1,5 @@
+version: 1.1.0
+ultraDebug: false
+sentry:
+  enable: true
+  dsn: "https://89a0ffe7251a6f2c0dc8317c74eed1bc@o4507012389601280.ingest.us.sentry.io/4508754521751552"
