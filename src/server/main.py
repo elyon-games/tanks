@@ -15,6 +15,7 @@ from server.routes.api.main import route_api
 from server.routes.web.main import route_web
 import server.services.storage.main as storage
 import common.random 
+from server.utils import formatErrorRes
 
 app: Flask = None 
 
@@ -39,28 +40,16 @@ def Main():
         
         @app.errorhandler(404)
         def page_not_found(error):
-            return jsonify({
-                "error": True,
-                "message": "NO_FOUND",
-                "code": 404
-            }), 404
+            return formatErrorRes("NOT_FOUND", "Page non trouvée")
 
         @app.errorhandler(Exception)
         def error_handler(error: Exception) -> tuple[Response, int]:
-            error = str(error)
-            return jsonify({
-                "error": True,
-                "message": error if error else "Erreur interne du serveur (LOGIQUE)",
-                "code": 500
-            }), 500
+            print("Erreur inerne du serveur", error)
+            return formatErrorRes("INTERNAL_SERVER_ERROR", f"Erreur interne du serveur (LOGIQUE) {str(error)}")
 
         @app.errorhandler(500)
         def error_handler(error: HTTPException) -> tuple[Response, int]:
-            return jsonify({
-                "error": True,
-                "message": "Erreur interne du serveur (WEB)",
-                "code": 500
-            }), 500
+            return formatErrorRes("INTERNAL_SERVER_ERROR", "Erreur interne du serveur (WEB)")
 
         initSessions(app=app)
         initRoute()

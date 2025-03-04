@@ -33,16 +33,6 @@ class Badges(BaseModel):
                 "description": "Joueur VIP"
             }
         ])
-    
-    def create(self, id, name, description):
-        badge = {
-            "id": id,
-            "name": name,
-            "description": description
-        }
-        self.insert(badge)
-        self.save()
-        return badge
 
 class Users(BaseModel):
     def __init__(self):
@@ -61,7 +51,7 @@ class Users(BaseModel):
             "stats_lose": {"type": int, "default": 0}
         }, default_data=[{
             "id": 1,
-            "username": "Admin",
+            "username": "admin",
             "password": generate_password_hash(config["admin"]["password"]),
             "email": config["admin"]["email"],
             "admin": True,
@@ -89,6 +79,9 @@ class Users(BaseModel):
     def existed(self, id):
         return next((user for user in self.data if user["id"] == id or user["email"] == id), None) is not None
 
+    def get_by_email(self, email):
+        return next((user for user in self.data if user["email"] == email), None)
+
     def login(self, email, password):
         user = self.get_by_email(email)
         if user and check_password_hash(user["password"], password):
@@ -96,7 +89,7 @@ class Users(BaseModel):
         return None
 
     def update(self, record_id, updates):
-        user = self.get_by_id(record_id)
+        user = self.get(record_id)
         if user:
             user.update(updates)
             self.save()
@@ -104,7 +97,7 @@ class Users(BaseModel):
         return None
 
     def delete(self, user_id):
-        user = self.get_by_id(user_id)
+        user = self.get(user_id)
         if user:
             self.data.remove(user)
             self.save()
@@ -113,12 +106,3 @@ class Users(BaseModel):
     
     def get_new_id(self):
         return len(self.data) + 1
-    
-    def get_by_email(self, email):
-        return next((user for user in self.data if user["email"] == email), None)
-    
-    def get_by_username(self, username):
-        return next((user for user in self.data if user["username"] == username), None)
-    
-    def get_by_id(self, user_id):
-        return next((user for user in self.data if user["id"] == user_id), None)

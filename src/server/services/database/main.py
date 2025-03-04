@@ -41,7 +41,7 @@ class BaseModel:
         return next((item for item in self.data if item['id'] == record_id), None)
     
     def delete(self, record_id):
-        record = next((item for item in self.data if item['id'] == record_id), None)
+        record = self.get(record_id)
         if not record:
             raise ValueError(f"Enregistrement avec l'id {record_id} non trouvé")
         self.data.remove(record)
@@ -57,7 +57,7 @@ class BaseModel:
         return record
 
     def update(self, record_id, updates):
-        record = next((item for item in self.data if item['id'] == record_id), None)
+        record = self.get(record_id)
         if not record:
             raise ValueError(f"Enregistrement avec l'id {record_id} non trouvé")
         

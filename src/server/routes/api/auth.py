@@ -18,7 +18,12 @@ def login():
     if not user:
         return jsonify({"error": "Identifiants incorrects"}), 401
 
-    return jsonify({"message": "CONNEXION_VALID", "user_id": user['id'], "username": user['username'], "token": create_jwt_token(user['id'])})
+    return jsonify({
+        "message": "CONNEXION_VALID",
+        "user_id": user['id'],
+        "username": user['username'],
+        "token": create_jwt_token(user['id'])
+    })
 
 @route_auth.route("/register", methods=["POST"])
 def register():

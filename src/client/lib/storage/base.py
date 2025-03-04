@@ -44,4 +44,11 @@ class File:
             self.data = json.load(file)
     
     def removeData(self) -> None:
+        self.data = {}
+        self.saveData()
         os.remove(self.path)
+
+    def removeKey(self, key: str) -> None:
+        if key in self.data:
+            del self.data[key]
+            self.saveData()

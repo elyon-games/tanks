@@ -6,7 +6,7 @@ from client.lib.screen.base import Screen
 actualScreen: Screen = None
 actualWindow: WINDOW = None
 
-def get_screen_class(screen_name: str) -> Type[Screen]:
+def getScreenClass(screen_name: str) -> Type[Screen]:
     if screen_name == "loading":
         from client.screen.loading import loadingScreen
         return loadingScreen
@@ -16,6 +16,21 @@ def get_screen_class(screen_name: str) -> Type[Screen]:
     elif screen_name == "auth-login":
         from client.screen.auth.login import AuthLoginScreen
         return AuthLoginScreen
+    elif screen_name == "auth-register":
+        from client.screen.auth.register import AuthRegisterScreen
+        return AuthRegisterScreen
+    elif screen_name == "shop":
+        from client.screen.shop import shopScreen
+        return shopScreen
+    elif screen_name == "profil":
+        from client.screen.profil import profilScreen
+        return profilScreen
+    elif screen_name == "settings":
+        from client.screen.settings import settingsScreen
+        return settingsScreen
+    elif screen_name == "game":
+        from client.screen.game import gameScreen
+        return gameScreen
     else:
         raise Exception(f"Screen {screen_name} not found.")
 
@@ -31,7 +46,7 @@ def showScreen(screen: str) -> Screen:
         return actualScreen
     elif actualScreen is None or actualScreen.id != screen:
         UnMountScreen()
-        screen_class = get_screen_class(screen)
+        screen_class = getScreenClass(screen)
         actualScreen = screen_class(actualWindow)
     else:
         raise Exception(f"Screen {screen} not found.")
@@ -40,7 +55,7 @@ def showScreen(screen: str) -> Screen:
 
 def getActualScreen() -> Screen:
     global actualScreen
-    return actualScreen
+    return actualScreen.id
 
 def updateScreen(window: WINDOW, events: EVENTS):
     global actualScreen, actualWindow

@@ -24,8 +24,11 @@ def loadAsset(id: str, pathFile: str, type: str = "image") -> Union[pygame.Surfa
             "message": "INVALID_TYPE"
         }
 
-def getAsset(id: str) -> Optional[Union[pygame.Surface, pygame.mixer.Sound]]:
-    return assets[id]["data"] if id in assets else None
+def getAsset(id: str, size=1) -> Optional[Union[pygame.Surface, pygame.mixer.Sound]]:
+    A = assets[id]["data"] if id in assets else None
+    if size != 1:
+        A = pygame.transform.scale_by(A, size)
+    return A
 
 def getAssetType(id: str) -> Optional[str]:
     return assets[id]["type"] if id in assets else None

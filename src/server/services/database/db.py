@@ -4,16 +4,16 @@ users = Users()
 badges = Badges()
 
 def get_user_id(username):
-    return users.get_by_username(username=username)
+    return next((user for user in users.data if user["username"] == username), None).get("id", 0)
 
 def get_user_badges(user_id):
-    user = users.get_by_id(user_id)
+    user = users.get(user_id)
     if not user:
         raise ValueError(f"Utilisateur avec l'id {user_id} non trouvé")
     return [badges.get(badge_id) for badge_id in user["badges"]]
 
 def add_user_badge(user_id, badge_id):
-    user = users.get_by_id(user_id)
+    user = users.get(user_id)
     if not user:
         raise ValueError(f"Utilisateur avec l'id {user_id} non trouvé")
     badge = badges.get(badge_id)
@@ -25,7 +25,7 @@ def add_user_badge(user_id, badge_id):
     users.save()
 
 def remove_user_badge(user_id, badge_id):
-    user = users.get_by_id(user_id)
+    user = users.get(user_id)
     if not user:
         raise ValueError(f"Utilisateur avec l'id {user_id} non trouvé")
     badge = badges.get(badge_id)
@@ -37,7 +37,7 @@ def remove_user_badge(user_id, badge_id):
     users.save()
 
 def get_user_stats(user_id):
-    user = users.get_by_id(user_id)
+    user = users.get(user_id)
     if not user:
         raise ValueError(f"Utilisateur avec l'id {user_id} non trouvé")
     kills = user.get("stats_kill", 0)

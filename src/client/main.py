@@ -144,17 +144,12 @@ def Main():
                 ms_per_frame = current_ms_per_frame
 
             if debugView:
-                computer_id_text = getFont("hud_info").render(f"CLIENT : {'-'.join(computer_id.split('-')[:2])}", True, WHITE)
-                fps_text = getFont("hud_info").render(f"FPS : {fps}", True, WHITE)
-                ms_text = getFont("hud_info").render(f"MSPF : {ms_per_frame}", True, WHITE)
-                pygame_version = getFont("hud_info").render(f"Pygame : {pygame.version.ver}", True, WHITE)
-                current_screen = getFont("hud_info").render(f"Screen : {getActualScreen()}", True, WHITE)
-
-                window.blit(computer_id_text, (10, 10))
-                window.blit(fps_text, (10, 25))
-                window.blit(ms_text, (10, 40))
-                window.blit(pygame_version, (10, 55))
-                window.blit(current_screen, (10, 70))
+                HUD_font = getFont("hud_info")
+                window.blit(HUD_font.render(f"CLIENT : {'-'.join(computer_id.split('-')[:2])}", True, WHITE), (10, 10))
+                window.blit(HUD_font.render(f"FPS : {fps}", True, WHITE), (10, 25))
+                window.blit(HUD_font.render(f"MSPF : {ms_per_frame}", True, WHITE), (10, 40))
+                window.blit(HUD_font.render(f"Pygame : {pygame.version.ver}", True, WHITE), (10, 55))
+                window.blit(HUD_font.render(f"Screen : {getActualScreen()}", True, WHITE), (10, 70))
                 
             pygame.display.flip()
             clock.tick(100)

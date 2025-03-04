@@ -1,13 +1,11 @@
 import pygame
 from client.lib.screen.base import Screen
-from client.lib.me import getData
 from client.composants import NavBar
-from client.style.fonts import getFont
-from client.style.constants import EMERAUDE, BLACK, GRAY, BLEU
+from client.lib.me import getData
 
-class HomeScreen(Screen):
+class settingsScreen(Screen):
     def __init__(self, window):
-        super().__init__(window, "home", "Accueil")
+        super().__init__(window, "settings", "Paramètres")
         self.user = getData().get("user")
         self.navbar = NavBar(window, self.user)
 

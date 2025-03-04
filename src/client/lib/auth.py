@@ -1,7 +1,10 @@
 import requests
+import common.config as config
 from client.lib.utils import with_url_api
 from client.var import auth as authData
 from client.lib.utils import getHeadersWithToken
+from client.lib.screen.controller import showScreen
+from client.lib.storage.controller import getStorage
 
 def login(email, password):
     global authData
@@ -30,3 +33,10 @@ def verify(token):
                 "user_id": response.get("user_id", None)
             }
     return {"status": False}
+
+def logout():
+    global authData
+    getStorage(config.getConfig("server").get("server", {}).get("id", None)).removeData()
+    authData["token"] = None
+    showScreen("auth-login")
+    return True

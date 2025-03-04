@@ -10,7 +10,7 @@ def create_jwt_token(user_id):
         raise Exception("TOKEN_SERVICE_NO_INIT")
     if not user_id:
         raise Exception("USER_ID_INVALID")
-    userData = User.get_by_id(user_id)
+    userData = User.get(user_id)
     if not userData:
         raise Exception("USER_NOFOUND")
     payload = {
