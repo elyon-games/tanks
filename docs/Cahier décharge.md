@@ -31,6 +31,8 @@ Tanks :
 	- Vitesse lent
 	- Dégât lourd
 	- Vie élevée
+Amélioration :
+	
 
 Bonus :
 - Editeur de cartes

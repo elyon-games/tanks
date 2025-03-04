@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistique</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.8.2/core.css">
+    <script type="module" src="https://pyscript.net/releases/2024.8.2/core.js"></script>
+</head>
+<body>
+    <h1>Statistique</h1>
+    <script type="mpy" src="{{ url_for('static', filename='index.py') }}"></script>
+
+    <p>Entrez votre pseudo : </p>
+    <input type="text" id="text">
+    <button py-click="search"></button>
+</body>
+</html>

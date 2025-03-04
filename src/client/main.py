@@ -20,7 +20,7 @@ from client.lib.title import changeTitle
 from client.lib.ping import ping
 from client.style.constants import WHITE
 from client.style.fonts import getFont
-from client.lib.screen.controller import showScreen, updateScreen
+from client.lib.screen.controller import showScreen, updateScreen, getActualScreen
 from client.lib.keys.controler import updateKeys
 from client.lib.notifications.controller import updateNotifications
 from client.lib.events.controller import updateEvents
@@ -148,11 +148,13 @@ def Main():
                 fps_text = getFont("hud_info").render(f"FPS : {fps}", True, WHITE)
                 ms_text = getFont("hud_info").render(f"MSPF : {ms_per_frame}", True, WHITE)
                 pygame_version = getFont("hud_info").render(f"Pygame : {pygame.version.ver}", True, WHITE)
-    
+                current_screen = getFont("hud_info").render(f"Screen : {getActualScreen()}", True, WHITE)
+
                 window.blit(computer_id_text, (10, 10))
                 window.blit(fps_text, (10, 25))
                 window.blit(ms_text, (10, 40))
                 window.blit(pygame_version, (10, 55))
+                window.blit(current_screen, (10, 70))
                 
             pygame.display.flip()
             clock.tick(100)

@@ -1,5 +1,6 @@
 from flask import jsonify, Blueprint, request
 from server.services.database.db import users as User
+from server.services.database.db import get_user_stats, get_user_id
 from server.middleware.auth import login_required
 
 route_users = Blueprint("users", __name__)
@@ -12,8 +13,6 @@ def get_users():
         users_list.append({
             "id": user["id"],
             "username": user["username"],
-            "bio": user.get("bio", ""),
-            "avatar": user.get("avatar"),
             "badges": user.get("badges", []),
         })
     return jsonify(users_list)
@@ -29,9 +28,9 @@ def get_profile():
         "email": user["email"],
         "username": user["username"],
         "money": user.get("money", 0.0),
-        "avatar": user.get("avatar"),
         "badges": user.get("badges", []),
         "created_at": user["created_at"],
-        "admin": user.get("admin", False),
-        "bio": user.get("bio", ""),
+        "admin": user.get("admin", False)
     })
+
+# print(get_user_stats(get_user_id("Admin")))

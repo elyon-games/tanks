@@ -21,15 +21,9 @@ class Notification:
         
         font = pygame.font.Font(None, font_size)
         text = font.render(self.message, True, (255, 255, 255))
-        text_rect = text.get_rect(midtop=(window_width // 2, padding + y_offset))
-        
-        # Add padding
-        background_rect = text_rect.inflate(padding * 2, padding * 2)
-        
-        # Draw rounded rectangle
+        text_rect = text.get_rect(midtop=(window_width // 2, padding + y_offset))        
+        background_rect = text_rect.inflate(padding * 2, padding * 2)        
         pygame.draw.rect(window, (0, 0, 0), background_rect, border_radius=10)
-        
-        # Blit the text onto the window
         window.blit(text, text_rect.move(padding, padding))
 
 notifications: list[Notification] = []
@@ -45,7 +39,7 @@ def updateNotifications(window: WINDOW):
             notifications.remove(notification)
         else:
             notification.render(window, y_offset)
-            y_offset += int(window_height * 0.1)  # Adjust vertical spacing based on window height
+            y_offset += int(window_height * 0.1)
 
 def getAll():
     return notifications

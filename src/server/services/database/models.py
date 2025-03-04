@@ -48,31 +48,36 @@ class Users(BaseModel):
     def __init__(self):
         super().__init__({
             "id": {"type": int, "required": True, "unique": True},
-            "username": {"type": str, "required": True},
-            "identifiant": {"type": str, "required": True, "unique": True},
+            "username": {"type": str, "required": True, "unique": True},
             "email": {"type": str, "required": True, "unique": True},
             "password": {"type": str, "required": True},
             "admin": {"type": bool, "required": True, "default": False},
             "money": {"type": int, "default": 0},
             "badges": {"type": list, "default": []},
-            "created_at": {"type": str, "required": True}
+            "created_at": {"type": str, "required": True},
+            "stats_kill": {"type": int, "default": 0},
+            "stats_death": {"type": int, "default": 0},
+            "stats_win": {"type": int, "default": 0},
+            "stats_lose": {"type": int, "default": 0}
         }, default_data=[{
             "id": 1,
             "username": "Admin",
-            "identifiant": "admin",
             "password": generate_password_hash(config["admin"]["password"]),
             "email": config["admin"]["email"],
             "admin": True,
             "badges": [],
             "created_at": get_current_time(),
-            "money": 0
+            "money": 0,
+            "stats_kill": 0,
+            "stats_death": 0,
+            "stats_win": 0,
+            "stats_lose": 0
         }])
 
     def create(self, username, identifiant, email, password, admin=False):
         user = self.insert({
             "id": self.get_new_id(),
             "username": username,
-            "identifiant": identifiant,
             "email": email,
             "password": generate_password_hash(password),
             "admin": admin,
@@ -82,7 +87,7 @@ class Users(BaseModel):
         return user
     
     def existed(self, id):
-        return next((user for user in self.data if user["identifiant"] == id or user["email"] == id), None) is not None
+        return next((user for user in self.data if user["id"] == id or user["email"] == id), None) is not None
 
     def login(self, email, password):
         user = self.get_by_email(email)
@@ -111,9 +116,6 @@ class Users(BaseModel):
     
     def get_by_email(self, email):
         return next((user for user in self.data if user["email"] == email), None)
-    
-    def get_by_identifiant(self, identifiant):
-        return next((user for user in self.data if user["identifiant"] == identifiant), None)
     
     def get_by_username(self, username):
         return next((user for user in self.data if user["username"] == username), None)

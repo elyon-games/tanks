@@ -38,6 +38,10 @@ def showScreen(screen: str) -> Screen:
     
     return actualScreen
 
+def getActualScreen() -> Screen:
+    global actualScreen
+    return actualScreen
+
 def updateScreen(window: WINDOW, events: EVENTS):
     global actualScreen, actualWindow
     actualWindow = window

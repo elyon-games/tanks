@@ -31,8 +31,8 @@ def initPath(path_data_t: str = "./data") -> None:
         "client_data_servers": joinPath(path_data, "client", "servers"),
         # server
         "server": "./src/server",
-        "server_public": "./src/server/public",
-        "server_templates": "./src/server/templates",
+        "server_public": "./src/server/routes/web/static",
+        "server_templates": "./src/server/routes/web/templates",
         "server_data": joinPath(path_data, "server"),
         "server_database": joinPath(path_data, "server/database"),
         "server_files": joinPath(path_data, "server/files"),
