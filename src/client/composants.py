@@ -4,7 +4,6 @@ from client.lib.me import getData
 from client.style.fonts import getFont
 from client.style.constants import EMERAUDE, BLACK, GRAY, BLEU, WHITE
 from client.lib.screen.controller import showScreen
-from client.style.gradient import draw_gradient
 from client.lib.assets import getAsset
 from client.lib.auth import logout
 
@@ -13,7 +12,6 @@ class composantBase():
         self.window = window
         self.updateSurface()
         
-    
     def updateSurface(self):
         self.surface = pygame.surface.Surface(self.getSize())
 
@@ -32,30 +30,73 @@ class NavBar(composantBase):
         self.buttons = [
             {
                 "text": "Boutique",
-                "screen": "shop"
+                "action": lambda: showScreen("shop"),
+                "rect": None,
+                "clicked": False,
+                "animation_progress": 0
+            },
+            {
+                "text": "Parties",
+                "action": lambda: showScreen("parties"),
+                "rect": None,
+                "clicked": False,
+                "animation_progress": 0
+            },
+            {
+                "text": "Classement",
+                "action": lambda: showScreen("classement"),
+                "rect": None,
+                "clicked": False,
+                "animation_progress": 0
             }
         ]
 
     def render(self):
         self.updateSurface() # IMPORTANT
-        draw_gradient(self.surface, EMERAUDE, BLACK, *self.getSize())
+        draw_gradient(self.surface, BLACK, EMERAUDE, *self.getSize())
         self.logoPos = self.surface.blit(self.logo, (20, 10))
-        self.surface.blit(self.fontTitre.render("Elyon Tanks", False, BLACK), (self.logoPos.x*5, self.logoPos.centery-10))
+        self.surface.blit(self.fontTitre.render("Elyon Tanks", False, WHITE), (self.logoPos.x*5, self.logoPos.centery-10))
         self.draw_buttons()
         self.draw_user_card()
         return self.surface # IMPORTANT
 
     def draw_buttons(self):
-        i=0
+        i = 0
         for button in self.buttons:
-            i+=1
-            self.surface.blit(self.font.render(f"{button.get("text", "")}", False, BLACK), (self.logoPos.x*(12+i), 
-                                                                                            self.logoPos.centery-4))
+            i += 1
+            text_surface = self.font.render(button["text"], False, BLACK)
+            text_rect = text_surface.get_rect(topleft=(self.logoPos.x*(12+i), self.logoPos.centery-4))
+            button_rect = pygame.Rect(text_rect.left - 10, text_rect.top - 5, text_rect.width + 20, text_rect.height + 10)
+            pygame.draw.rect(self.surface, EMERAUDE, button_rect, border_radius=10)
+            self.surface.blit(text_surface, text_rect.topleft)
+            button["rect"] = button_rect
+            if button["clicked"]:
+                self.animate_button(button)
+
+    def animate_button(self, button):
+        if button["animation_progress"] < 1:
+            button["animation_progress"] += 0.1
+        else:
+            button["clicked"] = False
+            button["animation_progress"] = 0
         
+        # Calculate the color based on the animation progress
+        start_color = EMERAUDE
+        end_color = BLEU
+        r = start_color[0] + (end_color[0] - start_color[0]) * button["animation_progress"]
+        g = start_color[1] + (end_color[1] - start_color[1]) * button["animation_progress"]
+        b = start_color[2] + (end_color[2] - start_color[2]) * button["animation_progress"]
+        animated_color = (int(r), int(g), int(b))
+        
+        # Redraw the button with the animated color
+        pygame.draw.rect(self.surface, animated_color, button["rect"], border_radius=10)
+        text_surface = self.font.render(button["text"], False, BLACK)
+        self.surface.blit(text_surface, button["rect"].inflate(-20, -10).topleft)
+
 
     def draw_text(self, text, position):
-            text_surface = self.font.render(text, True, EMERAUDE)
-            self.surface.blit(text_surface, position)
+        text_surface = self.font.render(text, True, EMERAUDE)
+        self.surface.blit(text_surface, position)
 
     def draw_user_card(self):
         window_width = self.surface.get_width()
@@ -107,3 +148,7 @@ class NavBar(composantBase):
                     showScreen("settings")
                 elif logout_rect.collidepoint(mouse_pos):
                     logout()
+            for button in self.buttons:
+                if button["rect"] and button["rect"].collidepoint(mouse_pos):
+                    button["clicked"] = True
+                    button["action"]()

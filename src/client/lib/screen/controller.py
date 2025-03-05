@@ -28,9 +28,24 @@ def getScreenClass(screen_name: str) -> Type[Screen]:
     elif screen_name == "settings":
         from client.screen.settings import settingsScreen
         return settingsScreen
-    elif screen_name == "game":
-        from client.screen.game import gameScreen
-        return gameScreen
+    elif screen_name == "game-main":
+        from client.screen.game.main import gameMainScreen
+        return gameMainScreen
+    elif screen_name == "game-end":
+        from client.screen.game.end import gameEndScreen
+        return gameEndScreen
+    elif screen_name == "game-wait":
+        from client.screen.game.wait import gameWaitScreen
+        return gameWaitScreen
+    elif screen_name == "classement":
+        from client.screen.classement import classementScreen
+        return classementScreen
+    elif screen_name == "parties":
+        from client.screen.parties import partiesScreen
+        return partiesScreen
+    elif screen_name == "create-party":
+        from client.screen.create_party import createPartyScreen
+        return createPartyScreen
     else:
         raise Exception(f"Screen {screen_name} not found.")
 
