@@ -4,7 +4,7 @@ from server.services.database.db import users as User
 from server.services.database.db import get_user_stats, get_user_id
 from server.middleware.auth import login_required
 
-route_users = Blueprint("users", __name__)
+route_users = Blueprint("api-users", __name__)
 
 def formatUserRes(user: dict) -> dict:
     return {

@@ -49,14 +49,17 @@ def get_user_stats(user_id: int) -> dict:
     points = user.get("points", 0)
 
     return {
-        "kills": kills,
-        "deaths": deaths,
-        "kd": kills / deaths,
-        "wins": wins,
-        "loses": loses,
-        "wl": wins / loses,
-        "points": points
+        "kills": round(kills, 1),
+        "deaths": round(deaths, 1),
+        "kd": round(kills / deaths, 1),
+        "wins": round(wins, 1),
+        "loses": round(loses, 1),
+        "wl": round(wins / loses, 1),
+        "points": round(points, 1)
     }
+
+def get_ranks(user_id: int) -> dict:
+    pass
 
 def get_classement(type: str, page: int = 1, limit: int = 10) -> list:
     valid_types = ["kills", "deaths", "kd", "wins", "loses", "wl", "points"]
@@ -70,10 +73,11 @@ def get_classement(type: str, page: int = 1, limit: int = 10) -> list:
         classement.append({
             "user_id": user_id,
             "username": user["username"],
-            "value": stats[type]
+            "value": stats[type],
+            "points": stats["points"]
         })
 
-    classement = sorted(classement, key=lambda x: x["value"], reverse=True)
+    classement = sorted(classement, key=lambda x: (x["value"], x["points"]), reverse=True)
     
     start = (page - 1) * limit
     end = start + limit

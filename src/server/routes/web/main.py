@@ -10,4 +10,7 @@ def index():
 
 @route_web.route("/stat")
 def stat():
-    pass
+    try: 
+        return 
+    except:
+        return

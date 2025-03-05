@@ -5,7 +5,7 @@ from server.utils import formatRes
 
 # print(get_user_stats(get_user_id("admin")))
 
-route_classement = Blueprint("classement", __name__)
+route_classement = Blueprint("api-classement", __name__)
 
 @route_classement.route("/<string:type>", methods=["GET"])
 def get_badges(type):
