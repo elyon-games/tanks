@@ -116,3 +116,9 @@ class BaseModel:
     
     def len_data(self):
         return len(self.data)
+    
+    def filter(self, conditions):
+        return [record for record in self.data if all(record.get(key) == value for key, value in conditions.items())]
+    
+    def get_by(self, key, value):
+        return next((item for item in self.data if item[key] == value), None)

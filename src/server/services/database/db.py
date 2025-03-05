@@ -3,16 +3,16 @@ from server.services.database.models import Users, Badges
 users = Users()
 badges = Badges()
 
-def get_user_id(username):
+def get_user_id(username: str) -> int:
     return next((user for user in users.data if user["username"] == username), None).get("id", 0)
 
-def get_user_badges(user_id):
+def get_user_badges(user_id: int) -> list:
     user = users.get(user_id)
     if not user:
         raise ValueError(f"Utilisateur avec l'id {user_id} non trouvé")
     return [badges.get(badge_id) for badge_id in user["badges"]]
 
-def add_user_badge(user_id, badge_id):
+def add_user_badge(user_id: int, badge_id: str) -> None:
     user = users.get(user_id)
     if not user:
         raise ValueError(f"Utilisateur avec l'id {user_id} non trouvé")
@@ -23,8 +23,9 @@ def add_user_badge(user_id, badge_id):
         raise ValueError(f"Utilisateur avec l'id {user_id} a déjà le badge avec l'id {badge_id}")
     user["badges"].append(badge_id)
     users.save()
+    return user.get("badges")
 
-def remove_user_badge(user_id, badge_id):
+def remove_user_badge(user_id: int, badge_id: str) -> None:
     user = users.get(user_id)
     if not user:
         raise ValueError(f"Utilisateur avec l'id {user_id} non trouvé")
@@ -35,8 +36,9 @@ def remove_user_badge(user_id, badge_id):
         raise ValueError(f"Utilisateur avec l'id {user_id} n'a pas le badge avec l'id {badge_id}")
     user["badges"].remove(badge_id)
     users.save()
+    return user.get("badges")
 
-def get_user_stats(user_id):
+def get_user_stats(user_id: int) -> dict:
     user = users.get(user_id)
     if not user:
         raise ValueError(f"Utilisateur avec l'id {user_id} non trouvé")
@@ -44,6 +46,7 @@ def get_user_stats(user_id):
     deaths = user.get("stats_death", 0) or 1
     wins = user.get("stats_win", 0)
     loses = user.get("stats_lose", 0) or 1
+    points = user.get("points", 0)
 
     return {
         "kills": kills,
@@ -51,5 +54,27 @@ def get_user_stats(user_id):
         "kd": kills / deaths,
         "wins": wins,
         "loses": loses,
-        "wl": wins / loses
+        "wl": wins / loses,
+        "points": points
     }
+
+def get_classement(type: str, page: int = 1, limit: int = 10) -> list:
+    valid_types = ["kills", "deaths", "kd", "wins", "loses", "wl", "points"]
+    if type not in valid_types:
+        raise ValueError(f"Type de classement invalide. Les types valides sont: {', '.join(valid_types)}.")
+
+    classement = []
+    for user in users.data:
+        user_id = user["id"]
+        stats = get_user_stats(user_id)
+        classement.append({
+            "user_id": user_id,
+            "username": user["username"],
+            "value": stats[type]
+        })
+
+    classement = sorted(classement, key=lambda x: x["value"], reverse=True)
+    
+    start = (page - 1) * limit
+    end = start + limit
+    return classement[start:end]
