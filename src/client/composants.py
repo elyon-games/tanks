@@ -6,6 +6,7 @@ from client.style.constants import EMERAUDE, BLACK, GRAY, BLEU, WHITE
 from client.lib.screen.controller import showScreen
 from client.lib.assets import getAsset
 from client.lib.auth import logout
+from client.lib.rank import get_rank
 
 class composantBase():
     def __init__(self, window):
@@ -152,3 +153,27 @@ class NavBar(composantBase):
                 if button["rect"] and button["rect"].collidepoint(mouse_pos):
                     button["clicked"] = True
                     button["action"]()
+
+class Button(composantBase):
+    def __init__(self, window):
+        super().__init__(window)
+
+    def render(self):
+        self.updateSurface()
+        return self.surface
+
+    def HandleEvent(self, type, event):
+        pass
+
+class showRank(composantBase):
+    def __init__(self, window, rankName):
+        super().__init__(window)
+        self.rank = get_rank(rankName)
+
+    def render(self):
+        self.updateSurface()
+        self.surface.blit(self.rank, (0, 0))
+        return self.surface
+
+    def HandleEvent(self, type, event):
+        pass
