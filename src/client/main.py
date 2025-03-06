@@ -30,6 +30,8 @@ from client.lib.auth import verify as auth_verify
 from client.var import auth as authData
 import hashlib
 
+from common.ranks import ranks
+
 import tkinter as tk
 from tkinter import messagebox
 
@@ -87,7 +89,13 @@ def Main():
             print("Init Screen")
             showScreen("loading")
             time.sleep(0.5)
+            # load assets
             loadAsset("logo", "/logo/round.png")
+            loadAsset("app-icon", "/logo/round.ico")
+            
+            for rank in ranks.values():
+                loadAsset(f"rank-{rank["name"]}", rank["icon"])
+
             token = serverStorage.getKey("token")
             if token:
                 verifyData = auth_verify(token)

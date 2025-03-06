@@ -1,4 +1,5 @@
 from server.services.database.models import Users, Badges
+from common.ranks import ranks
 
 users = Users()
 badges = Badges()
@@ -58,13 +59,23 @@ def get_user_stats(user_id: int) -> dict:
         "points": round(points, 1)
     }
 
-def get_ranks(user_id: int) -> dict:
-    pass
+def get_user_ranks(user_id: int) -> dict:
+    user = users.get(user_id)
+    if not user:
+        raise ValueError(f"Utilisateur avec l'id {user_id} non trouvé")
+    points = user.get("points", 0)
+    return get_rank(points)
+
+def get_rank(points: int) -> dict:
+    for rank in ranks.items():
+        if points >= rank[0]:
+            return rank[1].get("name", "bronze-I")
+    return ranks[0]
 
 def get_classement(type: str, page: int = 1, limit: int = 10) -> list:
     valid_types = ["kills", "deaths", "kd", "wins", "loses", "wl", "points"]
     if type not in valid_types:
-        raise ValueError(f"Type de classement invalide. Les types valides sont: {', '.join(valid_types)}.")
+        raise ValueError(f"Les types valides sont: {', '.join(valid_types)}.")
 
     classement = []
     for user in users.data:

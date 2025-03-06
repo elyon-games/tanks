@@ -11,6 +11,7 @@ def getData():
             "error": True,
             "user": res.get("data", {})
         }
+        
     return {"error": False}
 
 def getUserData():

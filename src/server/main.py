@@ -44,7 +44,7 @@ def Main():
 
         @app.errorhandler(Exception)
         def error_handler(error: Exception) -> tuple[Response, int]:
-            print("Erreur inerne du serveur", error)
+            print("Erreur interne du serveur", error)
             return formatErrorRes("INTERNAL_SERVER_ERROR", f"Erreur interne du serveur (LOGIQUE) {str(error)}")
 
         @app.errorhandler(500)

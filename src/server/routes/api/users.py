@@ -1,13 +1,13 @@
 from flask import jsonify, Blueprint, request
 from server.utils import formatRes
 from server.services.database.db import users as User
-from server.services.database.db import get_user_stats, get_user_id
+from server.services.database.db import get_user_stats, get_user_id, get_rank, get_user_ranks
 from server.middleware.auth import login_required
 
 route_users = Blueprint("api-users", __name__)
 
 def formatUserRes(user: dict) -> dict:
-    return {
+    user = {
         "id": user["id"],
         "email": user["email"],
         "username": user["username"],
@@ -15,8 +15,11 @@ def formatUserRes(user: dict) -> dict:
         "badges": user.get("badges", []),
         "created_at": user["created_at"],
         "admin": user.get("admin", False),
-        "stats": get_user_stats(user["id"])
+        "stats": get_user_stats(user["id"]),
+        "rank": get_rank(user.get("points", 0))
     }
+    print(user.get("points"))
+    return user
 
 @route_users.route("/", methods=["GET"])
 def get_users():
@@ -27,6 +30,7 @@ def get_users():
             "id": user["id"],
             "username": user["username"],
             "badges": user.get("badges", []),
+            "rank": get_rank(user["points"])
         })
     return formatRes("FOUND", users_list)
 
@@ -51,3 +55,7 @@ def get_user_by_username(username):
     if not user_id:
         raise ValueError("NOT_FOUND")
     return formatRes("FOUND", str(user_id))
+
+@route_users.route("/rank/<int:user_id>", methods=["GET"])
+def get_user_rank(user_id):
+    return formatRes("FOUND", get_user_ranks(user_id))
