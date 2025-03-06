@@ -63,10 +63,11 @@ def get_user_ranks(user_id: int) -> dict:
     return get_rank(points)
 
 def get_rank(points: int) -> dict:
+    res = ranks[0]
     for pointsMin, data in ranks.items():
         if int(pointsMin) < int(points):
-            return data["name"]
-    return ranks[0]
+            res = data
+    return res["name"]
 
 def get_classement(type: str, page: int = 1, limit: int = 10) -> list:
     valid_types = ["kills", "deaths", "kd", "wins", "loses", "wl", "points"]
@@ -89,4 +90,10 @@ def get_classement(type: str, page: int = 1, limit: int = 10) -> list:
     
     start = (page - 1) * limit
     end = start + limit
-    return classement[start:end]
+    paginated_classement = classement[start:end]
+    
+    for i, user in enumerate(paginated_classement, start=start + 1):
+        del user["points"]
+        user["position"] = i
+    
+    return paginated_classement
