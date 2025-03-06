@@ -8,9 +8,8 @@ route_classement = Blueprint("api-classement", __name__)
 def get_badges(type):
     page = request.args.get('page', default=1, type=int)
     per_page = request.args.get('per_page', default=10, type=int)
-    users = get_classement(type, page, per_page)
     return formatRes("FOUND", {
-        "users": users,
+        "users": get_classement(type, page, per_page),
         "type": type,
         "page": page,
         "per_page": per_page

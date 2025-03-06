@@ -18,7 +18,6 @@ def formatUserRes(user: dict) -> dict:
         "stats": get_user_stats(user["id"]),
         "rank": get_rank(user.get("points", 0))
     }
-    print(user.get("points"))
     return user
 
 @route_users.route("/", methods=["GET"])

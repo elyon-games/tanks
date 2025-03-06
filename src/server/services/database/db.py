@@ -4,19 +4,21 @@ from common.ranks import ranks
 users = Users()
 badges = Badges()
 
+def get_user(user_id: int) -> dict:
+    user = users.get(user_id)
+    if not user:
+        raise ValueError(f"Utilisateur avec l'id {user_id} non trouvé")
+    return user
+
 def get_user_id(username: str) -> int:
     return next((user for user in users.data if user["username"] == username), None).get("id", 0)
 
 def get_user_badges(user_id: int) -> list:
-    user = users.get(user_id)
-    if not user:
-        raise ValueError(f"Utilisateur avec l'id {user_id} non trouvé")
+    user = get_user(user_id)
     return [badges.get(badge_id) for badge_id in user["badges"]]
 
 def add_user_badge(user_id: int, badge_id: str) -> None:
     user = users.get(user_id)
-    if not user:
-        raise ValueError(f"Utilisateur avec l'id {user_id} non trouvé")
     badge = badges.get(badge_id)
     if not badge:
         raise ValueError(f"Badge avec l'id {badge_id} non trouvé")
@@ -28,8 +30,6 @@ def add_user_badge(user_id: int, badge_id: str) -> None:
 
 def remove_user_badge(user_id: int, badge_id: str) -> None:
     user = users.get(user_id)
-    if not user:
-        raise ValueError(f"Utilisateur avec l'id {user_id} non trouvé")
     badge = badges.get(badge_id)
     if not badge:
         raise ValueError(f"Badge avec l'id {badge_id} non trouvé")
@@ -41,8 +41,6 @@ def remove_user_badge(user_id: int, badge_id: str) -> None:
 
 def get_user_stats(user_id: int) -> dict:
     user = users.get(user_id)
-    if not user:
-        raise ValueError(f"Utilisateur avec l'id {user_id} non trouvé")
     kills = user.get("stats_kill", 0)
     deaths = user.get("stats_death", 0) or 1
     wins = user.get("stats_win", 0)
@@ -61,15 +59,13 @@ def get_user_stats(user_id: int) -> dict:
 
 def get_user_ranks(user_id: int) -> dict:
     user = users.get(user_id)
-    if not user:
-        raise ValueError(f"Utilisateur avec l'id {user_id} non trouvé")
     points = user.get("points", 0)
     return get_rank(points)
 
 def get_rank(points: int) -> dict:
-    for rank in ranks.items():
-        if points >= rank[0]:
-            return rank[1].get("name", "bronze-I")
+    for pointsMin, data in ranks.items():
+        if int(pointsMin) < int(points):
+            return data["name"]
     return ranks[0]
 
 def get_classement(type: str, page: int = 1, limit: int = 10) -> list:
@@ -85,6 +81,7 @@ def get_classement(type: str, page: int = 1, limit: int = 10) -> list:
             "user_id": user_id,
             "username": user["username"],
             "value": stats[type],
+            "rank": get_rank(stats["points"]),
             "points": stats["points"]
         })
 
