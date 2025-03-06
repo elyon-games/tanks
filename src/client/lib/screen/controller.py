@@ -1,10 +1,11 @@
 import pygame
-from typing import  Type
+from typing import Type
 from client.types import EVENTS, WINDOW
 from client.lib.screen.base import Screen
 
 actualScreen: Screen = None
 actualWindow: WINDOW = None
+historyScreen: list = []
 
 def getScreenClass(screen_name: str) -> Type[Screen]:
     if screen_name == "loading":
@@ -55,11 +56,19 @@ def UnMountScreen():
         actualScreen.UnMount()
         actualScreen = None
 
+def backScreen():
+    global actualScreen, actualWindow, historyScreen
+    if historyScreen:
+        previous_screen = historyScreen.pop()
+        showScreen(previous_screen)
+
 def showScreen(screen: str) -> Screen:
-    global actualScreen, actualWindow
+    global actualScreen, actualWindow, historyScreen
     if actualScreen is not None and actualScreen.id == screen:
         return actualScreen
     elif actualScreen is None or actualScreen.id != screen:
+        if actualScreen is not None:
+            historyScreen.append(actualScreen.id)
         UnMountScreen()
         screen_class = getScreenClass(screen)
         actualScreen = screen_class(actualWindow)

@@ -1,5 +1,4 @@
 import pygame
-
 keys = None
 
 def getKeys() -> dict:
@@ -9,3 +8,7 @@ def getKeys() -> dict:
 def updateKeys(keysSet) -> None:
     global keys
     keys = keysSet
+    from client.lib.screen.controller import backScreen
+    if keys[pygame.K_LCTRL] and keys[pygame.K_z]:
+        backScreen()
+
