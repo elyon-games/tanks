@@ -14,9 +14,9 @@ class AuthLoginScreen(Screen):
         self.email = ""
         self.password = ""
         self.active_input = None
+        self.error_message = ""
 
     def draw_rounded_rect(self, surface, rect, color, border_radius=20, border_color=None, border_width=0):
-        """Dessine un rectangle avec des coins arrondis."""
         x, y, w, h = rect
         pygame.draw.rect(surface, color, (x + border_radius, y, w - 2 * border_radius, h))  # Centre
         pygame.draw.rect(surface, color, (x, y + border_radius, w, h - 2 * border_radius))  # Verticales
@@ -45,6 +45,11 @@ class AuthLoginScreen(Screen):
         text_rect = text_surface.get_rect(center=rect.center)
         self.surface.blit(text_surface, text_rect)
 
+    def render_error_message(self):
+        if self.error_message:
+            error_surface = getFontSize(24).render(self.error_message, True, (255, 0, 0))
+            self.surface.blit(error_surface, ((self.surface.get_width() - error_surface.get_width()) // 2, 350))
+
     def handle_paste(self):
         try:
             clipboard_text = pygame.scrap.get(pygame.SCRAP_TEXT).decode('utf-8')
@@ -68,41 +73,52 @@ class AuthLoginScreen(Screen):
         self.draw_rounded_rect(self.surface, (card_x, card_y, card_width, card_height), CARD_COLOR, border_radius=20, border_color=CARD_BORDER_COLOR, border_width=2)
 
         # Input fields
-        email_rect = pygame.Rect(card_x + 50, card_y + 50, 300, 40)
-        password_rect = pygame.Rect(card_x + 50, card_y + 110, 300, 40)
-        self.render_text_input(email_rect, self.email, self.active_input == "email")
-        self.render_text_input(password_rect, "*" * len(self.password), self.active_input == "password")
+        self.email_rect = pygame.Rect(card_x + 50, card_y + 50, 300, 40)
+        self.password_rect = pygame.Rect(card_x + 50, card_y + 110, 300, 40)
+        self.render_text_input(self.email_rect, self.email, self.active_input == "email")
+        self.render_text_input(self.password_rect, "*" * len(self.password), self.active_input == "password")
 
         # Button
-        button_rect = pygame.Rect(card_x + 150, card_y + 200, 100, 40)
+        self.button_rect = pygame.Rect(card_x + 150, card_y + 200, 100, 40)
+        self.signup_button_rect = pygame.Rect(card_x + 150, card_y + 250, 100, 40)  # New signup button
         mouse_pos = pygame.mouse.get_pos()
-        button_hover = button_rect.collidepoint(mouse_pos)
-        self.render_button(button_rect, "Login", button_hover)
+        button_hover = self.button_rect.collidepoint(mouse_pos)
+        signup_button_hover = self.signup_button_rect.collidepoint(mouse_pos)  # Hover state for signup button
+        self.render_button(self.button_rect, "Login", button_hover)
+        self.render_button(self.signup_button_rect, "S'inscrire", signup_button_hover)  # Render signup button
 
-        for event in self.events:
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if email_rect.collidepoint(event.pos):
-                    self.active_input = "email"
-                elif password_rect.collidepoint(event.pos):
-                    self.active_input = "password"
-                elif button_rect.collidepoint(event.pos):
-                    self.active_input = None
-                    if login(self.email, self.password) == True:
-                        showScreen("home")
-                    else:
-                        self.password = ""
+        # Error message
+        self.render_error_message()
+
+    def HandleEvent(self, type, event):
+        if type == pygame.MOUSEBUTTONDOWN:
+            if self.email_rect.collidepoint(event.pos):
+                self.active_input = "email"
+            elif self.password_rect.collidepoint(event.pos):
+                self.active_input = "password"
+            elif self.button_rect.collidepoint(event.pos):
+                self.active_input = None
+                if login(self.email, self.password):
+                    showScreen("home")
+                    self.error_message = ""
                 else:
-                    self.active_input = None
-            elif event.type == pygame.KEYDOWN and self.active_input:
-                if event.key == pygame.K_BACKSPACE:
-                    if self.active_input == "email":
-                        self.email = self.email[:-1]
-                    elif self.active_input == "password":
-                        self.password = self.password[:-1]
-                elif event.key == pygame.K_v and (self.keys[pygame.K_LCTRL] or self.keys[pygame.K_RCTRL]):
-                    self.handle_paste()
-                elif len(self.email) < 20 and len(self.password) < 20:
-                    if self.active_input == "email":
-                        self.email += event.unicode
-                    elif self.active_input == "password":
-                        self.password += event.unicode
+                    self.password = ""
+                    self.error_message = "Email ou mot de passe incorrect"
+            elif self.signup_button_rect.collidepoint(event.pos):  # Handle signup button click
+                self.active_input = None
+                showScreen("auth-register")  # Assuming you have a signup screen
+            else:
+                self.active_input = None
+        elif type == pygame.KEYDOWN and self.active_input:
+            if event.key == pygame.K_BACKSPACE:
+                if self.active_input == "email":
+                    self.email = self.email[:-1]
+                elif self.active_input == "password":
+                    self.password = self.password[:-1]
+            elif event.key == pygame.K_v and (self.keys[pygame.K_LCTRL] or self.keys[pygame.K_RCTRL]):
+                self.handle_paste()
+            elif len(self.email) < 20 and len(self.password) < 20:
+                if self.active_input == "email":
+                    self.email += event.unicode
+                elif self.active_input == "password":
+                    self.password += event.unicode
