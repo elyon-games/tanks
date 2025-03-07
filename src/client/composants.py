@@ -1,7 +1,7 @@
 import pygame
 from client.style.gradient import draw_gradient
 from client.lib.me import getData
-from client.style.fonts import getFont
+from client.style.fonts import getFont, getFontSize
 from client.style.constants import EMERAUDE, BLACK, GRAY, BLEU, WHITE
 from client.lib.screen.controller import showScreen
 from client.lib.assets import getAsset
@@ -167,13 +167,39 @@ class Button(composantBase):
 
 class showRank(composantBase):
     def __init__(self, window, rankName):
-        super().__init__(window)
         self.rank = get_rank(rankName)
+        self.font = getFont("medium")
+        self.icon = getAsset(f"rank-{self.rank['name']}", 0.5)
+        super().__init__(self.icon.get_size())
 
     def render(self):
         self.updateSurface()
-        self.surface.blit(self.rank, (0, 0))
+        self.surface.blit(self.icon, (0, 0))
         return self.surface
+
+    def updateSurface(self):
+        self.surface = pygame.surface.Surface(self.icon.get_size(), pygame.SRCALPHA)
+
+    def HandleEvent(self, type, event):
+        pass
+
+class showUsername():
+    def __init__(self, window, username, rankName=None, color=EMERAUDE):
+        self.font = getFontSize(34)
+        self.username = username
+        self.color = color
+        self.rank = showRank(window, rankName) if rankName else None
+        self.text = self.font.render(self.username, True, self.color)
+        self.surface = self.updateSurface()
+
+    def render(self):
+        self.surface.blit(self.text, (0, 0))
+        if self.rank:
+            self.surface.blit(self.rank.render(), (self.text.get_width() + 5, 0))
+        return self.surface
+
+    def updateSurface(self):
+        return pygame.surface.Surface((self.text.get_width() + 5 + (self.rank.render().get_width() if self.rank else 0), self.text.get_height()), pygame.SRCALPHA)
 
     def HandleEvent(self, type, event):
         pass

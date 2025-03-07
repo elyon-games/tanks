@@ -1,7 +1,7 @@
 import pygame
 from client.lib.screen.base import Screen
 from client.lib.me import getData
-from client.composants import NavBar, showRank
+from client.composants import NavBar, showRank, showUsername
 from client.lib.classement import getClassement
 
 class classementScreen(Screen):
@@ -9,7 +9,7 @@ class classementScreen(Screen):
         super().__init__(window, "classement", "Classement")
         self.user = getData().get("user")
         self.navbar = NavBar(window, self.user)
-        self.type = ["kills", "deaths", "kd", "wins", "loses", "wl", "points"]
+        self.type = ["points", "wins", "kd", "kills", "deaths", "loses", "wl"]
         self.current_type_index = 0
         self.page = 1
         self.items_per_page = 5
@@ -42,8 +42,15 @@ class classementScreen(Screen):
             pygame.draw.rect(self.surface, (50, 50, 50), card_rect)
             pygame.draw.rect(self.surface, (255, 255, 255), card_rect, 2)
             
-            text = self.font.render(f"#{item['position']} | {item['username']} ({item['rank']}) : {item['value']} {self.type[self.current_type_index]}", True, (255, 255, 255))
-            self.surface.blit(text, (60, y_offset + 10))
+            position_text = self.font.render(f"#{item['position']} ", True, (255, 255, 255))
+            self.surface.blit(position_text, (60, y_offset + 10))
+            
+            username = showUsername(self.window, item['username'], item['rank'])
+            self.surface.blit(username.render(), (120, y_offset + 10))
+            
+            value_text = self.font.render(f" {item['value']}", True, (255, 255, 255))
+            self.surface.blit(value_text, (400, y_offset + 10))
+            
             y_offset += card_height + card_margin
 
         self.pagination_y_offset = y_offset  # Save the y_offset for pagination buttons

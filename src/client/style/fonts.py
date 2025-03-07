@@ -4,6 +4,7 @@ fonts = {
     "titre": SysFont(None, 36),
     "texte": SysFont(None, 14),
     "hud_info": SysFont(None, 16),
+    "username": SysFont(None, 30),
     "medium": SysFont(None, 24),
     "small": SysFont(None, 12),
     "big": SysFont(None, 48),

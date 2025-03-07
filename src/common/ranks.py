@@ -3,7 +3,7 @@ import math
 base_value = 100
 growth_factor = 1.5
 
-rank_values = [0] + [round(base_value * math.pow(growth_factor, i), -1) for i in range(16)]
+rank_values = [0] + [round(base_value * math.pow(growth_factor, i), -1) for i in range(17)]
 rank_names = [
     "unranked",
     "bronze-I", "bronze-II", "bronze-III", "bronze-IV",
@@ -13,8 +13,7 @@ rank_names = [
     "legendary"
 ]
 rank_icons = [
-    # "/ranks/unranked.png",
-    "/ranks/bronze-1.png",
+    "/ranks/unranked.png",
     "/ranks/bronze-1.png", "/ranks/bronze-2.png", "/ranks/bronze-3.png", "/ranks/bronze-4.png",
     "/ranks/argent-1.png", "/ranks/argent-2.png", "/ranks/argent-3.png", "/ranks/argent-4.png",
     "/ranks/gold-1.png", "/ranks/gold-2.png", "/ranks/gold-3.png", "/ranks/gold-4.png",
@@ -22,4 +21,4 @@ rank_icons = [
     "/ranks/legendary.png"
 ]
 
-ranks = {int(rank_values[i]): {"name": rank_names[i], "icon": rank_icons[i]} for i in range(17)}
+ranks = {int(rank_values[i]): {"name": rank_names[i], "icon": rank_icons[i]} for i in range(18)}
