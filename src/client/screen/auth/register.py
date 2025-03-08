@@ -7,6 +7,7 @@ from client.types import EVENTS, KEYS
 from client.lib.title import changeTitle
 from client.lib.auth import register  # Assuming you have a register function
 from client.lib.screen.controller import showScreen
+from client.lib.assets import getAsset
 
 class AuthRegisterScreen(Screen):
     def __init__(self, window):
@@ -17,6 +18,7 @@ class AuthRegisterScreen(Screen):
         self.confirm_password = ""
         self.active_input = None
         self.error_message = ""
+        self.logo = getAsset("logo", 0.6)
 
     def draw_rounded_rect(self, surface, rect, color, border_radius=20, border_color=None, border_width=0):
         x, y, w, h = rect
@@ -77,7 +79,7 @@ class AuthRegisterScreen(Screen):
         # Center card dimensions
         card_width, card_height = 400, 450
         card_x = (self.surface.get_width() - card_width) // 2
-        card_y = (self.surface.get_height() - card_height) // 2
+        card_y = (self.surface.get_height() - card_height +190*0.6) // 2
 
         # Draw card with rounded corners
         self.draw_rounded_rect(self.surface, (card_x, card_y, card_width, card_height), CARD_COLOR, border_radius=20, border_color=CARD_BORDER_COLOR, border_width=2)
@@ -87,6 +89,8 @@ class AuthRegisterScreen(Screen):
         self.email_rect = pygame.Rect(card_x + 50, card_y + 130, 300, 40)
         self.password_rect = pygame.Rect(card_x + 50, card_y + 190, 300, 40)
         self.confirm_password_rect = pygame.Rect(card_x + 50, card_y + 250, 300, 40)
+
+        self.surface.blit(self.logo, (self.surface.get_width()/2 - (190*0.65)/2, 10))
 
         # Render labels
         self.render_label("Nom d'utilisateur", self.username_rect)

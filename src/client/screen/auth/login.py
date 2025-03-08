@@ -7,6 +7,7 @@ from client.types import EVENTS, KEYS
 from client.lib.title import changeTitle
 from client.lib.auth import login
 from client.lib.screen.controller import showScreen
+from client.lib.assets import getAsset
 
 class AuthLoginScreen(Screen):
     def __init__(self, window):
@@ -15,6 +16,7 @@ class AuthLoginScreen(Screen):
         self.password = ""
         self.active_input = None
         self.error_message = ""
+        self.logo = getAsset("logo", 0.65)
 
     def draw_rounded_rect(self, surface, rect, color, border_radius=20, border_color=None, border_width=0):
         x, y, w, h = rect
@@ -77,10 +79,11 @@ class AuthLoginScreen(Screen):
         self.password_rect = pygame.Rect(card_x + 50, card_y + 110, 300, 40)
         self.render_text_input(self.email_rect, self.email, self.active_input == "email")
         self.render_text_input(self.password_rect, "*" * len(self.password), self.active_input == "password")
+        self.surface.blit(self.logo, (self.surface.get_width()/2 - (190*0.65)/2, 10))
 
         # Button
-        self.button_rect = pygame.Rect(card_x + 150, card_y + 200, 100, 40)
-        self.signup_button_rect = pygame.Rect(card_x + 150, card_y + 250, 100, 40)  # New signup button
+        self.button_rect = pygame.Rect(card_x + 140, card_y + 175, 140, 45)
+        self.signup_button_rect = pygame.Rect(card_x + 140, card_y + 225, 140, 45)  # New signup button
         mouse_pos = pygame.mouse.get_pos()
         button_hover = self.button_rect.collidepoint(mouse_pos)
         signup_button_hover = self.signup_button_rect.collidepoint(mouse_pos)  # Hover state for signup button
