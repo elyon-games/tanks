@@ -86,6 +86,7 @@ def Main():
         process.started_callback("client-main")
 
         def initLoading():
+            pygame.scrap.init()
             print("Init Screen")
             showScreen("loading")
             time.sleep(0.5)

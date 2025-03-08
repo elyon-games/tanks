@@ -52,7 +52,7 @@ class AuthLoginScreen(Screen):
 
     def handle_paste(self):
         try:
-            clipboard_text = pygame.scrap.get(pygame.SCRAP_TEXT).decode('utf-8')
+            clipboard_text = pygame.scrap.get(pygame.SCRAP_TEXT).decode("utf-8")
             if self.active_input == "email":
                 self.email += clipboard_text
             elif self.active_input == "password":
