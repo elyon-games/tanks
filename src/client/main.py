@@ -70,6 +70,7 @@ def Main():
         changeTitle("Chargement...")
 
         pingData = ping()
+        print(f"pingData : {pingData}; \nconfig : {config['version']}")
         if pingData.get("version") != config["version"]:
             raise ValueError(errors.getErrorMessage("CLIENT_VERSION_MISMATCH"))
         

@@ -53,20 +53,21 @@ class NavBar(composantBase):
         ]
 
     def render(self):
-        self.updateSurface() # IMPORTANT
+        self.updateSurface() 
         draw_gradient(self.surface, BLACK, EMERAUDE, *self.getSize())
         self.logoPos = self.surface.blit(self.logo, (20, 10))
         self.surface.blit(self.fontTitre.render("Elyon Tanks", False, WHITE), (self.logoPos.x*5, self.logoPos.centery-10))
         self.draw_buttons()
         self.draw_user_card()
-        return self.surface # IMPORTANT
+        return self.surface 
 
+    #affichage des boutons de la barre de navigation
     def draw_buttons(self):
         i = 0
         for button in self.buttons:
             i += 1
             text_surface = self.font.render(button["text"], False, BLACK)
-            text_rect = text_surface.get_rect(topleft=(self.logoPos.x*(12+i), self.logoPos.centery-4))
+            text_rect = text_surface.get_rect(topleft=(self.logoPos.x*(8+i*5), self.logoPos.centery-4))
             button_rect = pygame.Rect(text_rect.left - 10, text_rect.top - 5, text_rect.width + 20, text_rect.height + 10)
             pygame.draw.rect(self.surface, EMERAUDE, button_rect, border_radius=10)
             self.surface.blit(text_surface, text_rect.topleft)
