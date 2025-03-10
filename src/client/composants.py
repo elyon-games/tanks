@@ -66,7 +66,7 @@ class NavBar(composantBase):
         for button in self.buttons:
             i += 1
             text_surface = self.font.render(button["text"], False, BLACK)
-            text_rect = text_surface.get_rect(topleft=(self.logoPos.x*(12+i), self.logoPos.centery-4))
+            text_rect = text_surface.get_rect(topleft=(self.logoPos.x*(8+i*5), self.logoPos.centery-4))
             button_rect = pygame.Rect(text_rect.left - 10, text_rect.top - 5, text_rect.width + 20, text_rect.height + 10)
             pygame.draw.rect(self.surface, EMERAUDE, button_rect, border_radius=10)
             self.surface.blit(text_surface, text_rect.topleft)
