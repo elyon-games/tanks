@@ -5,7 +5,6 @@ Général : 
     - Mort 
     - Victoire
     - Défaite
-    - Pièces ramasser   
     - Ratio K/D et V/D
 
 - Système de partie (privée/public) 
