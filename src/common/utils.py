@@ -2,6 +2,7 @@ import os
 import sys
 import re
 import json
+import datetime
 
 def create_file_if_not_exists(pathR: str, default: str = json.dumps({})) -> None:
     create_folder_if_not_exists(os.path.dirname(pathR))
@@ -43,3 +44,6 @@ def is_valid_ip(ip: str) -> bool:
 
 def file_exists(file: str) -> bool:
     return os.path.exists(file)
+
+def get_current_year() -> int:
+    return int(datetime.datetime.now().year)
