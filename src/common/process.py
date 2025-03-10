@@ -1,3 +1,8 @@
+# LIBRAIRIE DE GESTION DE PROCESSUS EXTERNES AU PROJECT ELYON
+# Cette librairie permet de gérer des processus
+# Réalisé par l'équipe de Younity MC, Inc. (https://www.younity-mc.fr) et RGreenWolf (https://www.rgreenwolf.fr/)
+# Version 1.5.3
+
 import threading
 from typing import Callable, Dict, Optional, Any
 

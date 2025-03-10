@@ -1,3 +1,4 @@
+# liste des erreurs possibles communes et connues
 errors_list = [
     {"code": "INVALID_REQUEST", "message": "Mauvaise Requête"},
     {"code": "UNAUTHORIZED", "message": "Non Autorisé"},
@@ -15,6 +16,7 @@ errors_list = [
     {"code": "ALREADY_CONNECTED", "message": "Vous êtes déjà connecté depuis une autre connexion."}
 ]
 
+# fonction pour générer une erreur à partir de son code (global)
 def generateError(code, message: str):
     for error in errors_list:
         if error["code"] == code:
@@ -31,6 +33,7 @@ def generateError(code, message: str):
         "message": "Erreur Inconnue"
     }
 
+# fonction pour récupérer une erreur à partir de son code (global)
 def getError(code):
     for error in errors_list:
         if error["code"] == code:

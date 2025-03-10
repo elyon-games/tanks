@@ -8,8 +8,10 @@ from typing import Optional
 
 logger: Optional[logging.Logger] = None
 
+# Liste des messages à ignorer
 messageIgnore = ["^", " ", ":", "~"]
 
+# Fonction pour initialiser le logger
 def setup_logger(log_file_path: str, disabled_console: bool) -> logging.Logger:
     global logger
     log_filename = os.path.join(log_file_path, f"{datetime.now().strftime('%Y_%m_%d_%H')}.log")
@@ -18,6 +20,7 @@ def setup_logger(log_file_path: str, disabled_console: bool) -> logging.Logger:
     if not disabled_console:
         handlers.append(logging.StreamHandler(sys.stdout))
 
+    # Configuration du logger
     logging.basicConfig(
         level=logging.DEBUG,
         format="%(asctime)s [%(levelname)s] [%(filename)s:%(lineno)d] %(message)s" if common_config["ultraDebug"] else "%(asctime)s [%(levelname)s] %(message)s",
@@ -25,16 +28,19 @@ def setup_logger(log_file_path: str, disabled_console: bool) -> logging.Logger:
     )
     logger = logging.getLogger("elyon")
 
+    # Redirection de stdout et stderr vers le logger
     sys.stdout = LoggerWriter(logger, logging.INFO)
     sys.stderr = LoggerWriter(logger, logging.ERROR)
     
     return logger
 
+# Fonction pour récupérer le logger
 def getLogger() -> logging.Logger:
     if logger is None:
         raise Exception("Logger is not initialized")
     return logger
 
+# Classe pour écrire dans le logger (file)
 class LoggerWriter:
     def __init__(self, logger: logging.Logger, log_level: int) -> None:
         self.logger = logger

@@ -8,6 +8,7 @@ import common.utils as utils
 import common.args as args
 import common.path as path
 import common.data as data
+import common.time as timeC
 import common.ams as AssetsManagerSystem
 from common.logger import setup_logger
 import logging
@@ -404,7 +405,7 @@ def start_GUI() -> None:
 
         footer_label = ctk.CTkLabel(
             footer_frame, 
-            text=f"© 2024-{utils.get_current_year()} Elyon Games. Tous droits réservés.",
+            text=f"© 2024-{timeC.get_current_year()} Elyon Games. Tous droits réservés.",
             font=FONT_FOOTER, 
             text_color=COLOR_TEXT
         )

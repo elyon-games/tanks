@@ -6,6 +6,7 @@ from sentry_sdk.integrations.threading import ThreadingIntegration
 
 enable: bool = False
 
+# Fonction pour initialiser Sentry
 def InitSentry():
     global enable
     sentryConfig: dict = common_config.get("sentry", {})
@@ -29,6 +30,7 @@ def InitSentry():
                 integrations=[LoggingIntegration(), ThreadingIntegration()]
             )
 
+# Fonction pour définir un contexte a passer a sentry (ABANDONNE)
 def setContext():
     global enable
     if enable:

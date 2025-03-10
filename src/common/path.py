@@ -9,6 +9,7 @@ global paths
 path_data: str = None
 paths: Dict[str, str] = {}
 
+# fonction pour initialiser les chemins de fichiers et dossiers 
 def initPath(path_data_t: str = "./data") -> None:
     global path_data
     global paths
@@ -38,6 +39,7 @@ def initPath(path_data_t: str = "./data") -> None:
         "server_files": joinPath(path_data, "server/files"),
         "server_sessions": joinPath(path_data, "server/sessions")
     }
-    
+
+# fonction pour récupérer un chemin de fichier ou de dossier 
 def get_path(key: str = "default") -> str:
     return joinPath(paths.get(key, "./"))

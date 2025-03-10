@@ -4,6 +4,7 @@ import sys
 from typing import Any, Dict, Optional
 from common.utils import getMode
 
+# fonction pour récupérer le chemin d'une ressource même si le programme est compilé
 def resource_path(relative_path: str) -> str:
     if hasattr(sys, "_MEIPASS"):
         return os.path.join(sys._MEIPASS, relative_path)
@@ -11,6 +12,7 @@ def resource_path(relative_path: str) -> str:
 
 path_all_config: str = resource_path("config")
 
+# fonction pour ouvrir un fichier de configuration YAML et le charger
 def openConfig(path: str) -> Optional[Dict[str, Any]]:
     try:
         with open(path, "r") as file:
@@ -25,6 +27,7 @@ def openConfig(path: str) -> Optional[Dict[str, Any]]:
         print(f"Une erreur inattendue s'est produite lors de l'ouverture de {path} : {exc}")
         sys.exit(1)
 
+# fonction pour s'assurer que le dossier de configuration existe
 def ensure_config_exists() -> None:
     global path_all_config
     external_config_path = os.path.join(os.path.abspath("."), "config")
@@ -37,6 +40,7 @@ def ensure_config_exists() -> None:
 
 ensure_config_exists()
 
+# initialisation de la configuration commune
 try:
     common_config_path = os.path.join(path_all_config, "common.yaml")
     common_config: Dict[str, Any] = openConfig(common_config_path) or {}
@@ -47,6 +51,7 @@ except Exception as exc:
 
 app_configs: Dict[str, Dict[str, Any]] = {}
 
+# fonction pour initialiser la configuration d'une application
 def initConfig(app: str, mode: str) -> None:
     global app_configs
     try:
@@ -69,6 +74,7 @@ def initConfig(app: str, mode: str) -> None:
         print(f"Une erreur inattendue s'est produite lors de l'initialisation de la configuration pour {app} : {exc}")
         sys.exit(1)
 
+# fonction pour définir un paramètre de configuration d'une application manuellement
 def setConfigParameter(app: str, key: str, value: Any) -> None:
     if app not in app_configs:
         initConfig(app, getMode())
@@ -80,6 +86,7 @@ def setConfigParameter(app: str, key: str, value: Any) -> None:
         d = d[k]
     d[keys[-1]] = value
 
+# fonction pour récupérer un paramètre de configuration d'une application
 def getConfig(app: str) -> Dict[str, Any]:
     if app not in app_configs:
         initConfig(app, getMode())
