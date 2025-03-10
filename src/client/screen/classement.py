@@ -53,14 +53,14 @@ class classementScreen(Screen):
             
             y_offset += card_height + card_margin
 
-        self.pagination_y_offset = y_offset  # Save the y_offset for pagination buttons
+        self.pagination_y_offset = y_offset  
         prev_text = self.font.render("Précédent", True, (255, 255, 255))
-        next_text = self.font.render("Suivant", True, (255, 255, 255))
         page_text = self.font.render(f"Page {self.page}", True, (255, 255, 255))
+        next_text = self.font.render("Suivant", True, (255, 255, 255))
         
         self.surface.blit(prev_text, (50, self.pagination_y_offset + 20))
-        self.surface.blit(page_text, (150, self.pagination_y_offset + 20))
-        self.surface.blit(next_text, (250, self.pagination_y_offset + 20))
+        self.surface.blit(page_text, (200, self.pagination_y_offset + 20))
+        self.surface.blit(next_text, (300, self.pagination_y_offset + 20))
 
     def HandleEvent(self, type, event):
         self.navbar.HandleEvent(type, event)
