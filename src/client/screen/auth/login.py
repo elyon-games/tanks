@@ -47,10 +47,14 @@ class AuthLoginScreen(Screen):
         text_rect = text_surface.get_rect(center=rect.center)
         self.surface.blit(text_surface, text_rect)
 
+    def render_label(self, text, rect):
+        label_surface = getFontSize(24).render(text, True, WHITE)
+        self.surface.blit(label_surface, (rect.x, rect.y))
+
     def render_error_message(self):
         if self.error_message:
             error_surface = getFontSize(24).render(self.error_message, True, (255, 0, 0))
-            self.surface.blit(error_surface, ((self.surface.get_width() - error_surface.get_width()) // 2, 350))
+            self.surface.blit(error_surface, ((self.surface.get_width() - error_surface.get_width()) // 2, 305))
 
     def handle_paste(self):
         try:
@@ -73,6 +77,12 @@ class AuthLoginScreen(Screen):
 
         # Draw card with rounded corners
         self.draw_rounded_rect(self.surface, (card_x, card_y, card_width, card_height), CARD_COLOR, border_radius=20, border_color=CARD_BORDER_COLOR, border_width=2)
+
+        # Label fields
+        self.email_rect_label = pygame.Rect(card_x + 50, card_y + 30, 300, 40)
+        self.password_rect_label = pygame.Rect(card_x + 50, card_y + 90, 300, 40)
+        self.render_label("Email", self.email_rect_label)
+        self.render_label("Mot de passe", self.password_rect_label)
 
         # Input fields
         self.email_rect = pygame.Rect(card_x + 50, card_y + 50, 300, 40)
