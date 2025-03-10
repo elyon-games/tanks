@@ -3,6 +3,7 @@ from client.lib.screen.base import Screen
 from client.lib.me import getData
 from client.composants import NavBar, showRank, showUsername
 from client.lib.classement import getClassement
+from client.style.fonts import getFontSize
 
 class classementScreen(Screen):
     def __init__(self, window):
@@ -14,6 +15,7 @@ class classementScreen(Screen):
         self.page = 1
         self.items_per_page = 5
         self.font = pygame.font.Font(None, 36)
+        self.buttons_type_rects=[]
         self.updateClassement()
 
     def updateClassement(self):
@@ -29,9 +31,11 @@ class classementScreen(Screen):
         y_offset = 100  # Adjusted y_offset to move the selector down
         for index, type_name in enumerate(self.type):
             color = (255, 255, 255) if index == self.current_type_index else (100, 100, 100)
-            text = self.font.render(type_name, True, color)
-            self.surface.blit(text, (x_offset, y_offset))
+            # text = self.font.render(type_name, True, color)
+            # self.surface.blit(text, (x_offset, y_offset))
             x_offset += 100
+            self.buttons_type_rects.append(pygame.Rect(x_offset-100, y_offset, 80, 30))
+            self.render_label(type_name, self.buttons_type_rects[index])
 
     def renderClassement(self):
         y_offset = 150  # Adjusted y_offset to move the classement down
@@ -53,30 +57,32 @@ class classementScreen(Screen):
             
             y_offset += card_height + card_margin
 
-        self.pagination_y_offset = y_offset  
-        prev_text = self.font.render("Précédent", True, (255, 255, 255))
-        page_text = self.font.render(f"Page {self.page}", True, (255, 255, 255))
-        next_text = self.font.render("Suivant", True, (255, 255, 255))
-        
-        self.surface.blit(prev_text, (50, self.pagination_y_offset + 20))
-        self.surface.blit(page_text, (200, self.pagination_y_offset + 20))
-        self.surface.blit(next_text, (300, self.pagination_y_offset + 20))
+        self.pagination_y_offset = y_offset
+
+        self.precedent_button = pygame.Rect(50, self.pagination_y_offset + 10, 100, 30)
+        self.page_button = pygame.Rect(200, self.pagination_y_offset + 10, 100, 30)
+        self.suivant_button = pygame.Rect(300, self.pagination_y_offset + 10, 100, 30)
+        self.render_label("Précédent", self.precedent_button)
+        self.render_label("Page", self.page_button)
+        self.render_label(f"Suivant {self.page}", self.suivant_button)
+
+    def render_label(self, text, rect): 
+        label_surface = getFontSize(30).render(text, True, (255, 255, 255))
+        self.surface.blit(label_surface, (rect.x, rect.y))
 
     def HandleEvent(self, type, event):
         self.navbar.HandleEvent(type, event)
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if 50 <= event.pos[0] <= 150 and self.pagination_y_offset + 20 <= event.pos[1] <= self.pagination_y_offset + 70:
+            mouse_pos = event.pos
+            if self.precedent_button.collidepoint(mouse_pos):
                 self.page = max(1, self.page - 1)
                 self.updateClassement()
-            elif 200 <= event.pos[0] <= 300 and self.pagination_y_offset + 20 <= event.pos[1] <= self.pagination_y_offset + 70:
+            elif self.suivant_button.collidepoint(mouse_pos):
                 self.page += 1
                 self.updateClassement()
-            elif 50 <= event.pos[1] <= 150:
-                x_offset = 50
-                for index in range(len(self.type)):
-                    if x_offset <= event.pos[0] <= x_offset + 100:
-                        self.current_type_index = index
-                        self.page = 1
-                        self.updateClassement()
-                        break
-                    x_offset += 100
+            for button_rect in self.buttons_type_rects:
+                if button_rect.collidepoint(mouse_pos):
+                    self.current_type_index = self.buttons_type_rects.index(button_rect)
+                    self.page = 1
+                    self.updateClassement()
+                    break
