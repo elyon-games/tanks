@@ -31,8 +31,6 @@ class classementScreen(Screen):
         y_offset = 100  # Adjusted y_offset to move the selector down
         for index, type_name in enumerate(self.type):
             color = (255, 255, 255) if index == self.current_type_index else (100, 100, 100)
-            # text = self.font.render(type_name, True, color)
-            # self.surface.blit(text, (x_offset, y_offset))
             x_offset += 100
             self.buttons_type_rects.append(pygame.Rect(x_offset-100, y_offset, 80, 30))
             self.render_label(type_name, self.buttons_type_rects[index])
@@ -63,8 +61,8 @@ class classementScreen(Screen):
         self.page_button = pygame.Rect(200, self.pagination_y_offset + 10, 100, 30)
         self.suivant_button = pygame.Rect(300, self.pagination_y_offset + 10, 100, 30)
         self.render_label("Précédent", self.precedent_button)
-        self.render_label("Page", self.page_button)
-        self.render_label(f"Suivant {self.page}", self.suivant_button)
+        self.render_label(f"Page {self.page}", self.page_button)
+        self.render_label("Suivant", self.suivant_button)
 
     def render_label(self, text, rect): 
         label_surface = getFontSize(30).render(text, True, (255, 255, 255))
