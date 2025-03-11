@@ -27,16 +27,16 @@ class classementScreen(Screen):
         self.renderClassement()
 
     def renderTypeSelector(self):
-        x_offset = 50
-        y_offset = 100  # Adjusted y_offset to move the selector down
+        x_offset = 75
+        y_offset = 150  # Adjusted y_offset to move the selector down
         for index, type_name in enumerate(self.type):
             color = (255, 255, 255) if index == self.current_type_index else (100, 100, 100)
-            x_offset += 100
+            x_offset += 80
             self.buttons_type_rects.append(pygame.Rect(x_offset-100, y_offset, 80, 30))
             self.render_label(type_name, self.buttons_type_rects[index])
 
     def renderClassement(self):
-        y_offset = 150  # Adjusted y_offset to move the classement down
+        y_offset = 205  # Adjusted y_offset to move the classement down
         card_height = 60
         card_margin = 10
         for item in self.classement:

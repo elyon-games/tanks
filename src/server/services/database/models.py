@@ -50,7 +50,7 @@ class Users(BaseModel):
             "stats_death": {"type": int, "default": 0},
             "stats_win": {"type": int, "default": 0},
             "stats_lose": {"type": int, "default": 0},
-            "item_buy": {"type": list}
+            "item_buy": {"type": list, "default": []}
         }, default_data=[{
             "id": 1,
             "username": "admin",
