@@ -42,10 +42,10 @@ class AuthRegisterScreen(Screen):
         text_surface = getFontSize(32).render(text, True, WHITE)
         self.surface.blit(text_surface, (rect.x + 10, rect.y + 8))
 
-    def render_button(self, rect, text, hover):
+    def render_button(self, rect, text, hover, size=32):
         color = LIGHTER_BLUE if hover else STEEL_BLUE
         self.draw_rounded_rect(self.surface, rect, color, border_radius=10)
-        text_surface = getFontSize(32).render(text, True, WHITE)
+        text_surface = getFontSize(size).render(text, True, WHITE)
         text_rect = text_surface.get_rect(center=rect.center)
         self.surface.blit(text_surface, text_rect)
 
@@ -70,7 +70,12 @@ class AuthRegisterScreen(Screen):
 
     def render_label(self, text, rect):
         label_surface = getFontSize(24).render(text, True, WHITE)
-        self.surface.blit(label_surface, (rect.x, rect.y - 40))
+        self.surface.blit(label_surface, (rect.x, rect.y))
+
+    def render_error_message(self):
+        if self.error_message:
+            error_surface = getFontSize(24).render(self.error_message, True, (255, 0, 0))
+            self.surface.blit(error_surface, ((self.surface.get_width() - error_surface.get_width()) // 2, self.confirm_password_rect.y + 45))
 
     def UpdateView(self):
         # Background
@@ -84,19 +89,26 @@ class AuthRegisterScreen(Screen):
         # Draw card with rounded corners
         self.draw_rounded_rect(self.surface, (card_x, card_y, card_width, card_height), CARD_COLOR, border_radius=20, border_color=CARD_BORDER_COLOR, border_width=2)
 
+        self.surface.blit(self.logo, (self.surface.get_width()/2 - (190*0.65)/2, 10))
+
+        # Label fiels
+        self.username_rect_label = pygame.Rect(card_x + 50, card_y + 50, 300, 40)
+        self.email_rect_label = pygame.Rect(card_x + 50, card_y + 110, 300, 40)
+        self.password_rect_label = pygame.Rect(card_x + 50, card_y + 170, 300, 40)
+        self.confirm_password_rect_label = pygame.Rect(card_x + 50, card_y + 230, 300, 40)
+
+        # Render labels
+        self.render_label("Nom d'utilisateur", self.username_rect_label)
+        self.render_label("Email", self.email_rect_label)
+        self.render_label("Mot de passe", self.password_rect_label)
+        self.render_label("Confirmer le mot de passe", self.confirm_password_rect_label)
+
         # Input fields
         self.username_rect = pygame.Rect(card_x + 50, card_y + 70, 300, 40)
         self.email_rect = pygame.Rect(card_x + 50, card_y + 130, 300, 40)
         self.password_rect = pygame.Rect(card_x + 50, card_y + 190, 300, 40)
         self.confirm_password_rect = pygame.Rect(card_x + 50, card_y + 250, 300, 40)
 
-        self.surface.blit(self.logo, (self.surface.get_width()/2 - (190*0.65)/2, 10))
-
-        # Render labels
-        self.render_label("Nom d'utilisateur", self.username_rect)
-        self.render_label("Email", self.email_rect)
-        self.render_label("Mot de passe", self.password_rect)
-        self.render_label("Confirmer le mot de passe", self.confirm_password_rect)
 
         self.render_text_input(self.username_rect, self.username, self.active_input == "username")
         self.render_text_input(self.email_rect, self.email, self.active_input == "email")
@@ -104,10 +116,14 @@ class AuthRegisterScreen(Screen):
         self.render_text_input(self.confirm_password_rect, "*" * len(self.confirm_password), self.active_input == "confirm_password")
 
         # Button
-        self.button_rect = pygame.Rect(card_x + 150, card_y + 300, 100, 40)
         mouse_pos = pygame.mouse.get_pos()
-        button_hover = self.button_rect.collidepoint(mouse_pos)
-        self.render_button(self.button_rect, "S'inscrire", button_hover)
+
+        self.button_rect_inscrire = pygame.Rect(card_x + 150, card_y + 315, 100, 40)
+        self.button_rect_connect = pygame.Rect(card_x + 150, card_y + 365, 100, 40)
+        inscrire_hover = self.button_rect_inscrire.collidepoint(mouse_pos)
+        connect_hover = self.button_rect_connect.collidepoint(mouse_pos)
+        self.render_button(self.button_rect_inscrire, "S'inscrire", inscrire_hover)
+        self.render_button(self.button_rect_connect, "Login", connect_hover)
 
         # Error message
         self.render_error_message()
@@ -122,17 +138,23 @@ class AuthRegisterScreen(Screen):
                 self.active_input = "password"
             elif self.confirm_password_rect.collidepoint(event.pos):
                 self.active_input = "confirm_password"
-            elif self.button_rect.collidepoint(event.pos):
-                self.active_input = None
-                if self.password != self.confirm_password:
-                    self.error_message = "Les mots de passe ne correspondent pas"
-                elif register(self.username, self.email, self.password):
-                    showScreen("home")
-                    self.error_message = ""
-                else:
-                    self.password = ""
-                    self.confirm_password = ""
-                    self.error_message = "Erreur lors de l'inscription"
+            elif self.button_rect_inscrire.collidepoint(event.pos):
+                try:
+                    self.active_input = None
+                    if self.password != self.confirm_password:
+                        self.error_message = "Les mots de passe ne correspondent pas"
+                    elif register(self.username, self.email, self.password):
+                        showScreen("home")
+                        self.error_message = ""
+                    else:
+                        self.password = ""
+                        self.confirm_password = ""
+                        self.error_message = "Erreur lors de l'inscription"
+                except:
+                    self.error_message = "Erreur"
+                    self.render_error_message()
+            elif self.button_rect_connect.collidepoint(event.pos):
+                    showScreen("auth-login")
             else:
                 self.active_input = None
         elif type == pygame.KEYDOWN and self.active_input:

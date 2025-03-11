@@ -49,7 +49,8 @@ class Users(BaseModel):
             "stats_kill": {"type": int, "default": 0},
             "stats_death": {"type": int, "default": 0},
             "stats_win": {"type": int, "default": 0},
-            "stats_lose": {"type": int, "default": 0}
+            "stats_lose": {"type": int, "default": 0},
+            "item_buy": {"type": list}
         }, default_data=[{
             "id": 1,
             "username": "admin",
@@ -63,7 +64,8 @@ class Users(BaseModel):
             "stats_kill": 0,
             "stats_death": 0,
             "stats_win": 0,
-            "stats_lose": 0
+            "stats_lose": 0,
+            "item_buy": []
         }])
 
     def create(self, username, identifiant, email, password, admin=False):
