@@ -115,7 +115,7 @@ class NavBar(composantBase):
 
     def draw_user_menu(self, user_card_rect):
         menu_items = ["Voir mon profil", "Paramètres", "Déconnexion"]
-        menu_height = len(menu_items) * 30 + 20
+        menu_height = len(menu_items) * 30
         menu_rect = pygame.Rect(user_card_rect.left, user_card_rect.bottom + 10, 180, menu_height)
         
         # Animation effect
