@@ -1,4 +1,5 @@
 from pygame.font import SysFont, Font
+from typing import Literal
 
 fonts = {
     "titre": SysFont(None, 36),
@@ -11,8 +12,8 @@ fonts = {
     "tiny": SysFont(None, 8)
 }
 
-def getFont(name) -> Font:
+def getFont(name: Literal["titre", "texte", "hud_info", "username", "medium", "small", "big", "tiny"]) -> Font:
     return fonts[name]
 
-def getFontSize(size) -> Font:
+def getFontSize(size: int) -> Font:
     return Font(None, size)

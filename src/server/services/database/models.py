@@ -68,7 +68,7 @@ class Users(BaseModel):
             "item_buy": []
         }])
 
-    def create(self, username, identifiant, email, password, admin=False):
+    def create(self, username: str, email: str, password: str, admin: bool = False):
         user = self.insert({
             "id": self.get_new_id(),
             "username": username,

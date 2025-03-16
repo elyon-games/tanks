@@ -5,6 +5,7 @@ from common.config import getConfig
 
 configData = getConfig("server")
 
+# fonction pour créer un token JWT à partir d'un user_id
 def create_jwt_token(user_id):
     if not configData:
         raise Exception("TOKEN_SERVICE_NO_INIT")
@@ -23,6 +24,7 @@ def create_jwt_token(user_id):
     token = jwt.encode(payload, configData["secret"], algorithm="HS256")
     return token
 
+# fonction pour vérifier un token JWT et retourner le payload
 def verify_jwt_token(token):
     try:
         if not configData:

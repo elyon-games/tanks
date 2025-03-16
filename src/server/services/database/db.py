@@ -98,5 +98,5 @@ def get_classement(type: str, page: int = 1, limit: int = 10) -> list:
     
     return paginated_classement
 
-def get_user_item_buy(user_id: int):
+def get_user_item_buy(user_id: int) -> list:
     return get_user(user_id).get("item_buy")

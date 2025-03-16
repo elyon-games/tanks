@@ -7,6 +7,8 @@ actualScreen: Screen = None
 actualWindow: WINDOW = None
 historyScreen: list = []
 
+args: dict = {}
+
 def getScreenClass(screen_name: str) -> Type[Screen]:
     if screen_name == "loading":
         from client.screen.loading import loadingScreen
@@ -91,3 +93,15 @@ def updateScreen(window: WINDOW, events: EVENTS):
             actualScreen.HandleEvent(type=event.type, event=event)
         actualScreen.Update(window)
         actualScreen.UpdateView()
+
+def setArgs(key: str, value: any):
+    global args
+    args[key] = value
+
+def getArgs(key: str) -> any:
+    global args
+    return args.get(key, None)
+
+def clearArgs():
+    global args
+    args = {}

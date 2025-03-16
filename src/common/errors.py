@@ -13,7 +13,11 @@ errors_list = [
     {"code": "GATEWAY_TIMEOUT", "message": "Temps d'Attente de la Passerelle Écoulé"},
     {"code": "CLIENT_VERSION_MISMATCH", "message": "La version du serveur ne correspond pas à celle du client."},
     {"code": "SERVER_MISSING_KEY", "message": "Le serveur n'a pas renvoyé de clé."},
-    {"code": "ALREADY_CONNECTED", "message": "Vous êtes déjà connecté depuis une autre connexion."}
+    {"code": "ALREADY_CONNECTED", "message": "Vous êtes déjà connecté depuis une autre connexion."},
+    {"code": "GATEWAY_NOT_FOUND", "message": "Passerelle non trouvée."},
+    {"code": "UNKNOWN_ERROR", "message": "Erreur Inconnue"},
+    {"code": "INVALID_GATEWAY", "message": "Passerelle Invalid."},
+    {"code": "INVALID_GATEWAY_KEY", "message": "Clé de Passerelle Invalide."},
 ]
 
 # fonction pour générer une erreur à partir de son code (global)

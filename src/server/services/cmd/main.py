@@ -12,10 +12,10 @@ comandes["tps"] = tpsCMD()
 from server.cmd.users_num import users_num
 comandes["users:num"] = users_num()
 
-def getCommandMain(command: str):
+def getCommandMain(command: str) -> str:
     return command.split(" ")[0]
 
-def getCommandArgs(command: str, helpCommand: bool = False):
+def getCommandArgs(command: str, helpCommand: bool = False) -> list[dict]:
     args = (command.replace(f"{getCommandMain(command)} ", "")).split(" ")
     if args[0] == "": 
         return []
@@ -28,7 +28,7 @@ def getCommandArgs(command: str, helpCommand: bool = False):
             result.append({"id": key_value[0], "value": key_value[1]})
     return result
 
-def initCMD():
+def initCMD() -> None:
     print("Start CLI")
     while process.get_process_running_status("server-cli"):
         command = input("\n")

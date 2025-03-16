@@ -7,3 +7,6 @@ def get_current_time() -> str:
 # Fonction pour récupérer l'année actuelle
 def get_current_year() -> int:
     return int(datetime.datetime.now().year)
+
+def get_current_time_ms() -> int:
+    return int(datetime.datetime.now().timestamp() * 1000)

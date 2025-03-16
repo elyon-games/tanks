@@ -4,6 +4,8 @@ from client.lib.me import getData
 from client.composants import NavBar, showRank, showUsername
 from client.lib.classement import getClassement
 from client.style.fonts import getFontSize
+from client.lib.utils import getUserIDWithUsername
+from client.lib.nav import goProfil
 
 class classementScreen(Screen):
     def __init__(self, window):
@@ -15,7 +17,8 @@ class classementScreen(Screen):
         self.page = 1
         self.items_per_page = 5
         self.font = pygame.font.Font(None, 36)
-        self.buttons_type_rects=[]
+        self.buttons_type_rects = []
+        self.username_rects = []
         self.updateClassement()
 
     def updateClassement(self):
@@ -28,17 +31,17 @@ class classementScreen(Screen):
 
     def renderTypeSelector(self):
         x_offset = 75
-        y_offset = 150  # Adjusted y_offset to move the selector down
+        y_offset = 150 
         for index, type_name in enumerate(self.type):
-            color = (255, 255, 255) if index == self.current_type_index else (100, 100, 100)
             x_offset += 80
             self.buttons_type_rects.append(pygame.Rect(x_offset-100, y_offset, 80, 30))
             self.render_label(type_name, self.buttons_type_rects[index])
 
     def renderClassement(self):
-        y_offset = 205  # Adjusted y_offset to move the classement down
+        y_offset = 205
         card_height = 60
         card_margin = 10
+        self.username_rects = []
         for item in self.classement:
             card_rect = pygame.Rect(50, y_offset, 700, card_height)
             pygame.draw.rect(self.surface, (50, 50, 50), card_rect)
@@ -48,8 +51,10 @@ class classementScreen(Screen):
             self.surface.blit(position_text, (60, y_offset + 10))
             
             username = showUsername(self.window, item['username'], item['rank'])
+            username_rect = username.render().get_rect(topleft=(120, y_offset + 10))
+            self.username_rects.append((username_rect, item['username']))
             self.surface.blit(username.render(), (120, y_offset + 10))
-            
+
             value_text = self.font.render(f" {item['value']}", True, (255, 255, 255))
             self.surface.blit(value_text, (400, y_offset + 10))
             
@@ -83,4 +88,9 @@ class classementScreen(Screen):
                     self.current_type_index = self.buttons_type_rects.index(button_rect)
                     self.page = 1
                     self.updateClassement()
+                    break
+            for username_rect, username in self.username_rects:
+                if username_rect.collidepoint(mouse_pos):
+                    user_id = getUserIDWithUsername(username)
+                    goProfil(user_id)
                     break
