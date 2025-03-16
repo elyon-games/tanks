@@ -12,19 +12,17 @@ from client.game.map import getWalls
 from client.style.fonts import getFontSize
 
 class Game:  # Définition de la classe Game
-    def __init__(self, width=1920, height=1080, fps=60, background_path=None, icon_path=None, debug=False):  # Définition du constructeur de la classe Game et de ses paramètres
+    def __init__(self, width=1920, height=1080, background_path=None):  # Définition du constructeur de la classe Game et de ses paramètres
         self.width = width  # Largeur de la fenêtre du jeu
         self.height = height  # Hauteur de la fenêtre du jeu
-        self.fps = fps  # Nombre de frames par seconde
         self.background_path = pygame.image.load(background_path)  # Chargement de l'image de fond
         self.background = pygame.transform.scale(self.background_path, (self.width, self.height))  # Redimensionnement de l'image de fond
-        self.icon_path = icon_path  # Chemin vers l'icône du jeu
         self.write_port_mode = ""  # Port du serveur (initialisation à vide)
         self.time = 0  # Initialisation du temps
         
         self.pressed = {}  # Dictionnaire pour gérer les touches pressées
         
-        self.debug = debug  # Mode de débogage
+        self.debug = False  # Mode de débogage
                 
         self.freeze = False  # Mode de pause du jeu
 
