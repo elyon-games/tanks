@@ -9,7 +9,6 @@ route_users = Blueprint("api-users", __name__)
 def formatUserRes(user: dict) -> dict:
     user = {
         "id": user["id"],
-        "email": user["email"],
         "username": user["username"],
         "money": user.get("money", 0.0),
         "badges": user.get("badges", []),

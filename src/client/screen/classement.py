@@ -4,6 +4,8 @@ from client.lib.me import getData
 from client.composants import NavBar, showRank, showUsername
 from client.lib.classement import getClassement
 from client.style.fonts import getFontSize
+from client.lib.utils import getUserIDWithUsername
+from client.lib.nav import goProfil
 
 class classementScreen(Screen):
     def __init__(self, window):
@@ -15,7 +17,8 @@ class classementScreen(Screen):
         self.page = 1
         self.items_per_page = 5
         self.font = pygame.font.Font(None, 36)
-        self.buttons_type_rects=[]
+        self.buttons_type_rects = []
+        self.username_rects = []
         self.updateClassement()
 
     def updateClassement(self):
@@ -39,6 +42,7 @@ class classementScreen(Screen):
         y_offset = 190  # Adjusted y_offset to move the classement down
         card_height = 60
         card_margin = 10
+        self.username_rects = []
         for item in self.classement:
             card_rect = pygame.Rect(50, y_offset, self.window.get_width()*0.9, card_height)
             pygame.draw.rect(self.surface, (50, 50, 50), card_rect)
@@ -48,8 +52,9 @@ class classementScreen(Screen):
             self.surface.blit(position_text, (card_rect.width*1.1 - card_rect.width, y_offset + 10))
             
             username = showUsername(self.window, item['username'], item['rank'])
-            self.surface.blit(username.render(), (card_rect.width*1.2 - card_rect.width, y_offset + 10))
-            
+            username_rect = username.render().get_rect(topleft=(120, y_offset + 10))
+            self.username_rects.append((username_rect, item['username']))
+            self.surface.blit(username.render(), (card_rect.width*1.2 - card_rect.width, y_offset + 10))            
             value_text = self.font.render(f" {item['value']}", True, (255, 255, 255))
             self.surface.blit(value_text, (card_rect.width*1.5-card_rect.width, y_offset + 10))
             
@@ -83,4 +88,9 @@ class classementScreen(Screen):
                     self.current_type_index = self.buttons_type_rects.index(button_rect)
                     self.page = 1
                     self.updateClassement()
+                    break
+            for username_rect, username in self.username_rects:
+                if username_rect.collidepoint(mouse_pos):
+                    user_id = getUserIDWithUsername(username)
+                    goProfil(user_id)
                     break

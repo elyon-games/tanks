@@ -7,6 +7,8 @@ from client.lib.screen.controller import showScreen
 from client.lib.assets import getAsset
 from client.lib.auth import logout
 from client.lib.rank import get_rank
+from client.lib.nav import goProfil
+from client.lib.utils import getUserIDWithUsername
 
 class composantBase():
     def __init__(self, window):
@@ -68,7 +70,6 @@ class NavBar(composantBase):
         label_surface = getFontSize(30).render(text, True, (255, 255, 255))
         self.surface.blit(label_surface, (rect.x, rect.y))
 
-    #affichage des boutons de la barre de navigation
     def draw_buttons(self):
         i = 0
         x = 200 + ((self.surface.get_width() - 250 - 220)/(len(self.buttons)))/2
@@ -89,7 +90,6 @@ class NavBar(composantBase):
             button["clicked"] = False
             button["animation_progress"] = 0
         
-        # Calculate the color based on the animation progress
         start_color = EMERAUDE
         end_color = BLEU
         r = start_color[0] + (end_color[0] - start_color[0]) * button["animation_progress"]
@@ -97,7 +97,6 @@ class NavBar(composantBase):
         b = start_color[2] + (end_color[2] - start_color[2]) * button["animation_progress"]
         animated_color = (int(r), int(g), int(b))
         
-        # Redraw the button with the animated color
         pygame.draw.rect(self.surface, animated_color, button["rect"], border_radius=10)
         text_surface = self.font.render(button["text"], False, BLACK)
         self.surface.blit(text_surface, button["rect"].inflate(-20, -10).topleft)
@@ -152,7 +151,7 @@ class NavBar(composantBase):
                 settings_rect = pygame.Rect(user_card_rect.left + 10, user_card_rect.bottom + 40, 180, 30)
                 logout_rect = pygame.Rect(user_card_rect.left + 10, user_card_rect.bottom + 70, 180, 30)
                 if profile_rect.collidepoint(mouse_pos):
-                    showScreen("profil")
+                    goProfil(self.user['id'])
                 elif settings_rect.collidepoint(mouse_pos):
                     showScreen("settings")
                 elif logout_rect.collidepoint(mouse_pos):
@@ -173,10 +172,10 @@ class Button(composantBase):
         pass
 
 class showRank(composantBase):
-    def __init__(self, window, rankName):
+    def __init__(self, window, rankName, size=0.5):
         self.rank = get_rank(rankName)
         self.font = getFont("medium")
-        self.icon = getAsset(f"rank-{self.rank['name']}", 0.5)
+        self.icon = getAsset(f"rank-{self.rank['name']}", size)
         super().__init__(self.icon.get_size())
 
     def render(self):
@@ -191,22 +190,23 @@ class showRank(composantBase):
         pass
 
 class showUsername():
-    def __init__(self, window, username, rankName=None, color=EMERAUDE):
-        self.font = getFontSize(34)
+    def __init__(self, window, username, rankName=None, color=EMERAUDE, size=34):
+        self.font = getFontSize(size)
         self.username = username
         self.color = color
-        self.rank = showRank(window, rankName) if rankName else None
+        self.rank = showRank(window, rankName, (size/68)) if rankName else None
         self.text = self.font.render(self.username, True, self.color)
         self.surface = self.updateSurface()
 
-    def render(self):
+    def render(self) -> pygame.surface.Surface:
+        self.updateSurface()
         self.surface.blit(self.text, (0, 0))
         if self.rank:
             self.surface.blit(self.rank.render(), (self.text.get_width() + 5, 0))
         return self.surface
 
-    def updateSurface(self):
-        return pygame.surface.Surface((self.text.get_width() + 5 + (self.rank.render().get_width() if self.rank else 0), self.text.get_height()), pygame.SRCALPHA)
-
-    def HandleEvent(self, type, event):
-        pass
+    def updateSurface(self) -> pygame.surface.Surface:
+        width = self.text.get_width() + 5 + (self.rank.render().get_width() if self.rank else 0)
+        height = max(self.text.get_height(), self.rank.render().get_height() if self.rank else 0)
+        self.surface = pygame.surface.Surface((width, height), pygame.SRCALPHA)
+        return self.surface

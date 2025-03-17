@@ -19,3 +19,17 @@ def getHeadersWithToken(headers={}, token:str=""):
 
 def isOfficielServer():
     return host.split(":")[0].endswith("elyon.younity-mc.fr")
+
+def getUserIDWithUsername(username: str) -> str:
+    url = with_url_api(f"/users/id/{username}")
+    res = requests.get(url)
+    if res.status_code == 200:
+        return res.json()["data"]
+    return None
+
+def getProfil(userID: int) -> dict:
+    url = with_url_api(f"/users/{userID}")
+    res = requests.get(url)
+    if res.status_code == 200:
+        return res.json()["data"]
+    return None

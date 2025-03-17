@@ -1,8 +1,9 @@
-from server.services.database.models import Users, Badges
+from server.services.database.models import Users, Badges, Parties
 from common.ranks import ranks
 
 users = Users()
 badges = Badges()
+parties = Parties()
 
 def get_user(user_id: int) -> dict:
     user = users.get(user_id)
@@ -98,5 +99,9 @@ def get_classement(type: str, page: int = 1, limit: int = 10) -> list:
     
     return paginated_classement
 
-def get_user_item_buy(user_id: int):
+def get_user_item_buy(user_id: int) -> list:
     return get_user(user_id).get("item_buy")
+
+
+def create_party():
+    return parties.create()
