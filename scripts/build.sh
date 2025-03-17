@@ -4,7 +4,7 @@ current_dir="$(dirname "$0")/../"
 src_path="${current_dir}src/main.py"
 assets_path="${current_dir}assets"
 config_path="${current_dir}config"
-public_server="${current_dir}src/server/public"
+public_server="${current_dir}src/server/routes/web/static"
 
 source ./venv/bin/activate
 

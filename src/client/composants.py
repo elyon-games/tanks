@@ -36,21 +36,24 @@ class NavBar(composantBase):
                 "action": lambda: showScreen("shop"),
                 "rect": None,
                 "clicked": False,
-                "animation_progress": 0
+                "animation_progress": 0,
+                "case_width": 0
             },
             {
                 "text": "Parties",
                 "action": lambda: showScreen("parties"),
                 "rect": None,
                 "clicked": False,
-                "animation_progress": 0
+                "animation_progress": 0,
+                "case_width": 0
             },
             {
                 "text": "Classement",
                 "action": lambda: showScreen("classement"),
                 "rect": None,
                 "clicked": False,
-                "animation_progress": 0
+                "animation_progress": 0,
+                "case_width": 0
             }
         ]
 
@@ -63,18 +66,22 @@ class NavBar(composantBase):
         self.draw_user_card()
         return self.surface 
 
+    def render_label(self, text, rect): 
+        label_surface = getFontSize(30).render(text, True, (255, 255, 255))
+        self.surface.blit(label_surface, (rect.x, rect.y))
+
     def draw_buttons(self):
         i = 0
+        x = 200 + ((self.surface.get_width() - 250 - 220)/(len(self.buttons)))/2
         for button in self.buttons:
-            i += 1
-            text_surface = self.font.render(button["text"], False, BLACK)
-            text_rect = text_surface.get_rect(topleft=(self.logoPos.x*(8+i*5), self.logoPos.centery-4))
-            button_rect = pygame.Rect(text_rect.left - 10, text_rect.top - 5, text_rect.width + 20, text_rect.height + 10)
-            pygame.draw.rect(self.surface, EMERAUDE, button_rect, border_radius=10)
-            self.surface.blit(text_surface, text_rect.topleft)
-            button["rect"] = button_rect
+            button["case_width"] = 12*len(button["text"]) + (button["case_width"] + (self.surface.get_width() - 250 - 220 - len(self.buttons)*button["case_width"])/(len(self.buttons)))/15
+            button["rect"] = pygame.Rect((x, 30, button["case_width"], 30))
+            pygame.draw.rect(self.surface, EMERAUDE, button["rect"], border_radius=10)
+            self.render_label(button["text"], button["rect"])
             if button["clicked"]:
                 self.animate_button(button)
+            x += button["case_width"] + (self.surface.get_width() - 250 - 220 - len(self.buttons)*button["case_width"])/(len(self.buttons))
+            i += 1
 
     def animate_button(self, button):
         if button["animation_progress"] < 1:
@@ -114,7 +121,7 @@ class NavBar(composantBase):
 
     def draw_user_menu(self, user_card_rect):
         menu_items = ["Voir mon profil", "Paramètres", "Déconnexion"]
-        menu_height = len(menu_items) * 30 + 20
+        menu_height = len(menu_items) * 30
         menu_rect = pygame.Rect(user_card_rect.left, user_card_rect.bottom + 10, 180, menu_height)
         
         # Animation effect
@@ -150,8 +157,7 @@ class NavBar(composantBase):
                 elif logout_rect.collidepoint(mouse_pos):
                     logout()
             for button in self.buttons:
-                if button["rect"] and button["rect"].collidepoint(mouse_pos):
-                    button["clicked"] = True
+                if button["rect"].collidepoint(mouse_pos):
                     button["action"]()
 
 class Button(composantBase):

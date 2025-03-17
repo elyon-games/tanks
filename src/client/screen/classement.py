@@ -30,41 +30,41 @@ class classementScreen(Screen):
         self.renderClassement()
 
     def renderTypeSelector(self):
-        x_offset = 75
-        y_offset = 150 
+        x_offset = self.window.get_width()*0.1
+        y_offset = 140  # Adjusted y_offset to move the selector down
         for index, type_name in enumerate(self.type):
-            x_offset += 80
-            self.buttons_type_rects.append(pygame.Rect(x_offset-100, y_offset, 80, 30))
+            color = (255, 255, 255) if index == self.current_type_index else (100, 100, 100)
+            x_offset += (self.window.get_width() - self.window.get_width()*0.1 - 180)/len(self.type)
+            self.buttons_type_rects.append(pygame.Rect(x_offset-100, y_offset, 80*(x_offset*1.1/x_offset), 30))
             self.render_label(type_name, self.buttons_type_rects[index])
 
     def renderClassement(self):
-        y_offset = 205
+        y_offset = 190  # Adjusted y_offset to move the classement down
         card_height = 60
         card_margin = 10
         self.username_rects = []
         for item in self.classement:
-            card_rect = pygame.Rect(50, y_offset, 700, card_height)
+            card_rect = pygame.Rect(50, y_offset, self.window.get_width()*0.9, card_height)
             pygame.draw.rect(self.surface, (50, 50, 50), card_rect)
             pygame.draw.rect(self.surface, (255, 255, 255), card_rect, 2)
             
             position_text = self.font.render(f"#{item['position']} ", True, (255, 255, 255))
-            self.surface.blit(position_text, (60, y_offset + 10))
+            self.surface.blit(position_text, (card_rect.width*1.1 - card_rect.width, y_offset + 10))
             
             username = showUsername(self.window, item['username'], item['rank'])
             username_rect = username.render().get_rect(topleft=(120, y_offset + 10))
             self.username_rects.append((username_rect, item['username']))
-            self.surface.blit(username.render(), (120, y_offset + 10))
-
+            self.surface.blit(username.render(), (card_rect.width*1.2 - card_rect.width, y_offset + 10))            
             value_text = self.font.render(f" {item['value']}", True, (255, 255, 255))
-            self.surface.blit(value_text, (400, y_offset + 10))
+            self.surface.blit(value_text, (card_rect.width*1.5-card_rect.width, y_offset + 10))
             
             y_offset += card_height + card_margin
 
         self.pagination_y_offset = y_offset
 
-        self.precedent_button = pygame.Rect(50, self.pagination_y_offset + 10, 100, 30)
-        self.page_button = pygame.Rect(200, self.pagination_y_offset + 10, 100, 30)
-        self.suivant_button = pygame.Rect(300, self.pagination_y_offset + 10, 100, 30)
+        self.precedent_button = pygame.Rect(self.window.get_width()/2 - 200, self.pagination_y_offset + 10, 100, 30)
+        self.page_button = pygame.Rect(self.window.get_width()/2 - 50,self.pagination_y_offset + 10, 100, 30)
+        self.suivant_button = pygame.Rect(self.window.get_width()/2 + 100, self.pagination_y_offset + 10, 100, 30)
         self.render_label("Précédent", self.precedent_button)
         self.render_label(f"Page {self.page}", self.page_button)
         self.render_label("Suivant", self.suivant_button)
