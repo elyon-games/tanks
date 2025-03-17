@@ -3,6 +3,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from common.time import get_current_time
 from common.config import getConfig
 
+from server.services.mapGenerator import generate_map
+
 config = getConfig("server")
 
 class Badges(BaseModel):
@@ -107,6 +109,58 @@ class Users(BaseModel):
             self.save()
             return user
         return None
+    
+    def get_new_id(self):
+        return len(self.data) + 1
+
+
+class Maps(BaseModel):
+    def __init__(self):
+        super().__init__(schema={
+            "id": {"type": int, "required": True, "unique": True},
+            "name": {"type": str, "required": True},
+            "description": {"type": str, "required": True},
+            "content": {"type": list, "required": True},
+        }, default_data=[{
+            "id": i,
+            "name": f"Map {i}",
+            "description": f"Map de Test {i}",
+            "content": generate_map()
+        } for i in range(3)])
+
+class Parties(BaseModel):
+    def __init__(self):
+        super().__init__({
+            "id": {"type": int, "required": True, "unique": True},
+            "owner": {"type": int, "required": True},
+            "max_players": {"type": int, "default": 2},
+            "players_datas": {"type": dict, "default": {}},
+            "players": {"type": list, "default": []},
+            "map": {"type": int, "required": True},
+            "private": {"type": bool, "default": False},
+            "started_at": {"type": str, "default": None},
+            "ended_at": {"type": str, "default": None},
+            "status": {"type": str, "default": "wait"},
+            "created_at": {"type": str, "required": True},
+        })
+
+    def create(self, owner: int):
+        party = self.insert({
+            "id": self.get_new_id(),
+            "owner": owner,
+            "created_at": get_current_time()
+        })
+        self.save()
+        return party
+
+    def get_by_owner(self, owner):
+        return [party for party in self.data if party["owner"] == owner]
+
+    def get_by_player(self, player):
+        return [party for party in self.data if player in party["players"]]
+
+    def get_by_id(self, party_id):
+        return next((party for party in self.data if party["id"] == party_id), None)
     
     def get_new_id(self):
         return len(self.data) + 1

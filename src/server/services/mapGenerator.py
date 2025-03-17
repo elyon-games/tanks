@@ -1,6 +1,6 @@
 import random
 
-def generate_map(min_walls = 90, max_walls = 100):
+def generate_map(min_walls = 90, max_walls = 100) -> list:
     max_walls = random.randint(min_walls, max_walls)
     # Chargement du modèle de carte depuis le fichier mapSkeleton
     map_skeleton = [
