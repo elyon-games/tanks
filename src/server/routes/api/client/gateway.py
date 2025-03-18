@@ -30,7 +30,7 @@ def before_request():
     key = body.get("gateway_key", None)
     if id and key:
         gateway = network.get_gateway(id)
-        if gateway.verify_key(key):
+        if gateway and gateway.verify_key(key):
             session["gateway"] = gateway
         else:
             session["gateway"] = None
