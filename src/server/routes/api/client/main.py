@@ -1,8 +1,9 @@
 from flask import Blueprint
 from common.config import getConfig
-from .gateway import route_client_gateway
+from server.routes.api.client.gateway import route_client_gateway
 
 route_client = Blueprint("client", __name__)
+
 @route_client.route("/info", methods=["GET"])
 def info():
     config = getConfig("server")

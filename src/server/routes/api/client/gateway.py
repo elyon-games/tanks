@@ -7,7 +7,7 @@ from typing import Optional
 from server.services.clock import registerTicked
 from common.time import get_current_time_ms
 
-route_client_gateway = Blueprint("client_route_client_gateway", __name__)
+route_client_gateway = Blueprint("api-client-gateway", __name__)
 
 @route_client_gateway.route("/create", methods=["POST"])
 @login_required

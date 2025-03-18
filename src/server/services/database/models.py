@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from common.time import get_current_time
 from common.config import getConfig
 
+import random
 from server.services.mapGenerator import generate_map
 
 config = getConfig("server")
@@ -126,16 +127,19 @@ class Maps(BaseModel):
             "name": f"Map {i}",
             "description": f"Map de Test {i}",
             "content": generate_map()
-        } for i in range(3)])
+        } for i in range(1, 3)])
+
+    def get_random(self):
+        return random.choice(self.data)["id"]
 
 class Parties(BaseModel):
     def __init__(self):
         super().__init__({
             "id": {"type": int, "required": True, "unique": True},
             "owner": {"type": int, "required": True},
-            "max_players": {"type": int, "default": 2},
             "players_datas": {"type": dict, "default": {}},
             "players": {"type": list, "default": []},
+            "max_players": {"type": int, "default": 2},
             "map": {"type": int, "required": True},
             "private": {"type": bool, "default": False},
             "started_at": {"type": str, "default": None},
@@ -144,10 +148,15 @@ class Parties(BaseModel):
             "created_at": {"type": str, "required": True},
         })
 
-    def create(self, owner: int):
+    def create(self, owner: int, private: bool = False, map: int = 0):
         party = self.insert({
             "id": self.get_new_id(),
             "owner": owner,
+            "players": [
+                owner
+            ],
+            "private": private,
+            "map": map,
             "created_at": get_current_time()
         })
         self.save()
@@ -164,3 +173,6 @@ class Parties(BaseModel):
     
     def get_new_id(self):
         return len(self.data) + 1
+    
+    def is_full(self, party):
+        return len(party["players"]) >= party["max_players"]

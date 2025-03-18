@@ -10,12 +10,12 @@ from client.game.network import connect_to_server, send_message, receive_message
 from client.game.bullet import Bullet  # Importation de la classe Bullet depuis le fichier modules/bullet.py
 from client.game.map import getWalls
 from client.style.fonts import getFontSize
-
+from client.lib.assets import getAsset
 class Game:  # Définition de la classe Game
-    def __init__(self, width=1920, height=1080, background_path=None):  # Définition du constructeur de la classe Game et de ses paramètres
+    def __init__(self, width=1920, height=1080, background_id="map-sable"):  # Définition du constructeur de la classe Game et de ses paramètres
         self.width = width  # Largeur de la fenêtre du jeu
         self.height = height  # Hauteur de la fenêtre du jeu
-        self.background_path = pygame.image.load(background_path)  # Chargement de l'image de fond
+        self.background_path = getAsset(background_id)  # Chargement de l'image de fond
         self.background = pygame.transform.scale(self.background_path, (self.width, self.height))  # Redimensionnement de l'image de fond
         self.write_port_mode = ""  # Port du serveur (initialisation à vide)
         self.time = 0  # Initialisation du temps
@@ -332,121 +332,6 @@ class Game:  # Définition de la classe Game
                             self.is_running = True
                             self.optionsScreen()  # Affichage de l'écran des options
 
-    def optionsScreen(self):
-        is_open = True
-        modify_up_key = False  # Variable pour indiquer si le mode de modification est activé
-        modify_down_key = False
-        modify_left_key = False
-        modify_right_key = False
-        modify_shoot_key = False
-
-        while is_open:
-            self.screen.fill((0, 0, 0))  # Remplissage de l'écran en noir
-
-            self.screen.blit(self.main_title, (self.width/2 - self.main_title.get_width()/2, 50))  # Affichage du titre
-
-            self.screen.blit(self.up_key, (self.width/2 - self.up_key.get_width() - 200/2, 210))  # Affichage du texte "Haut"
-
-            self.screen.blit(self.down_key, (self.width/2 - self.down_key.get_width() - 200/2, 260))  # Affichage du texte "Bas"
-
-            self.screen.blit(self.left_key, (self.width/2 - self.left_key.get_width() - 200/2, 310))  # Affichage du texte "Gauche"
-
-            self.screen.blit(self.right_key, (self.width/2 - self.right_key.get_width() - 200/2, 360))  # Affichage du texte "Droite"
-
-            self.screen.blit(self.shoot_key, (self.width/2 - self.shoot_key.get_width() - 200/2, 410))  # Affichage du texte "Tirer"
-
-            pygame.draw.rect(self.screen,(50,50,50),[self.width/2 - 150/2,490,150,40])
-            self.screen.blit(self.main_back, (self.width/2 - self.main_back.get_width()/2, 500)) # Affichage du bouton "Retour"
-
-            if(modify_up_key):
-                pygame.draw.rect(self.screen,(75,75,75),[self.width/2 - 150/2,200,150,40])
-            else:
-                pygame.draw.rect(self.screen,(50,50,50),[self.width/2 - 150/2,200,150,40])
-            
-            if(modify_down_key):
-                pygame.draw.rect(self.screen,(75,75,75),[self.width/2 - 150/2,250,150,40])
-            else:
-                pygame.draw.rect(self.screen,(50,50,50),[self.width/2 - 150/2,250,150,40])
-
-            if(modify_left_key):
-                pygame.draw.rect(self.screen,(75,75,75),[self.width/2 - 150/2,300,150,40])
-            else:
-                pygame.draw.rect(self.screen,(50,50,50),[self.width/2 - 150/2,300,150,40])
-
-            if(modify_right_key):
-                pygame.draw.rect(self.screen,(75,75,75),[self.width/2 - 150/2,350,150,40])
-            else:
-                pygame.draw.rect(self.screen,(50,50,50),[self.width/2 - 150/2,350,150,40])
-
-            if(modify_shoot_key):
-                pygame.draw.rect(self.screen,(75,75,75),[self.width/2 - 150/2,400,150,40])
-            else:
-                pygame.draw.rect(self.screen,(50,50,50),[self.width/2 - 150/2,400,150,40])
-
-            self.screen.blit(self.smallfont.render(self.controls["up_key"], True, (255,255,255)), (self.width/2 - 150/2 + 10, 210))  # Affichage de la touche associée à "Haut"
-            self.screen.blit(self.smallfont.render(self.controls["down_key"], True, (255,255,255)), (self.width/2 - 150/2 + 10, 260))  # Affichage de la touche associée à "Bas"
-            self.screen.blit(self.smallfont.render(self.controls["left_key"], True, (255,255,255)), (self.width/2 - 150/2 + 10, 310))  # Affichage de la touche associée à "Gauche"
-            self.screen.blit(self.smallfont.render(self.controls["right_key"], True, (255,255,255)), (self.width/2 - 150/2 + 10, 360))  # Affichage de la touche associée à "Droite"
-            self.screen.blit(self.smallfont.render(self.controls["shoot_key"], True, (255,255,255)), (self.width/2 - 150/2 + 10, 410))  # Affichage de la touche associée à "Tirer"
-
-            pygame.display.update()  # Mise à jour de l'affichage
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:  # Si l'utilisateur ferme la fenêtre
-                    self.stopGame()  # Arrêt de Pygame
-                elif event.type == pygame.KEYDOWN:  # Si une touche est pressée
-                    self.pressed[event.key] = True  # Enregistrement de la touche pressée
-                    if event.key == pygame.K_ESCAPE:  # Si la touche ESCAPE est pressée
-                        self.status = "menu"  # Retour au menu principal
-                        is_open = False
-                        modify_up_key, modify_down_key, modify_left_key, modify_right_key, modify_shoot_key = False, False, False, False, False  # Réinitialisation des variables de modification
-                        
-                    if modify_up_key:
-                        self.controls["up_key"] = pygame.key.name(event.key)
-                        modify_up_key = False
-                    elif modify_down_key:
-                        self.controls["down_key"] = pygame.key.name(event.key)
-                        modify_down_key = False
-                    elif modify_left_key:
-                        self.controls["left_key"] = pygame.key.name(event.key)
-                        modify_left_key = False
-                    elif modify_right_key:
-                        self.controls["right_key"] = pygame.key.name(event.key)
-                        modify_right_key = False
-                    elif modify_shoot_key:
-                        self.controls["shoot_key"] = pygame.key.name(event.key)
-                        modify_shoot_key = False
-        
-                elif event.type == pygame.KEYUP:  # Si une touche est relâchée
-                    self.pressed[event.key] = False  # Enregistrement de la touche relâchée
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button == 1:
-                        if self.width/2 - 150/2 <= event.pos[0] <= self.width/2 + 150/2 and 490 <= event.pos[1] <= 530:
-                            self.is_running = True
-                            is_open = False
-                            self.status = "menu"
-                        elif (self.width/2 - 150/2 <= event.pos[0] <= self.width/2 + 150/2 and 200 <= event.pos[1] <= 240):
-                            modify_up_key = True
-                            modify_down_key, modify_left_key, modify_right_key, modify_shoot_key = False, False, False, False
-                        elif (self.width/2 - 150/2 <= event.pos[0] <= self.width/2 + 150/2 and 250 <= event.pos[1] <= 290):
-                            modify_down_key = True
-                            modify_up_key, modify_left_key, modify_right_key, modify_shoot_key = False, False, False, False
-                        elif (self.width/2 - 150/2 <= event.pos[0] <= self.width/2 + 150/2 and 300 <= event.pos[1] <= 340):
-                            modify_left_key = True
-                            modify_up_key, modify_down_key, modify_right_key, modify_shoot_key = False, False, False, False
-                        elif (self.width/2 - 150/2 <= event.pos[0] <= self.width/2 + 150/2 and 350 <= event.pos[1] <= 390):
-                            modify_right_key = True
-                            modify_up_key, modify_down_key, modify_left_key, modify_shoot_key = False, False, False, False
-                        elif (self.width/2 - 150/2 <= event.pos[0] <= self.width/2 + 150/2 and 400 <= event.pos[1] <= 440):
-                            modify_shoot_key = True
-                            modify_up_key, modify_down_key, modify_left_key, modify_right_key = False, False, False, False
-                        else:
-                            modify_up_key, modify_down_key, modify_left_key, modify_right_key, modify_shoot_key = False, False, False, False, False
-
-                if self.pressed.get(pygame.K_ESCAPE):
-                    self.in_main_menu = True
-                    is_open = False
-
     def playScreen(self):
         is_open = True
         write_port_mode = False  # Variable pour indiquer si le mode d'écriture est activé
@@ -737,3 +622,6 @@ class Game:  # Définition de la classe Game
                         elif self.width/2 - 150/2 <= event.pos[0] <= self.width/2 + 150/2 and 340 <= event.pos[1] <= 380:
                             self.in_main_menu = True
                             self.pause = False
+
+    def run(self):
+        self.game()
