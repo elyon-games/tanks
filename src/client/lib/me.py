@@ -3,6 +3,7 @@ from client.lib.utils import with_url_api
 from client.var import auth as authData
 from client.lib.utils import getHeadersWithToken
 
+# Fonction pour obtenir les données de l'utilisateur
 def getData():
     response: dict = requests.get(with_url_api("/users/me"), headers=getHeadersWithToken(token=authData.get("token", False)))
     res: dict = response.json()
