@@ -162,7 +162,7 @@ def Main():
                 window.blit(HUD_font.render(f"MSPF : {ms_per_frame}", True, WHITE), (10, 40))
                 window.blit(HUD_font.render(f"Pygame : {pygame.version.ver}", True, WHITE), (10, 55))
                 window.blit(HUD_font.render(f"Screen : {getActualScreen()}", True, WHITE), (10, 70))
-                
+            
             pygame.display.flip()
             clock.tick(100)
 

@@ -40,14 +40,6 @@ class NavBar(composantBase):
                 "case_width": 0
             },
             {
-                "text": "Parties",
-                "action": lambda: showScreen("parties"),
-                "rect": None,
-                "clicked": False,
-                "animation_progress": 0,
-                "case_width": 0
-            },
-            {
                 "text": "Classement",
                 "action": lambda: showScreen("classement"),
                 "rect": None,
