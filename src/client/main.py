@@ -123,6 +123,9 @@ def Main():
                 if event.type == pygame.QUIT:
                     running = False
                 if event.type == pygame.VIDEORESIZE:
+                    if event.size[0] < config["screen"]["width"] or event.size[1] < config["screen"]["height"]:
+                        event.w = config["screen"]["width"]
+                        event.h = config["screen"]["height"]
                     window = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)
 
             window.fill((0, 0, 0))

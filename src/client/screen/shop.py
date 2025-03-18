@@ -12,6 +12,8 @@ class shopScreen(Screen):
 
     def UpdateView(self):
         self.surface.blit(self.navbar.render(), (0, 0))
+        text_rect=pygame.Rect(self.window.get_width()/2-130, self.window.get_height()/2-30, 100, 30)
+        self.render_label("Cette fonction n'est pas encore disponible", text_rect)
     
     def render_label(self, text, rect): 
         label_surface = getFontSize(30).render(text, True, (255, 255, 255))
