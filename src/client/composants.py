@@ -64,7 +64,7 @@ class NavBar(composantBase):
 
     def draw_buttons(self):
         i = 0
-        x = 200 + ((self.surface.get_width() - 250 - 220)/(len(self.buttons)))/2
+        x = 200 + self.surface.get_width()*0.1
         for button in self.buttons:
             button["case_width"] = 12*len(button["text"]) + (button["case_width"] + (self.surface.get_width() - 250 - 220 - len(self.buttons)*button["case_width"])/(len(self.buttons)))/15
             button["rect"] = pygame.Rect((x, 30, button["case_width"], 30))
@@ -72,7 +72,8 @@ class NavBar(composantBase):
             self.render_label(button["text"], button["rect"])
             if button["clicked"]:
                 self.animate_button(button)
-            x += button["case_width"] + (self.surface.get_width() - 250 - 220 - len(self.buttons)*button["case_width"])/(len(self.buttons))
+            x += button["case_width"] + self.surface.get_width()*0.1
+            # + (self.surface.get_width() - 250 - 220 - len(self.buttons)*button["case_width"])/(len(self.buttons))
             i += 1
 
     def animate_button(self, button):
