@@ -5,6 +5,8 @@ from server.routes.api.badges import route_badges
 from server.routes.api.client.main import route_client
 from server.routes.api.classement import route_classement
 from server.routes.api.shop import route_shop
+from server.routes.api.maps import route_maps
+from server.routes.api.parties import route_parties
 
 route_api = Blueprint("api", __name__)
 
@@ -14,3 +16,5 @@ route_api.register_blueprint(route_badges, url_prefix="/badges")
 route_api.register_blueprint(route_client, url_prefix="/client")
 route_api.register_blueprint(route_classement, url_prefix="/classement")
 route_api.register_blueprint(route_shop, url_prefix="/shop")
+route_api.register_blueprint(route_maps, url_prefix="/maps")
+route_api.register_blueprint(route_parties, url_prefix="/parties")

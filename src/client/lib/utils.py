@@ -33,3 +33,10 @@ def getProfil(userID: int) -> dict:
     if res.status_code == 200:
         return res.json()["data"]
     return None
+
+def getMaps() -> list[dict]:
+    url = with_url_api("/maps")
+    res = requests.get(url)
+    if res.status_code == 200:
+        return res.json()["data"]
+    return None
