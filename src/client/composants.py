@@ -73,6 +73,7 @@ class NavBar(composantBase):
             if button["clicked"]:
                 self.animate_button(button)
             x += button["case_width"] + self.surface.get_width()*0.1
+            button["rect"] = button["rect"]
             # + (self.surface.get_width() - 250 - 220 - len(self.buttons)*button["case_width"])/(len(self.buttons))
             i += 1
 
