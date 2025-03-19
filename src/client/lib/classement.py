@@ -3,6 +3,8 @@ from client.lib.utils import with_url_api
 from client.var import auth as authData
 from client.lib.utils import getHeadersWithToken
 
+# Fonction pour obtenir le classement des utilisateurs par type (kills, deaths, kd, wins, loses, wl, points)
+# Optionnel: page, per_page
 def getClassement(type: str, page: int = 1, per_page: int = 10) -> dict:
     response: dict = requests.get(with_url_api(f"/classement/{type}?page={page}&per_page={per_page}"), headers=getHeadersWithToken(token=authData.get("token", False)))
     res: dict = response.json()

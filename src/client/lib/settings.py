@@ -19,16 +19,19 @@ controls = {**default_controls, **stored_controls}
 commonStorage.addData("controls", controls)
 commonStorage.saveData()
 
+# Fonction pour récupérer les contrôles
 def get_controls():
     global controls
     return controls
 
+# Fonction pour définir un contrôle
 def set_control(key: str, value: str):
     global controls
     controls[key] = value
     commonStorage.addData("controls", controls)
     commonStorage.saveData()
 
+# Fonction pour récupérer un contrôle
 def get_control(key: str):
     global controls
     return controls[key]

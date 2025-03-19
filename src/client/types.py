@@ -1,8 +1,9 @@
 import pygame
 from typing import List
 
-EVENTS = List[pygame.event.EventType]
+# Type definitions
 EVENT = pygame.event.EventType
+EVENTS = List[EVENT]
 KEYS = List[bool]
 CLOCK = pygame.time.Clock
 WINDOW = pygame.Surface

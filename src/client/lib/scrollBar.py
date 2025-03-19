@@ -1,4 +1,6 @@
 import pygame
+
+# Classe pour la barre de défilement d'une fenêtre progressivement (ABANDONNÉE)
 class ScrollBar:
     def __init__(self, x, y, width, height, content_height, window_height):
         self.rect = pygame.Rect(x, y, width, height)

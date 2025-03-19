@@ -3,12 +3,17 @@ from typing import Type
 from client.types import EVENTS, WINDOW
 from client.lib.screen.base import Screen
 
+# Screen Manager System (SMS) Controller
+
+# Global variables
 actualScreen: Screen = None
 actualWindow: WINDOW = None
 historyScreen: list = []
 
+# Arguments
 args: dict = {}
 
+# Fonction pour récupérer la classe d'un écran en fonction de son nom
 def getScreenClass(screen_name: str) -> Type[Screen]:
     if screen_name == "loading":
         from client.screen.loading import loadingScreen
@@ -43,27 +48,27 @@ def getScreenClass(screen_name: str) -> Type[Screen]:
     elif screen_name == "classement":
         from client.screen.classement import classementScreen
         return classementScreen
-    elif screen_name == "parties":
-        from client.screen.parties import partiesScreen
-        return partiesScreen
     elif screen_name == "create-party":
         from client.screen.create_party import createPartyScreen
         return createPartyScreen
     else:
         raise Exception(f"Screen {screen_name} not found.")
-
+    
+# Fonction pour "démonter" l'écran actuel
 def UnMountScreen():
     global actualScreen
     if actualScreen is not None and actualScreen.isMounted:
         actualScreen.UnMount()
         actualScreen = None
 
+# Fonction pour revenir à l'écran précédent
 def backScreen():
     global actualScreen, actualWindow, historyScreen
     if historyScreen:
         previous_screen = historyScreen.pop()
         showScreen(previous_screen)
 
+# Fonction pour afficher un écran
 def showScreen(screen: str) -> Screen:
     global actualScreen, actualWindow, historyScreen
     if actualScreen is not None and actualScreen.id == screen:
@@ -79,10 +84,12 @@ def showScreen(screen: str) -> Screen:
     
     return actualScreen
 
+# Fonction pour récupérer l'écran actuel
 def getActualScreen() -> Screen:
     global actualScreen
     return actualScreen.id
 
+# Fonction pour mettre à jour l'écran actuel avec les événements
 def updateScreen(window: WINDOW, events: EVENTS):
     global actualScreen, actualWindow
     actualWindow = window
@@ -94,14 +101,17 @@ def updateScreen(window: WINDOW, events: EVENTS):
         actualScreen.Update(window)
         actualScreen.UpdateView()
 
+# Fonction pour définir un argument pour l'écran actuel
 def setArgs(key: str, value: any):
     global args
     args[key] = value
 
+# Fonction pour récupérer un argument de l'écran actuel
 def getArgs(key: str) -> any:
     global args
     return args.get(key, None)
 
+# Fonction pour effacer les arguments de l'écran actuel
 def clearArgs():
     global args
     args = {}

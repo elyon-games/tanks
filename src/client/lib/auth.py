@@ -6,6 +6,7 @@ from client.lib.utils import getHeadersWithToken
 from client.lib.screen.controller import showScreen
 from client.lib.storage.controller import getStorage
 
+# Fonction pour se connecter
 def login(email, password):
     global authData
     response: dict = requests.post(with_url_api("/auth/login"), json={
@@ -20,10 +21,12 @@ def login(email, password):
         return True
     else: 
         return False
-    
+
+# Fonction pour s'inscrire
 def register(para):
     pass
 
+# Fonction pour vérifier le token
 def verify(token):
     response: dict = requests.get(with_url_api("/auth/verify"), headers=getHeadersWithToken(token=token)).json()
     if response.get("message", None):
@@ -34,6 +37,7 @@ def verify(token):
             }
     return {"status": False}
 
+# Fonction pour se déconnecter
 def logout():
     global authData
     getStorage(config.getConfig("server").get("server", {}).get("id", None)).removeData()

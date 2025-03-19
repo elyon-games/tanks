@@ -3,6 +3,8 @@ import common.path as path
 import os
 import json
 
+# Classe pour gérer les fichiers de stockage
+
 class File:
     def __init__(self, id, path: str = None, default: dict = {}):
         self.id = id

@@ -1,6 +1,9 @@
 import os
 import sys
 
+# AMS: Asset Management System
+# Ce module permet de gérer les assets (images, sons, etc.) de l'application
+
 # fonction pour récupérer le chemin d'un asset
 def getAsset(relative_path: str) -> str:
     cleaned_path = relative_path.lstrip("/").replace("/", os.sep)
