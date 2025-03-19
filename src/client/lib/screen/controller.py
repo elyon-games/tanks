@@ -51,6 +51,9 @@ def getScreenClass(screen_name: str) -> Type[Screen]:
     elif screen_name == "create-party":
         from client.screen.create_party import createPartyScreen
         return createPartyScreen
+    elif screen_name == "private-party":
+        from client.screen.partie_privee import privatePartieScreen
+        return privatePartieScreen
     else:
         raise Exception(f"Screen {screen_name} not found.")
     
