@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Elya.md",
+                "file": "Présentation.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Elya"
+              "title": "Présentation"
             }
           }
         ]
@@ -170,15 +170,16 @@
   },
   "active": "567ac85d3ba20d9d",
   "lastOpenFiles": [
-    "Cahier décharge.md",
-    "Elya.md",
-    "Présentation.md",
-    "L'histoire.md",
-    "Scripts.md",
     "Structure.md",
+    "Sans titre.md",
     "Build.md",
+    "L'histoire.md",
     "Démarrage.md",
     "Config.md",
+    "Elya.md",
+    "Cahier décharge.md",
+    "Présentation.md",
+    "Scripts.md",
     "Bienvenue.md"
   ]
 }

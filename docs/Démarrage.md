@@ -1,10 +1,9 @@
-# Démarrage
+### **Fichier** :
 Vous pouvez utiliser le **"./start.bat"** pour démarrer Elyon :
 ### **Arguments** :
 Tout les arguments sauf une exceptions (celle-ci sont spécifier en dessous) sont de se format ci-contre : '--{clé} {valeur}'
-Listes des arguments existant :
-
 Le type dans le tableau correspond sur quelle parti du programme cette arguments peux influer 
+Listes des arguments existant :
 
 | Clé         | Valeur Attendu                                | Fonction                                                                                                                               | Type   |
 | ----------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------ |
