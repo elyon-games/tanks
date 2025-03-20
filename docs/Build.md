@@ -1,2 +1,0 @@
-Nôtre projet peux être "build" pour en récupérer un exécutable plus simple pour le partager, il permet aussi de ne plus avoir besoin de python ainsi que d'installer des dépendances.
-Vous pouvez utiliser le [[Scripts]] build.bat pour cela

@@ -168,18 +168,18 @@
       "command-palette:Ouvrir la palette de commandes": false
     }
   },
-  "active": "567ac85d3ba20d9d",
+  "active": "cbd72105ab0dfede",
   "lastOpenFiles": [
-    "Structure.md",
-    "Sans titre.md",
-    "Build.md",
-    "L'histoire.md",
     "Démarrage.md",
-    "Config.md",
-    "Elya.md",
-    "Cahier décharge.md",
     "Présentation.md",
+    "Config.md",
+    "Build.md",
+    "Cahier décharge.md",
+    "Elya.md",
+    "L'histoire.md",
+    "Structure.md",
     "Scripts.md",
+    "Sans titre.md",
     "Bienvenue.md"
   ]
 }
