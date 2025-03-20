@@ -62,7 +62,7 @@ class privatePartieScreen(Screen):
             clipboard_text = pygame.scrap.get(pygame.SCRAP_TEXT).decode("utf-8")
             self.id_partie += clipboard_text
         except Exception as e:
-            print(f"Erreur lors du collage: {e}")
+            print(f"Erreur lors du collage : {e}")
     
     def UpdateView(self):
         self.id_partie = self.id_partie.replace("\x00", "").strip()
