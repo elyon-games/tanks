@@ -31,9 +31,17 @@ class NavBar(composantBase):
         self.menu_open = False
         self.menu_animation_progress = 0
         self.buttons = [
+            # {
+            #     "text": "Boutique",
+            #     "action": lambda: showScreen("shop"),
+            #     "rect": None,
+            #     "clicked": False,
+            #     "animation_progress": 0,
+            #     "case_width": 0
+            # },
             {
-                "text": "Boutique",
-                "action": lambda: showScreen("shop"),
+                "text": "Acceuil",
+                "action": lambda: showScreen("home"),
                 "rect": None,
                 "clicked": False,
                 "animation_progress": 0,
@@ -74,7 +82,6 @@ class NavBar(composantBase):
                 self.animate_button(button)
             x += button["case_width"] + self.surface.get_width()*0.1
             button["rect"] = button["rect"]
-            # + (self.surface.get_width() - 250 - 220 - len(self.buttons)*button["case_width"])/(len(self.buttons))
             i += 1
 
     def animate_button(self, button):

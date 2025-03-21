@@ -68,6 +68,9 @@ class privatePartieScreen(Screen):
         self.id_partie = self.id_partie.replace("\x00", "").strip()
         self.surface.blit(self.navbar.render(), (0, 0))
         
+        label_rect = pygame.Rect(self.window.get_width()/2-275, self.window.get_height()/3 - 60, 550, 60)
+        self.render_label("Rejoindre une partie privée", label_rect, 60)
+        
         self.id_partie_rect = pygame.Rect(self.window.get_width()/2 - 150, self.window.get_height()/3, 300, 40)
         self.render_text_input(self.id_partie_rect, self.id_partie)
         
@@ -77,16 +80,15 @@ class privatePartieScreen(Screen):
         self.create_party_rect = pygame.Rect(self.window.get_width()/2-175, self.window.get_height()/2, 150, 40)
         self.render_button(self.create_party_rect, "Créer")
         
-        if self.partie_is_create:
-            id_rect = pygame.Rect(self.window.get_width()/2 - 150, self.window.get_height()/2 + 50)
-            self.render_label(self.id_partie, id_rect, 40, (255,0,0))
         
         
 
     def HandleEvent(self, type, event):
         self.UpdateView()
         if type == pygame.MOUSEBUTTONDOWN:
-            pass
+            if self.create_party_rect.collidepoint(event.pos):
+                self.partie_is_create = True
+                self.id_partie = "123456"
                 
         elif type == pygame.KEYDOWN:
             if event.key == pygame.K_BACKSPACE:
