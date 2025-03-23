@@ -27,8 +27,6 @@ class profilScreen(Screen):
         self.surface.blit(label_surface, (rect.x, rect.y))
 
     def renderProfileDetails(self):
-        print(self.user)
-
         y_offset = 100
         padding = 20
         card_width = self.window.get_width()*0.8

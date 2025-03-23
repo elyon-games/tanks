@@ -61,7 +61,7 @@ class HomeScreen(Screen):
         
         #bouton jouer en classé 
         self.join_classed_rect = pygame.Rect(self.window.get_width() - 160 - 180, self.window.get_height()-60, 170, 50)
-        self.render_button(self.join_classed_rect, "Jouer en classé")
+        self.render_button(self.join_classed_rect, "Ranked")
         
         #bouton jouer
         self.join_classic_rect = pygame.Rect(self.window.get_width() - 160, self.window.get_height()-60, 150, 50)
