@@ -11,13 +11,13 @@ from client.game.bullet import Bullet  # Importation de la classe Bullet depuis 
 from client.game.map import getWalls
 from client.style.fonts import getFontSize
 from client.lib.assets import getAsset
+from client.types import SURFACE
 class Game:  # Définition de la classe Game
-    def __init__(self, width=1920, height=1080, background_id="map-sable"):  # Définition du constructeur de la classe Game et de ses paramètres
-        self.width = width  # Largeur de la fenêtre du jeu
-        self.height = height  # Hauteur de la fenêtre du jeu
-        self.background_path = getAsset(background_id)  # Chargement de l'image de fond
-        self.background = pygame.transform.scale(self.background_path, (self.width, self.height))  # Redimensionnement de l'image de fond
-        self.write_port_mode = ""  # Port du serveur (initialisation à vide)
+    def __init__(self, surface: SURFACE, background_id="map-sable"):  # Définition du constructeur de la classe Game et de ses paramètres
+        self.width = surface.get_width()  # Largeur de la fenêtre du jeu
+        self.height = surface.get_height()  # Hauteur de la fenêtre du jeu
+        self.background = getAsset(background_id, (self.width, self.height))
+        self.write_port_mode = ""
         self.time = 0  # Initialisation du temps
         
         self.pressed = {}  # Dictionnaire pour gérer les touches pressées
@@ -272,65 +272,6 @@ class Game:  # Définition de la classe Game
                     self.in_main_menu = True
                 else:
                     self.pause = not self.pause
-                    
-    def AffichageFin(self):
-        while self.win != None:
-            if self.win:
-                self.screen.blit(self.win_text, (self.width/2 - self.win_text.get_width()/2, 70))
-            else:
-                self.screen.blit(self.loose_text, (self.width/2 - self.loose_text.get_width()/2, 70))
-            pygame.draw.rect(self.screen,(50,50,50),[self.width/2 - 150/2,490,150,40])
-            self.screen.blit(self.main_back, (self.width/2 - self.main_back.get_width()/2, 500))
-            pygame.display.update()
-            for event in pygame.event.get():
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button == 1:
-                        if self.width/2 - 150/2 <= event.pos[0] <= self.width/2 + 150/2 and 490 <= event.pos[1] <= 530:
-                            self.finish()
-                            self.in_main_menu = True
-                            self.win = None
-                            self.AffichFin = False
-                            return None
-                elif event.type == pygame.QUIT:
-                    self.stopGame()  # Arrêt du jeu
-    
-    def mainmenuScreen(self):
-        self.finish()  # Arrêt de la partie en cours
-        is_open = True
-        while is_open:
-            self.screen.fill((0, 0, 0))  # Remplissage de l'écran en noir
-
-            self.screen.blit(self.main_title, (self.width/2 - self.main_title.get_width()/2, 50))  # Affichage du titre
-            pygame.draw.rect(self.screen,(50,50,50),[self.width/2 - 150/2,290,150,40]) 
-            self.screen.blit(self.main_play, (self.width/2 - self.main_play.get_width()/2, 300))  # Affichage du bouton "Jouer"
-            pygame.draw.rect(self.screen,(50,50,50),[self.width/2 - 150/2,340,150,40])
-            self.screen.blit(self.main_options, (self.width/2 - self.main_options.get_width()/2, 350))  # Affichage du bouton "Options"
-            pygame.draw.rect(self.screen,(50,50,50),[self.width/2 - 150/2,390,150,40])
-            self.screen.blit(self.main_quit, (self.width/2 - self.main_quit.get_width()/2, 400))  # Affichage du bouton "Quitter"
-
-            pygame.display.update()  # Mise à jour de l'affichage
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:  # Si l'utilisateur ferme la fenêtre
-                    return self.stopGame()  # Arrêt de Pygame
-                elif event.type == pygame.KEYDOWN:  # Si une touche est pressée
-                    self.pressed[event.key] = True  # Enregistrement de la touche pressée
-                elif event.type == pygame.KEYUP:  # Si une touche est relâchée
-                    self.pressed[event.key] = False  # Enregistrement de la touche relâchée
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button == 1:
-                        # Vérification des clics sur les boutons du menu principal
-                        if self.width/2 - 150/2 <= event.pos[0] <= self.width/2 + 150/2 and 290 <= event.pos[1] <= 330:
-                            self.status = "play"  # Changement de statut pour jouer
-                            self.playScreen()  # Affichage de l'écran de jeu
-                            if self.status == "ingame":
-                                is_open = False
-                        elif self.width/2 - 150/2 <= event.pos[0] <= self.width/2 + 150/2 and 390 <= event.pos[1] <= 430:
-                            return self.stopGame()  # Arrêt de Pygame
-                        elif self.width/2 - 150/2 <= event.pos[0] <= self.width/2 + 150/2 and 340 <= event.pos[1] <= 380:
-                            self.status = "options"  # Changement de statut pour les options
-                            self.is_running = True
-                            self.optionsScreen()  # Affichage de l'écran des options
 
     def playScreen(self):
         is_open = True
@@ -584,44 +525,3 @@ class Game:  # Définition de la classe Game
             position = (int((self.width - 265) / 2), int((self.height - 230) / 2))
         tank = Tank(self, initial_position=position, rotation=direction, image_path="assets/tank2.png")
         return (tank, TopTank(self, tank, angle=angle, image_path="assets/toptank2.png"))
-    
-    def pauseMenu(self):
-        while self.pause:
-            # Affichage du titre
-            self.screen.blit(self.pause_text, (self.width/2 - self.pause_text.get_width()/2, 50))
-            # Affichage du bouton "Reprendre"
-            pygame.draw.rect(self.screen,(50,50,50),[self.width/2 - 150/2,290,150,40])
-            self.screen.blit(self.reprendre_text, (self.width/2 - self.reprendre_text.get_width()/2, 300))
-            # Affichage du bouton "Quitter"
-            pygame.draw.rect(self.screen,(50,50,50),[self.width/2 - 150/2,340,150,40])
-            self.screen.blit(self.quitter_text, (self.width/2 - self.quitter_text.get_width()/2, 350))
-            pygame.display.update()
-
-            data = [[self.tanks[0][0].rect.x, self.tanks[0][0].rect.y], self.tanks[0][0].rotation, self.tanks[0][1].get_angle(), [{"position": [projectile.rect.x, projectile.rect.y], "angle": projectile.angle} for projectile in self.tanks[0][0].all_projectiles], self.tanks[0][0].life, self.tanks[1][0].life, self.pause]
-            if self.firstMessage:
-                data = [[self.tanks[0][0].rect.x, self.tanks[0][0].rect.y], self.tanks[0][0].rotation,
-                        self.tanks[0][1].get_angle(), [
-                            {"position": [projectile.rect.x, projectile.rect.y], "angle": projectile.angle,
-                             "id": projectile.id} for projectile in self.tanks[0][0].all_projectiles], 100, 100,
-                        self.pause]
-                self.firstMessage = False
-            if data != None:
-                send_message(data, self.port, self.ip)
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.stopGame()
-                elif event.type == pygame.KEYDOWN:
-                    self.pressed[event.key] = True
-                elif event.type == pygame.KEYUP:
-                    self.pressed[event.key] = False
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button == 1:
-                        if self.width/2 - 150/2 <= event.pos[0] <= self.width/2 + 150/2 and 290 <= event.pos[1] <= 330:
-                            self.pause = False
-                        elif self.width/2 - 150/2 <= event.pos[0] <= self.width/2 + 150/2 and 340 <= event.pos[1] <= 380:
-                            self.in_main_menu = True
-                            self.pause = False
-
-    def run(self):
-        self.game()

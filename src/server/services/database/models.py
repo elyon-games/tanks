@@ -142,19 +142,21 @@ class Parties(BaseModel):
             "max_players": {"type": int, "default": 2},
             "map": {"type": int, "required": True},
             "private": {"type": bool, "default": False},
+            "ranked": {"type": bool, "default": False},
             "started_at": {"type": str, "default": None},
             "ended_at": {"type": str, "default": None},
             "status": {"type": str, "default": "wait"},
             "created_at": {"type": str, "required": True},
         })
 
-    def create(self, owner: int, private: bool = False, map: int = 0):
+    def create(self, owner: int, private: bool = False, ranked: bool = False, map: int = 0):
         party = self.insert({
             "id": self.get_new_id(),
             "owner": owner,
             "players": [
                 owner
             ],
+            "ranked": ranked,
             "private": private,
             "map": map,
             "created_at": get_current_time()
@@ -171,5 +173,22 @@ class Parties(BaseModel):
     def get_new_id(self):
         return len(self.data) + 1
     
+    def get_all_partys_public(self):
+        return [{
+            "id": party.get("id"),
+            "map": party.get("map"),
+            "private": party.get("private"),
+            "owner": party.get("owner"),
+        } for party in self.get_by("private", False) if not self.is_full(party) and party.get("status") == "wait"]
+
+    def find_random_party_public(self):
+        parties = self.get_all_partys_public()
+        if not parties:
+            return None
+        return random.choices(parties)
+    
     def is_full(self, party):
         return len(party["players"]) >= party["max_players"]
+    
+    def is_owner(self, party, user):
+        return party["owner"] == user["id"]

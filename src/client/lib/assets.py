@@ -28,9 +28,11 @@ def loadAsset(id: str, pathFile: str, type: str = "image") -> Union[pygame.Surfa
         }
 
 # Fonction pour récupérer un assets et le redimensionner si besoin
-def getAsset(id: str, size: float = 1) -> Optional[Union[pygame.Surface, pygame.mixer.Sound]]:
+def getAsset(id: str, size: Union[float, tuple] = 1) -> Optional[Union[pygame.Surface, pygame.mixer.Sound]]:
     A = assets[id]["data"] if id in assets else None
-    if size != 1:
+    if isinstance(size, tuple):
+        A = pygame.transform.scale(A, size)
+    elif size != 1:
         A = pygame.transform.scale_by(A, size)
     return A
 
