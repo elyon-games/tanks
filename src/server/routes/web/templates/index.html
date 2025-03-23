@@ -1,22 +1,20 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Statistique</title>
-<style>
-html{
-    background-color: red;
-}
-</style>
+{% extends "base.html" %}
+{% block title %}Acceuil{% endblock %}
+{% block head %}
 
-</head>
-<body>
+{% endblock %}
+
+{% block content %}
     <h1>Statistique</h1>
 
-    <p>Entrez votre pseudo : </p>
-    <input type="text" id="text">
-    <button py-click="search"></button>
+    <form action="/stats" method="GET">
+        <p>Entrez votre pseudo : </p>
+        <input type="text" id="text" name="text">
+        <br>
+        <button type="submit">Submit</button>
+    </form>
 
-</body>
-</html>
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+{% endblock %}

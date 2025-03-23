@@ -59,15 +59,11 @@ class HomeScreen(Screen):
         self.private_partie_rect = pygame.Rect(self.window.get_width() - 160, self.window.get_height()-60-60, 150, 50)
         self.render_button(self.private_partie_rect, "Partie privée")
         
-        #bouton jouer en classé 
-        self.join_classed_rect = pygame.Rect(self.window.get_width() - 160 - 180, self.window.get_height()-60, 170, 50)
-        self.render_button(self.join_classed_rect, "Ranked")
-        
         #bouton jouer
         self.join_classic_rect = pygame.Rect(self.window.get_width() - 160, self.window.get_height()-60, 150, 50)
         self.render_button(self.join_classic_rect, "Jouer")
         
-        
+        #lien vers la documentation
         self.link_to_doc = pygame.Rect(15, self.window.get_height()-40, 150, 30)
         self.render_label("Documentation", self.link_to_doc, color=(0,0,246))
         

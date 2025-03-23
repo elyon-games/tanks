@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Statistique{% endblock %}
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+    <h1>Statistique</h1>
+
+   {% for name, stat in all_stats.items() %}
+        <p>{{name}} : {{ stat }}</p>
+   {% endfor %}
+{% endblock %}
