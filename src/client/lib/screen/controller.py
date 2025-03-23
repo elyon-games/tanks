@@ -27,9 +27,6 @@ def getScreenClass(screen_name: str) -> Type[Screen]:
     elif screen_name == "auth-register":
         from client.screen.auth.register import AuthRegisterScreen
         return AuthRegisterScreen
-    elif screen_name == "shop":
-        from client.screen.shop import shopScreen
-        return shopScreen
     elif screen_name == "profil":
         from client.screen.profil import profilScreen
         return profilScreen

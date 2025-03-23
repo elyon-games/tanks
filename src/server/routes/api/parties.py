@@ -6,7 +6,7 @@ from server.middleware.auth import login_required
 from server.utils import formatRes
 from common.time import get_current_time
 
-route_parties = Blueprint("api-client-parties", __name__)
+route_parties = Blueprint("api-parties", __name__)
 
 @route_parties.route("/public", methods=["GET"])
 def list_parties():
