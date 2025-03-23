@@ -15,7 +15,7 @@ Note : Celle-ci fonction grâce à "Llama 3" sur serveur nous appartenant
 Aucune donnée d'historique de conversation n'est sauvegarder avec celle-ci
 
 ## Démarrage
-#### Arguments
+### Arguments
 Tout les arguments sauf une exceptions (celle-ci sont spécifier en dessous) sont de se format ci-contre : '--{clé} {valeur}'
 Le type dans le tableau correspond sur quelle parti du programme cette arguments peux influer 
 Listes des arguments existant :
@@ -52,7 +52,8 @@ Les scripts sont des petits programmes réaliser en python ou en bat permettant 
 | ./scripts/dependances.bat | Permet d'installer les dépendances (librairie python) nécessaire au bon fonctionnement de l'application                                                                                            |
 | ./scripts/line.exe        | Permet une fois lancer, de lui passer un "chemin" et d'y calculer le nombre de lignes total que comporte tout les fichier python qui si trouve. Pour nombre projet il faut donc renseigner "./src" |
 
-
 ## Build 
 Nôtre projet peux être "build" pour en récupérer un exécutable plus simple pour le partager, il permet aussi de ne plus avoir besoin de python ainsi que d'installer des dépendances.
 Vous pouvez utiliser le [[Scripts]] build.bat pour cela
+
+Faudra finir la documentasation a faire cette nuit je pense 

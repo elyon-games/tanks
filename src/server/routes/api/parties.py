@@ -4,17 +4,29 @@ from server.services.database.db import maps as Maps
 from server.services.database.db import users as Users
 from server.middleware.auth import login_required
 from server.utils import formatRes
+import random
 
 route_parties = Blueprint("api-client-parties", __name__)
 
-@route_parties.route("/public", methods=["GET"])
-def list_parties():
+def get_all_partys_public():
     parties = [{
         "id": party.get("id"),
         "map": party.get("map"),
         "private": party.get("private"),
         "owner": party.get("owner"),
-    } for party in Parties.get_all() if not party.get("private") and not Parties.is_full(party) and party.get("status") == "wait"]
+    } for party in Parties.get_by("private", False) if not Parties.is_full(party) and party.get("status") == "wait"]
+    return parties
+
+
+def find_random_party_public():
+    parties = get_all_partys_public()
+    if not parties:
+        return None
+    return random.choices(parties)
+
+@route_parties.route("/public", methods=["GET"])
+def list_parties():
+    parties = find_random_party_public()
     return formatRes("FOUND", parties)
 
 @route_parties.route("/create", methods=["POST"])

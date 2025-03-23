@@ -82,7 +82,7 @@ class Users(BaseModel):
         })
         self.save()
         return user
-    
+     
     def existed(self, id):
         return next((user for user in self.data if user["id"] == id or user["email"] == id), None) is not None
 
@@ -168,9 +168,6 @@ class Parties(BaseModel):
     def get_by_player(self, player):
         return [party for party in self.data if player in party["players"]]
 
-    def get_by_id(self, party_id):
-        return next((party for party in self.data if party["id"] == party_id), None)
-    
     def get_new_id(self):
         return len(self.data) + 1
     
