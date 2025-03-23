@@ -4,6 +4,7 @@ from server.services.database.db import maps as Maps
 from server.services.database.db import users as Users
 from server.middleware.auth import login_required
 from server.utils import formatRes
+from common.time import get_current_time
 
 route_parties = Blueprint("api-client-parties", __name__)
 
@@ -71,7 +72,8 @@ def join_party():
         "owner": party.get("owner"),
     })
 
-partiesToClose = [party for party in Parties.get_all() if not party.get("status") == "close"]
+partiesToClose = [party for party in Parties.get_all() if not party.get("status") == "wait" and party.get("ended_at") is None]
 for party in partiesToClose:
+    party["ended_at"] = get_current_time()
     party["status"] = "close"
 Parties.save()

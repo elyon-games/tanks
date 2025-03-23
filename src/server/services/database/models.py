@@ -192,3 +192,35 @@ class Parties(BaseModel):
     
     def is_owner(self, party, user):
         return party["owner"] == user["id"]
+    
+    def finish(self, party):
+        party["status"] = "finished"
+        party["ended_at"] = get_current_time()
+        self.save()
+        return party
+    
+    def is_finished(self, party):
+        return party["status"] == "finished"
+    
+    def is_waiting(self, party):
+        return party["status"] == "wait"
+    
+    def start(self, party):
+        party["status"] = "playing"
+        party["started_at"] = get_current_time()
+        self.save()
+        return party
+    
+    def is_playing(self, party):
+        return party["status"] == "playing"
+    
+    def time_lenght_playing(self, party):
+        if party["status"] == "playing":
+            return get_current_time() - party["started_at"]
+        return 0
+    
+    def time_party(self, party):
+        if party["status"] == "finished":
+            return party["ended_at"] - party["started_at"]
+        return 0
+    
