@@ -5,6 +5,8 @@ def getKeys() -> dict:
     global keys
     return keys
 
+# Fonction pour mettre a jour les touches appuyées
+# Cette fonction gère également le "backScreen" pour revenir au screen précédent avec la touche CTRL+Z
 def updateKeys(keysSet) -> None:
     global keys
     keys = keysSet

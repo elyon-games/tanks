@@ -2,20 +2,22 @@ import pygame
 import time
 from client.types import WINDOW
 
+# Class d'une notification
 class Notification:
-    def __init__(self, message, duration):
+    def __init__(self, message: str, duration: int=3) -> None:
         self.message = message
         self.duration = duration
         self.start_time = time.time()
     
+    # Vérifie si la notification est expirée
     def isExpired(self):
         return time.time() - self.start_time > self.duration
 
-    def render(self, window: WINDOW, y_offset):
+    # Rendu de la notification
+    def render(self, window: WINDOW, y_offset: int) -> None:
         window_width = window.get_width()
         window_height = window.get_height()
         
-        # Adjust font size and padding based on window size
         font_size = int(window_height * 0.05)
         padding = int(window_height * 0.02)
         
@@ -26,12 +28,15 @@ class Notification:
         pygame.draw.rect(window, (0, 0, 0), background_rect, border_radius=10)
         window.blit(text, text_rect.move(padding, padding))
 
+# Global variables
 notifications: list[Notification] = []
 
-def showNotification(message, duration=3):
+# Fonction pour afficher une notification
+def showNotification(message: str, duration: int= 3) -> None:
     notifications.append(Notification(message, duration))
 
-def updateNotifications(window: WINDOW):
+# Fonction pour mettre à jour les notifications
+def updateNotifications(window: WINDOW) -> None:
     window_height = window.get_height()
     y_offset = 0
     for notification in notifications:
@@ -41,5 +46,6 @@ def updateNotifications(window: WINDOW):
             notification.render(window, y_offset)
             y_offset += int(window_height * 0.1)
 
-def getAll():
+# Fonction pour récupérer toutes les notifications 
+def getAll() -> list[Notification]:
     return notifications
