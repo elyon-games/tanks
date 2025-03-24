@@ -9,4 +9,4 @@ pyscroll==2.31
 customtkinter==5.2.2
 sentry-sdk==2.19.2
 waitress==3.0.2
-requests==2.32.3 
+requests==2.32.3
