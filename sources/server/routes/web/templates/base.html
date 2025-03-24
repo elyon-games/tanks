@@ -15,6 +15,7 @@
       .container {
         width: 80%;
         margin: 0 auto;
+        item-align: center;
       }
       h1 {
         text-align: center;
@@ -43,20 +44,33 @@
       p {
         text-align: center;
       }
-      .container {
+       .container {
         margin-top: 50px;
+      } 
+      h2{
+       text-align: center;
       }
       .container p:nth-child(odd) {
+        padding: 3px;
+        margin: 3px;
+        margin-left: 40%;
+        margin-right: 40%;
+        border-radius: 5px;
+        width: 20%;
         background-color: rgb(16, 185, 129);
       }
       .container p:nth-child(even) {
+        padding: 3px;
+        margin: 3px;
+        margin-left: 40%;
+        margin-right: 40%;
+        border-radius: 8px;
+        width: 20%;
         background-color: rgb(100, 149, 237);
       }
   </style>
   </head>
   <body>
-    <div class="container">
     {% block content %}{% endblock content %}
-    </div>
   </body>
 </html>

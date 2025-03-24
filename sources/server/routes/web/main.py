@@ -11,7 +11,8 @@ def index():
 @route_web.route("/stats")
 def stats():
     try:
-        id = get_user_id(str(request.args.get("text"))) 
+        name=str(request.args.get("name"))
+        id = get_user_id(name) 
     except: id = None 
     
     # Vérifie que le champ n'est pas vide
@@ -20,4 +21,4 @@ def stats():
     
     all_stats = get_user_stats(id)
 
-    return render_template("stats.html", all_stats=all_stats)
+    return render_template("stats.html", all_stats=all_stats, name=name)

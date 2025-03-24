@@ -6,8 +6,11 @@
 
 {% block content %}
     <h1>Statistique</h1>
+     <h2>Statistique de {{ name }} :</h2>
 
+    <div class="container">
    {% for name, stat in all_stats.items() %}
         <p>{{name}} : {{ stat }}</p>
    {% endfor %}
+    </div>
 {% endblock %}
