@@ -7,7 +7,7 @@ Tout est parti de notre passion pour la programmation et les jeux vidéo. Quand 
 ## Technologies
 Pour ce projet, nous avons principalement utilisé **Python** comme langage de programmation avec  **Pygame** pour la parti client et **Flask** afin de créer un serveur permettant aux joueurs de s'affronter en ligne.
 ## Elya
-Elya est une documentaliste virtuelle conçu par nous qui permet de répond à la plus part des questions que vous pouvez avoir. Celle-ci a appris l'entière du code et documentation du projet. Elle peut donc répondre de manière précise. Nous avons choisir de faire une partir de cette manière pour que tout les questions est une réponse.
+Elya est une documentaliste virtuelle conçu par nous qui permet de répond à la plus part des questions que vous pouvez avoir. Celle-ci a appris l'entière du code et documentation du projet. Elle peut donc répondre de manière précise. Nous avons choisir de faire la documentation de cette manière pour que tout les questions est une réponse.
 
 Note : Celle-ci fonction grâce à "Llama 3" sur serveur nous appartenant
 Aucune donnée d'historique de conversation n'est sauvegarder avec celle-ci
@@ -18,15 +18,15 @@ Tout les arguments sauf une exceptions (celle-ci sont spécifier en dessous) son
 Le type dans le tableau correspond sur quelle parti du programme cette arguments peux influer 
 Listes des arguments existant :
 
-| Clé         | Valeur Attendu                                | Fonction                                                                                                                               | Type   |
-| ----------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| dev         | Aucune (cas spécial)                          | Permet de passer entre le mode "prod" ou "dev"<br>Et d'afficher ou non certaine logs/débogage                                          | All    |
-| type        | client/server/local                           | Permet de choisir quel partie du projet doit être lancer (local lance les deux en même et modifie les configuration pour les lier)     | All    |
-| config      | valeur au choix<br>(ne peut pas être "all")   | Permet de passer outre le système de [[Config]] de base entre prod et dev (cela permet d'avoir une troisième [[Config]] pour des test) | All    |
-| clear-data  | client/server/all                             | Permet de supprimer les donnée d'une ou l'autre parti selon la valeur (all supprimer les deux)<br>                                     | All    |
-| data-path   | valeur de vôtre choix                         | Permet de changer le dossiers pour stocker les données                                                                                 | All    |
-| server-host | valeur de vôtre choix                         | Permet de choisir sur quelle host le client va se connecter directement<br>Attention : cela ne fonction que en mode "client"           | Client |
-| server-port | valeur de vôtre choix (compris entre 1-50000) | Permet de choisir le port sur lequelle va se lancer le serveur                                                                         | Server |
+| Clé         | Valeur Attendu                                | Valeur par défaut        | Fonction                                                                                                                               | Type   |
+| ----------- | --------------------------------------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| dev         | Aucune (cas spécial)                          | False                    | Permet de passer entre le mode "prod" ou "dev"<br>Et d'afficher ou non certaine logs/débogage                                          | All    |
+| type        | client/server/local/gui                       | gui                      | Permet de choisir quel partie du projet doit être lancer (local lance les deux en même et modifie les configuration pour les lier)     | All    |
+| config      | valeur au choix<br>(ne peut pas être "all")   | None                     | Permet de passer outre le système de [[Config]] de base entre prod et dev (cela permet d'avoir une troisième [[Config]] pour des test) | All    |
+| clear-data  | client/server/all                             | None                     | Permet de supprimer les donnée d'une ou l'autre parti selon la valeur (all supprimer les deux)<br>                                     | All    |
+| data-path   | valeur de vôtre choix                         | data                     | Permet de changer le dossiers pour stocker les données                                                                                 | All    |
+| server-host | valeur de vôtre choix                         | play.elyon.younity-mc.fr | Permet de choisir sur quelle host le client va se connecter directement<br>Attention : cela ne fonction que en mode "client"           | Client |
+| server-port | valeur de vôtre choix (compris entre 1-50000) | 3300                     | Permet de choisir le port sur lequelle va se lancer le serveur                                                                         | Server |
 
 ## Structure
 Voici la structure de dossiers et fichier du projet ainsi que leurs descriptions de celui-ci, les dossiers noté entre " sont se qui ne sont pas fixe entre les projets, ils sont générer par l'application elle même 
@@ -43,12 +43,12 @@ Voici la structure de dossiers et fichier du projet ainsi que leurs descriptions
 ## Scripts
 Les scripts sont des petits programmes réaliser en python ou en bat permettant de réaliser certain action. Voici la listes des scripts disponible :
 
-| Chemin                    | fonction                                                                                                                                                                                           |
-| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ./boot.exe                | [[Démarrage\|voir démarrage]]                                                                                                                                                                      |
-| ./scripts/build.bat       | Permet de build l'appli [[Build]]                                                                                                                                                                  |
-| ./scripts/dependances.bat | Permet d'installer les dépendances (librairie python) nécessaire au bon fonctionnement de l'application                                                                                            |
-| ./scripts/line.exe        | Permet une fois lancer, de lui passer un "chemin" et d'y calculer le nombre de lignes total que comporte tout les fichier python qui si trouve. Pour nombre projet il faut donc renseigner "./src" |
+| Chemin                    | fonction                                                                                                                                                                                               |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| ./boot.exe                | [[Démarrage\|voir démarrage]]                                                                                                                                                                          |
+| ./scripts/build.bat       | Permet de build l'appli [[Build]]                                                                                                                                                                      |
+| ./scripts/dependances.bat | Permet d'installer les dépendances (librairie python) nécessaire au bon fonctionnement de l'application                                                                                                |
+| ./scripts/line.exe        | Permet une fois lancer, de lui passer un "chemin" et d'y calculer le nombre de lignes total que comporte tout les fichier python qui si trouve. Pour nombre projet il faut donc renseigner "./sources" |
 
 ## Build 
 Nôtre projet peux être "build" pour en récupérer un exécutable plus simple pour le partager, il permet aussi de ne plus avoir besoin de python ainsi que d'installer des dépendances.

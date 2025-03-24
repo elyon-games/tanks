@@ -53,8 +53,7 @@ class Users(BaseModel):
             "stats_kill": {"type": int, "default": 0},
             "stats_death": {"type": int, "default": 0},
             "stats_win": {"type": int, "default": 0},
-            "stats_lose": {"type": int, "default": 0},
-            "item_buy": {"type": list, "default": []},
+            "stats_lose": {"type": int, "default": 0}
         }, default_data=[{
             "id": 1,
             "username": "admin",
@@ -68,8 +67,7 @@ class Users(BaseModel):
             "stats_kill": 0,
             "stats_death": 0,
             "stats_win": 0,
-            "stats_lose": 0,
-            "item_buy": []
+            "stats_lose": 0
         }])
 
     def create(self, username: str, email: str, password: str, admin: bool = False):
@@ -149,21 +147,19 @@ class Parties(BaseModel):
             "max_players": {"type": int, "default": 2},
             "map": {"type": int, "required": True},
             "private": {"type": bool, "default": False},
-            "ranked": {"type": bool, "default": False},
             "started_at": {"type": str, "default": None},
             "ended_at": {"type": str, "default": None},
             "status": {"type": str, "default": "wait"},
             "created_at": {"type": str, "required": True},
         })
 
-    def create(self, owner: int, private: bool = False, ranked: bool = False, map: int = 0):
+    def create(self, owner: int, private: bool = False, map: int = 0):
         party = self.insert({
             "id": self.get_new_id(),
             "owner": owner,
             "players": [
                 owner
             ],
-            "ranked": ranked,
             "private": private,
             "map": map,
             "created_at": get_current_time()
@@ -229,5 +225,4 @@ class Parties(BaseModel):
     def time_party(self, party):
         if party["status"] == "finished":
             return party["ended_at"] - party["started_at"]
-        return 0
-    
+        return 0    

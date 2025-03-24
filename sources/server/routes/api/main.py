@@ -5,7 +5,7 @@ from server.routes.api.badges import route_badges
 from server.routes.api.client.main import route_client
 from server.routes.api.classement import route_classement
 from server.routes.api.maps import route_maps
-from server.routes.api.parties import route_parties
+from sources.server.routes.api.parties.main import route_parties
 
 route_api = Blueprint("api", __name__)
 
