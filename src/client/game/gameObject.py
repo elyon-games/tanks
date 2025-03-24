@@ -12,11 +12,6 @@ class GameObject(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, [dimensions[0]*self.game.height, dimensions[1]*self.game.width])
         
         self.image_start = self.image
-        
-        # Ajout d'une bordure rouge autour de l'image si le mode debug est activé en utilisant le rect de l'image
-        if game.debug:
-            rect = self.image.get_rect()
-            pygame.draw.rect(self.image, (255, 0, 0), rect, 5)
             
         # Création de différentes versions de l'image, chacune tournée dans une direction différente
         if need_rotate:

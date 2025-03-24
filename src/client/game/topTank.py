@@ -11,12 +11,6 @@ class TopTank(pygame.sprite.Sprite):
         self.image = getAsset(image_id)  # Chargement de l'image à partir du chemin spécifié
         dimensions = ((175/1080)*self.game.height, (175/1920)*self.game.width)
         self.image = pygame.transform.scale(self.image, dimensions)  # Redimensionnement de l'image aux dimensions spécifiées
-        if game.debug:
-            # Ajout d'une bordure rouge autour de l'image pour le mode débogage
-            self.image.fill((255, 0, 0), rect=[0, 0, dimensions[0], 5])
-            self.image.fill((255, 0, 0), rect=[0, 0, 5, dimensions[1]])
-            self.image.fill((255, 0, 0), rect=[0, dimensions[1]-5, dimensions[0], 5])
-            self.image.fill((255, 0, 0), rect=[dimensions[0]-5, 0, 5, dimensions[1]])
         self.image = pygame.transform.rotate(self.image, -90)  # Rotation initiale de l'image
         self.rect = self.image.get_rect()  # Obtention du rectangle englobant l'image (utilisé pour le positionnement et la détection des collisions)
         self.image_original = self.image  # Sauvegarde de l'image originale pour les rotations futures

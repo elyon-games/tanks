@@ -42,32 +42,20 @@ def receive_messages(SERVER_PORT, SERVER_HOST):
                 if response.status_code == 200:
                     if json.loads(response.text) != "wait":
                         status = json.loads(response.text)
-                        if debug:
-                            print(f"[CLIENT] Map : {status}")
-                            print("[CLIENT] Map reçu du serveur.")
                         return ("ready", status)
                     else:
                         return "wait"
                 else:
-                    if debug:
-                        print(response.text)
-                        print("[CLIENT] Erreur lors de la réception des messages.")
                     close_connection(SERVER_PORT, SERVER_HOST)
                     return "Finish"
         else:
                 response = requests.get(f"http://{SERVER_HOST}:5555/receive/{SERVER_PORT}/{IPAddr}")
                 if response.status_code == 200:
                         data = json.loads(response.text)
-                        if debug:
-                            print(f"[CLIENT] Data : {data}")
-                            print("[CLIENT] Message reçu du serveur.")
                         if data == None:
                             return None
                         return data
                 else:
-                    if debug:
-                        print(response.text)
-                        print("[CLIENT] Erreur lors de la réception des messages.")
                     close_connection(SERVER_PORT, SERVER_HOST)
                     return "Finish"
 
@@ -82,12 +70,8 @@ def send_message(data, SERVER_PORT, SERVER_HOST):
             dataJSON = json.dumps(data)
             response = requests.post(f"http://{SERVER_HOST}:5555/send/{SERVER_PORT}/{IPAddr}", json=dataJSON)
             if response.status_code == 200:
-                if debug:
-                    print(f"[CLIENT] Data : {data}")
-                    print("[CLIENT] Message envoyé au serveur.")
+                 pass
             else:
-                if debug:
-                    print("[CLIENT] Erreur lors de l'envoi du message.")
                 close_connection(SERVER_PORT, SERVER_HOST)
 
 # Fonction pour fermer la connexion avec le serveur

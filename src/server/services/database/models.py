@@ -5,6 +5,7 @@ from common.config import getConfig
 
 import random
 from server.services.mapGenerator import generate_map
+from common.ams import getAllAssetsIn
 
 config = getConfig("server")
 
@@ -117,17 +118,23 @@ class Users(BaseModel):
 
 class Maps(BaseModel):
     def __init__(self):
+        default = []
+        for map in getAllAssetsIn("maps"):
+            map = map.replace("\\", "/").split("/")[-1].split(".")[0]
+            default.append({
+                "id": len(default) + 1,
+                "name": map,
+                "description": f"Map {map}",
+                "content": generate_map(),
+                "background": map
+            })
         super().__init__(schema={
             "id": {"type": int, "required": True, "unique": True},
             "name": {"type": str, "required": True},
             "description": {"type": str, "required": True},
             "content": {"type": list, "required": True},
-        }, default_data=[{
-            "id": i,
-            "name": f"Map {i}",
-            "description": f"Map de Test {i}",
-            "content": generate_map()
-        } for i in range(1, 3)])
+            "background": {"type": str, "default": "sable"},
+        }, default_data=default)
 
     def get_random(self):
         return random.choice(self.data)["id"]

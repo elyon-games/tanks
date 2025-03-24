@@ -13,3 +13,12 @@ def getAsset(relative_path: str) -> str:
 # fonction pour récupérer le contenu d'un asset
 def getAssetContent(relative_path: str) -> str:
     return open(getAsset(relative_path), "r").read()
+
+
+# fonction pour récupérer le contenu d'un asset en tant que bytes
+def getAllAssetsIn(path: str) -> list:
+    assets = []
+    for root, dirs, files in os.walk(getAsset(path)):
+        for file in files:
+            assets.append(os.path.join(root, file))
+    return assets

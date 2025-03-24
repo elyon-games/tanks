@@ -21,9 +21,7 @@ class Game:  # Définition de la classe Game
         self.time = 0  # Initialisation du temps
         
         self.pressed = {}  # Dictionnaire pour gérer les touches pressées
-        
-        self.debug = False  # Mode de débogage
-                
+                        
         self.freeze = False  # Mode de pause du jeu
 
         self.status = "menu"  # Statut du jeu (menu, play, options, ingame)
@@ -229,9 +227,6 @@ class Game:  # Définition de la classe Game
                     self.tanks[1][0].life = self.tanks[1][0].life  # Mise à jour des points de vie du tank ennemi
                     self.waiting = message[5]
 
-                    if self.debug:
-                        print(f"[CLIENT] Message reçu: {message}")  # Affichage du message reçu du serveur
-                        
                 if self.tanks[0][0].life <= 0 or self.tanks[1][0].life <= 0:
                     if self.tanks[0][0].life <= 0:
                         self.win = False
