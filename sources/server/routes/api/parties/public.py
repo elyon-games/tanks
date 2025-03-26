@@ -11,7 +11,7 @@ route_parties_public = Blueprint("api-parties-public", __name__)
 @login_required
 def create_party():
     body: dict = request.get_json(silent=True)
-    map: int = body.get("map", Maps.get_random())
+    map: int = Maps.get_random()
     if not map:
         return formatRes("INVALID_MAP", {})
     party = Parties.create(
@@ -41,6 +41,5 @@ def random_party():
         return formatRes("NOT_FOUND", {})
     return formatRes("FOUND", {
         "id": party.get("id"),
-        "map": party.get("map"),
-        "owner": party.get("owner"),
+        "map": party.get("map")
     })

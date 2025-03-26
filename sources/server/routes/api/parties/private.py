@@ -12,7 +12,12 @@ route_parties_private = Blueprint("api-parties-private", __name__)
 @login_required
 def create_party():
     body: dict = request.get_json(silent=True)
-    map: int = Maps.get_random()
+    map: int = body.get("map", Maps.get_random())
+    if not map:
+        return formatRes("INVALID_MAP", {})
+    mapVerify = Maps.get(map)
+    if not mapVerify:
+        return formatRes("INVALID_MAP", {})
     party = Parties.create(
         owner=request.user_id,
         private=True,
@@ -20,7 +25,8 @@ def create_party():
     )
     return formatRes("CREATED", {
         "id": party.get("id"),
-        "map": party.get("map")
+        "map": party.get("map"),
+        "owner": party.get("owner"),
     })
 
 @route_parties_private.route("/join", methods=["POST"])

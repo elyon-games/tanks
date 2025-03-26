@@ -18,13 +18,12 @@ def get_party(party_id: int):
         return formatRes("NOT_FOUND", {})
     if request.user_id not in party.get("players", []):
         return formatRes("NOT_AUTHORIZED", {})
-    if party.get("private"):
-        return formatRes("NOT_FOUND", {})
     return formatRes("FOUND", {
         "id": party.get("id"),
         "map": party.get("map"),
         "owner": party.get("owner"),
     })
+
 
 partiesToClose = [party for party in Parties.get_all() if not party.get("status") == "wait" and party.get("ended_at") is None]
 for party in partiesToClose:

@@ -39,9 +39,9 @@ def getScreenClass(screen_name: str) -> Type[Screen]:
     elif screen_name == "game-end":
         from client.screen.game.end import gameEndScreen
         return gameEndScreen
-    elif screen_name == "game-wait":
-        from client.screen.game.wait import gameWaitScreen
-        return gameWaitScreen
+    elif screen_name == "error":
+        from client.screen.error import errorScreen
+        return errorScreen
     elif screen_name == "classement":
         from client.screen.classement import classementScreen
         return classementScreen
@@ -69,11 +69,14 @@ def backScreen():
         showScreen(previous_screen)
 
 # Fonction pour afficher un écran
-def showScreen(screen: str) -> Screen:
+def showScreen(screen: str, args: dict = None) -> Screen:
     global actualScreen, actualWindow, historyScreen
     if actualScreen is not None and actualScreen.id == screen:
         return actualScreen
     elif actualScreen is None or actualScreen.id != screen:
+        if not args:
+            for key, value in args.items():
+                setArgs(key, value)
         if actualScreen is not None:
             historyScreen.append(actualScreen.id)
         UnMountScreen()

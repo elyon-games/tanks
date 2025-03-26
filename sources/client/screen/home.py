@@ -6,7 +6,7 @@ from client.style.fonts import getFont
 from client.style.constants import EMERAUDE, BLEU, WHITE, BLACK, GRAY, STEEL_BLUE, LIGHTER_BLUE, CARD_COLOR, CARD_BORDER_COLOR
 from client.style.fonts import getFontSize
 import webbrowser
-from client.lib.utils import getMaps
+from client.lib.maps import getMaps
 from client.lib.screen.controller import showScreen
 
 class HomeScreen(Screen):

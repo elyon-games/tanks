@@ -180,8 +180,6 @@ class Parties(BaseModel):
         return [{
             "id": party.get("id"),
             "map": party.get("map"),
-            "private": party.get("private"),
-            "owner": party.get("owner"),
         } for party in self.get_by("private", False) if not self.is_full(party) and party.get("status") == "wait"]
 
     def find_random_party_public(self):

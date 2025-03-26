@@ -1,6 +1,8 @@
 from urllib.parse import urljoin
 from common.config import getConfig
 from client.var import auth as authData
+from client.lib.screen.controller import showScreen
+from common.time import get_current_time
 import requests
 
 # Récupération de l'URL du serveur
@@ -41,10 +43,13 @@ def getProfil(userID: int) -> dict:
         return res.json()["data"]
     return None
 
-# Fonction pour récupérer les maps
-def getMaps() -> list[dict]:
-    url = with_url_api("/maps")
-    res = requests.get(url)
-    if res.status_code == 200:
-        return res.json()["data"]
-    return None
+def verifyStatusRes(res: dict):
+    errorStatus = res.get("error", False)
+    if errorStatus:
+        showScreen("error", {
+            "time": get_current_time(),
+            "message": res.get("message", "Une erreur est survenue !"),
+        })
+    else:
+        return res.get("data", {})
+

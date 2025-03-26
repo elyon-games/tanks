@@ -9,16 +9,6 @@ from common.time import get_current_time_ms
 
 route_client_gateway = Blueprint("api-client-gateway", __name__)
 
-@route_client_gateway.route("/create", methods=["POST"])
-@login_required
-def create_gateway():
-    gateway = network.create_gateway(request.user_id)
-    print(f"Gateway {gateway.id} created by user {gateway.userID}")
-    return formatRes("CREATED", {
-        "gateway_id": gateway.id,
-        "gateway_key": gateway.SECRET_KEY
-    })
-
 @route_client_gateway.before_request
 def before_request():
     body: dict = request.get_json(silent=True)
