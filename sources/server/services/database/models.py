@@ -175,9 +175,15 @@ class Parties(BaseModel):
     
     def get_all_parties_public(self) -> list:
         parties = [
-            {"id": party.get("id"), "map": party.get("map")}
+            {
+                "id": party.get("id"),
+                "map": party.get("map"),
+                "players": party.get("players"),
+                "max_players": party.get("max_players"),
+                "private": party.get("private"),
+            }
             for party in self.get_all()
-            if party.get("private") == False and not self.is_full(party) and self.is_waiting(party) and not self.is_finished(party)
+            if party.get("private") == False and not self.is_full(party) and self.is_waiting(party) and not self.is_finished(party) and party.get("players") not in [None, []]
         ]
         return parties if parties else []
 
@@ -185,7 +191,7 @@ class Parties(BaseModel):
         parties = self.get_all_parties_public()
         if not parties:
             return None
-        return random.choices(parties)
+        return random.choice(parties)
     
     def is_full(self, party):
         return len(party["players"]) >= party["max_players"]
@@ -222,4 +228,7 @@ class Parties(BaseModel):
     def time_party(self, party):
         if party["status"] == "finished":
             return party["ended_at"] - party["started_at"]
-        return 0    
+        return 0
+    
+    def is_player_in_party(self, party, player):
+        return player in party["players"]

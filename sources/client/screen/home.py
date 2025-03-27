@@ -9,7 +9,7 @@ import webbrowser
 from client.lib.maps import getMaps
 from client.lib.screen.controller import showScreen
 from client.lib.parties import getPartysPublicShow
-
+from client.lib.parties import joinParty
 class HomeScreen(Screen):
     def __init__(self, window):
         super().__init__(window, "home", "Accueil")
@@ -68,7 +68,6 @@ class HomeScreen(Screen):
         #lien vers la documentation
         self.link_to_doc = pygame.Rect(15, self.window.get_height()-40, 150, 30)
         self.render_label("Documentation", self.link_to_doc, color=(0,0,246))
-        
 
     def HandleEvent(self, type, event):
         self.UpdateView()
@@ -77,5 +76,11 @@ class HomeScreen(Screen):
                 webbrowser.open("https://elyon.younity-mc.fr/documentation")
             if self.private_partie_rect.collidepoint(pygame.mouse.get_pos()):
                 showScreen("private-party")
-            
+            if self.join_classic_rect.collidepoint(pygame.mouse.get_pos()):
+                info = joinParty(private=False)
+                print("Join Info", info)
+                showScreen("game-main", {
+                    "party_id": info["party_id"],
+                })
+
         self.navbar.HandleEvent(type, event)

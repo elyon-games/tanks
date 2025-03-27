@@ -14,9 +14,9 @@ route_parties = Blueprint("api-parties", __name__)
 def get_party(party_id: int):
     party = Parties.get(party_id)
     if not party:
-        return formatRes("NOT_FOUND", {})
+        return formatErrorRes("NOT_FOUND", {})
     if request.user_id not in party.get("players", []):
-        return formatRes("NOT_AUTHORIZED", {})
+        return formatErrorRes("NOT_AUTHORIZED", {})
     return formatRes("FOUND", {
         "id": party.get("id"),
         "map": party.get("map"),
@@ -29,24 +29,22 @@ def get_party(party_id: int):
 def create_party():
     body: dict = request.get_json(silent=True)
     if not body:
-        return formatRes("INVALID_BODY", {})
-    private = body.get("private", False)
-    map: int = body.get("map", Maps.get_random()) if private else Maps.get_random()
+        return formatErrorRes("INVALID_BODY", {})
+    map: int = body.get("map", Maps.get_random())
     if not map:
-        return formatRes("INVALID_MAP", {})
+        return formatErrorRes("INVALID_MAP", {})
     mapVerify = Maps.get(map)
     if not mapVerify:
-        return formatRes("INVALID_MAP", {})
+        return formatErrorRes("INVALID_MAP", {})
     party = Parties.create(
         owner=request.user_id,
-        private=private,
+        private=True,
         map=map,
     )
     return formatRes("CREATED", {
         "id": party.get("id"),
         "map": party.get("map"),
-        "owner": party.get("owner"),
-        "private": party.get("private"),
+        "owner": party.get("owner")
     })
 
 @route_parties.route("/join", methods=["POST"])
@@ -54,23 +52,36 @@ def create_party():
 def join_party():
     body: dict = request.get_json(silent=True)
     if not body:
-        return formatRes("INVALID_BODY", {})
+        return formatErrorRes("INVALID_BODY", {})
     private = body.get("private", False)
-    party = None  
+    party = None
     if private:
         party_id: int = body.get("party_id")
+        if not party_id:
+            return formatErrorRes("MISSING_PARTY_ID", {})
         party = Parties.get(party_id)
+        if not party:
+            return formatErrorRes("NOT_FOUND", {})
     else:
         party = Parties.find_random_party_public()
+        if not party:
+            party = Parties.create(
+                owner=request.user_id,
+                private=False,
+                map=Maps.get_random(),
+            )
+            Parties.save()
     if not party:
-        return formatRes("NOT_FOUND", {})
-    if request.user_id in party.get("players", []):
-        return formatRes("ALREADY_JOINED", {})
+        return formatRes("ERROR_FOR_FOUND", {})
+            
+    if Parties.is_player_in_party(party, request.user_id):
+        return formatErrorRes("ALREADY_JOINED", {})
     if Parties.is_full(party):
-        return formatRes("FULL", {})
+        return formatErrorRes("FULL", {})
     gateway = create_gateway(request.user_id)
-    gateway.add_group(f"party-{party_id}")
+    gateway.add_group(f"party-{party.get('id')}")
     party["players"].append(request.user_id)
+
     Parties.save()
     return formatRes("JOINED", {
         "gateway_id": gateway.id,
@@ -91,7 +102,8 @@ def list_parties():
         return formatRes("NOT_FOUND", [])
     return formatRes("FOUND", parties)
 
-partiesToClose = [party for party in Parties.get_all() if not party.get("status") == "wait" and party.get("ended_at") is None]
+partiesToClose = [
+    party for party in Parties.get_all() if not party.get("status") == "finish" and party.get("ended_at") is None]
 for party in partiesToClose:
     party["ended_at"] = get_current_time()
     party["status"] = "close"

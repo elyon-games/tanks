@@ -43,6 +43,19 @@ def update_gateway():
 @route_client_gateway.route("/send", methods=["POST"])
 def send_message():
     gateway: Optional[Gateway] = session.get("gateway")
+    if gateway:
+        body: dict = request.get_json(silent=True)
+        if not body:
+            return formatErrorRes("INVALID_BODY", "Invalid body")
+        
+        message = body.get("message", None)
+        if not message:
+            return formatErrorRes("INVALID_MESSAGE", "Invalid message")
+        
+        gateway.send_message(message)
+        return formatRes("SENT", {})
+    else:
+        return formatErrorRes("GATEWAY_NOT_FOUND", "Gateway not found")
 
 
 @route_client_gateway.route("/connect", methods=["POST"])
