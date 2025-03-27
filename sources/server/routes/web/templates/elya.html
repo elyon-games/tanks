@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Elya{% endblock %}
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+    .user_entry{
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        
+    }
+    .user_entry input{
+        width: 80%;
+        height: 15%;
+        margin:0;
+        margin-left: 1px;
+    }
+    .user_entry button{
+        width: 17%;
+        height: 15%;
+        justify-self: flex-end;
+        margin-left:auto;
+    }
+    .container {
+        width: 80%;
+        max-width: 800px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-grow: 1;
+        overflow: hidden; /* Pour que la div ne dépasse pas */
+    }
+
+    .reponse {
+        background-color: rgb(226, 226, 226);
+        width: 100%;
+        flex-grow: 1; /* Permet de remplir l'espace restant */
+        max-height: calc(100vh - 120px); /* Limite la hauteur (titre + bouton) */
+        overflow-y: auto; /* Active le scroll si nécessaire */
+        padding: 10px;
+        box-sizing: border-box;
+        border-radius: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <h1>Elya</h1>
+    <div>
+        <div class="reponse" id="reponse">
+        </div>
+    </div>
+    <div class="user_entry">
+        <input type="text" id="input"reqired>
+        <button id="submit">Submit</button>
+    </div>
+<script>
+const history = [];
+document.getElementById('submit').addEventListener('click', function(event){
+    const input = document.getElementById('input');
+    axios.post('https://elyon.younity-mc.fr/api/ai/ask', {"question": input.value, "history": history}, {'Content-Type': 'application/json'})
+    .then(function (response) {
+        console.log(response.data.answer);
+        history.push({"question": input.value, "answer": response.data.answer, "time": new Date().toISOString()});
+        input.value = '';
+
+        document.getElementById("reponse").innerHTML = marked.parse(response.data.answer);
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+    
+});
+
+</script>
+{% endblock %}

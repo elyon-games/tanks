@@ -8,7 +8,16 @@ route_web = Blueprint("web", __name__)
 def index():
     return render_template("index.html")
 
-@route_web.route("/stats")
+
+@route_web.route("/elya")
+def elya():
+    return render_template("elya.html")
+
+@route_web.route("/stat")
+def index_stat():
+    return render_template("index_stat.html")
+
+@route_web.route("/stat/stats")
 def stats():
     try:
         name=str(request.args.get("name"))
@@ -17,7 +26,7 @@ def stats():
     
     # Vérifie que le champ n'est pas vide
     if not id:  
-        return render_template("index.html", error="Veuillez entrer un nom d'utilisateur valide")
+        return render_template("index_stat.html", error="Veuillez entrer un nom d'utilisateur valide")
     
     all_stats = get_user_stats(id)
 

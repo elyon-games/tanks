@@ -5,16 +5,5 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Statistique</h1>
-
-    <form action="/stats" method="GET">
-        <p>Entrez votre pseudo : </p>
-        <input type="text" id="name" name="name" required>
-        <br>
-        <button type="submit">Submit</button>
-    </form>
-
-    {% if error %}
-        <p>{{ error }}</p>
-    {% endif %}
+    <h1>Bienvenue</h1>
 {% endblock %}
