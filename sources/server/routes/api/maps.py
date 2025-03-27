@@ -6,10 +6,7 @@ route_maps = Blueprint("api-maps", __name__)
 
 @route_maps.route("/", methods=["GET"])
 def list_maps():
-    maps = [{
-        "id": map.get("id"),
-        "name": map.get("name"),
-    } for map in Maps.get_all()]
+    maps = [map for map in Maps.get_all()]
     return formatRes("FOUND", maps)
 
 @route_maps.route("/<int:map_id>", methods=["GET"])

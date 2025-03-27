@@ -6,6 +6,7 @@ from server.services.network.gateways import Gateway
 from typing import Optional
 from server.services.clock import registerTicked
 from common.time import get_current_time_ms
+from server.services.network.main import send_message_to_group
 
 route_client_gateway = Blueprint("api-client-gateway", __name__)
 
@@ -52,7 +53,12 @@ def send_message():
         if not message:
             return formatErrorRes("INVALID_MESSAGE", "Invalid message")
         
-        gateway.send_message(message)
+        target_group = next((group for group in gateway.groups if "party" in group), None)
+        if not target_group:
+            return formatErrorRes("GROUP_NOT_FOUND", "No group containing 'party' found")
+        
+        send_message_to_group(target_group, message)
+        
         return formatRes("SENT", {})
     else:
         return formatErrorRes("GATEWAY_NOT_FOUND", "Gateway not found")

@@ -26,11 +26,16 @@ from client.lib.notifications.controller import updateNotifications
 from client.lib.events.controller import updateEvents
 from client.lib.storage.controller import createStorage
 from client.lib.assets import loadAsset
+from common.ams import getAllAssetsIn
 from client.lib.auth import verify as auth_verify
 from client.var import auth as authData
+from client.var import walls as wallsData
+from client.var import tanks as tanksData
+from client.var import bullets as bulletsData
 import hashlib
 
 from common.ranks import ranks
+from client.lib.maps import getMaps
 
 import tkinter as tk
 from tkinter import messagebox
@@ -96,6 +101,31 @@ def Main():
             
             for rank in ranks.values():
                 loadAsset(f"rank-{rank["name"]}", rank["icon"])
+
+            for map in getMaps():
+                print(f"Loading map {map['name']}")
+                loadAsset(f"map-{map['name']}", f"/maps/{map['name']}.png")
+
+            for wall in getAllAssetsIn("/walls"):
+                wall_name = os.path.basename(wall).replace(".png", "")
+                print(f"Loading wall {wall_name}")
+                assetName = f"wall-{wall_name}"
+                loadAsset(assetName, f"/walls/{wall_name}.png")
+                wallsData.append(assetName)
+
+            for tank in getAllAssetsIn("/tanks"):
+                tankl_name = os.path.basename(tank).replace(".png", "")
+                print(f"Loading tank element {tankl_name}")
+                assetName = f"tank-{tankl_name}"
+                loadAsset(assetName, f"/tanks/{tankl_name}.png")
+                tanksData.append(assetName)
+
+            for bullet in getAllAssetsIn("/bullets"):
+                bullet_name = os.path.basename(bullet).replace(".png", "")
+                print(f"Loading bullet element {bullet_name}")
+                assetName = f"bullet-{bullet_name}"
+                loadAsset(assetName, f"/bullets/{bullet_name}.png")
+                bulletsData.append(assetName)
 
             token = serverStorage.getKey("token")
             if token:

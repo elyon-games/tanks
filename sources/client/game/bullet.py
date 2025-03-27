@@ -6,7 +6,7 @@ class Bullet(Movable):
         self.angle = angle
         self.max_bounce = max_bounce
         # Appel du constructeur de la classe parente (Movable)
-        super().__init__(game, "assets/bullet.png", start, (17/1080, 17/1920), velocity, 270 - self.angle)
+        super().__init__(game, "bullet-lite", start, (17/1080, 17/1920), velocity, 270 - self.angle)
         
         # Angle de déplacement de la balle
         # Position de départ de la balle

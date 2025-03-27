@@ -115,3 +115,9 @@ def getArgs(key: str) -> any:
 def clearArgs():
     global args
     args = {}
+
+def forceFullScreen():
+    global actualWindow
+    if actualWindow is not None:
+        actualWindow = pygame.display.set_mode((0, 0), pygame.FULLSCREEN | pygame.RESIZABLE)
+        pygame.mouse.set_visible(False)

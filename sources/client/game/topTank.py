@@ -4,11 +4,11 @@ from client.lib.assets import getAsset
 
 # Classe représentant le dessus du tank
 class TopTank(pygame.sprite.Sprite):
-    def __init__(self, game, tank, image_id="tank-top", angle=0):
+    def __init__(self, game, tank, image_path="tank-toptank", angle=0):
         super().__init__()  # Appel du constructeur de la classe parente (pygame.sprite.Sprite)
         self.game = game  # Référence à l'instance de la classe Game
         self.tank = tank  # Référence à l'instance de la classe Tank associée
-        self.image = getAsset(image_id)  # Chargement de l'image à partir du chemin spécifié
+        self.image = getAsset(image_path)  # Chargement de l'image à partir du chemin spécifié
         dimensions = ((175/1080)*self.game.height, (175/1920)*self.game.width)
         self.image = pygame.transform.scale(self.image, dimensions)  # Redimensionnement de l'image aux dimensions spécifiées
         self.image = pygame.transform.rotate(self.image, -90)  # Rotation initiale de l'image

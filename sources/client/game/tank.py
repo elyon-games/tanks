@@ -6,7 +6,7 @@ from client.game.bullet import Bullet  # Importe la classe Bullet du module bull
 
 # Classe représentant un tank
 class Tank(Movable):
-    def __init__(self, game, image_path="assets/tank.png", initial_position=(0, 0), dimensions=(80/1080, 106/1920), velocity=10, rotation="haut"):
+    def __init__(self, game, image_path="tank-tank", initial_position=(0, 0), dimensions=(80/1080, 106/1920), velocity=10, rotation="haut"):
         # Appel du constructeur de la classe parente (Movable)
         super().__init__(game, image_path, initial_position, dimensions, velocity)
         # Référence à l'instance de la classe Game
@@ -35,37 +35,37 @@ class Tank(Movable):
         myrect.y = self.rect.y - 25
         if myrect.top < 0:
             myrect.y = self.rect.bottom + 5
-            pygame.draw.rect(self.game.screen, (0, 0, 0), myrect)
+            pygame.draw.rect(self.game.surface, (0, 0, 0), myrect)
             if self.rotation == "haut" or self.rotation == "bas":
                 if self.life <= 30:
-                    pygame.draw.rect(self.game.screen, (255, 0, 0), [myrect.left+5, myrect.top+5, self.life, 10])
+                    pygame.draw.rect(self.game.surface, (255, 0, 0), [myrect.left+5, myrect.top+5, self.life, 10])
                 elif self.life <= 60:
-                    pygame.draw.rect(self.game.screen, (255, 255, 0), [myrect.left+5, myrect.top+5, self.life, 10])
+                    pygame.draw.rect(self.game.surface, (255, 255, 0), [myrect.left+5, myrect.top+5, self.life, 10])
                 else:
-                    pygame.draw.rect(self.game.screen, (0, 255, 0), [myrect.left+5, myrect.top+5, self.life, 10])
+                    pygame.draw.rect(self.game.surface, (0, 255, 0), [myrect.left+5, myrect.top+5, self.life, 10])
             else:
                 if self.life <= 30:
-                    pygame.draw.rect(self.game.screen, (255, 0, 0), [myrect.left+5, myrect.top+5, self.life, 10])
+                    pygame.draw.rect(self.game.surface, (255, 0, 0), [myrect.left+5, myrect.top+5, self.life, 10])
                 elif self.life <= 60:
-                    pygame.draw.rect(self.game.screen, (255, 255, 0), [myrect.left+5, myrect.top+5, self.life, 10])
+                    pygame.draw.rect(self.game.surface, (255, 255, 0), [myrect.left+5, myrect.top+5, self.life, 10])
                 else:
-                    pygame.draw.rect(self.game.screen, (0, 255, 0), [myrect.left+5, myrect.top+5, self.life, 10])
+                    pygame.draw.rect(self.game.surface, (0, 255, 0), [myrect.left+5, myrect.top+5, self.life, 10])
         else:
-            pygame.draw.rect(self.game.screen, (0, 0, 0), myrect)
+            pygame.draw.rect(self.game.surface, (0, 0, 0), myrect)
             if self.rotation == "haut" or self.rotation == "bas":
                 if self.life <= 30:
-                    pygame.draw.rect(self.game.screen, (255, 0, 0), [myrect.left+5, myrect.top+5, self.life, 10])
+                    pygame.draw.rect(self.game.surface, (255, 0, 0), [myrect.left+5, myrect.top+5, self.life, 10])
                 elif self.life <= 60:
-                    pygame.draw.rect(self.game.screen, (255, 255, 0), [myrect.left+5, myrect.top+5, self.life, 10])
+                    pygame.draw.rect(self.game.surface, (255, 255, 0), [myrect.left+5, myrect.top+5, self.life, 10])
                 else:
-                    pygame.draw.rect(self.game.screen, (0, 255, 0), [myrect.left+5, myrect.top+5, self.life, 10])
+                    pygame.draw.rect(self.game.surface, (0, 255, 0), [myrect.left+5, myrect.top+5, self.life, 10])
             else:
                 if self.life <= 30:
-                    pygame.draw.rect(self.game.screen, (255, 0, 0), [myrect.left+5, myrect.top+5, self.life, 10])
+                    pygame.draw.rect(self.game.surface, (255, 0, 0), [myrect.left+5, myrect.top+5, self.life, 10])
                 elif self.life <= 60:
-                    pygame.draw.rect(self.game.screen, (255, 255, 0), [myrect.left+5, myrect.top+5, self.life, 10])
+                    pygame.draw.rect(self.game.surface, (255, 255, 0), [myrect.left+5, myrect.top+5, self.life, 10])
                 else:
-                    pygame.draw.rect(self.game.screen, (0, 255, 0), [myrect.left+5, myrect.top+5, self.life, 10])
+                    pygame.draw.rect(self.game.surface, (0, 255, 0), [myrect.left+5, myrect.top+5, self.life, 10])
         
 
     # Méthode pour gérer les entrées de l'utilisateur
