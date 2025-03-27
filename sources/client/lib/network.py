@@ -30,8 +30,7 @@ def receive_messages():
     })
     if res.status_code == 200:
         data = res.json()["data"]
-        
-        return packets
+        return data
 
 def send_message(datas):
-    
+    print(datas)
