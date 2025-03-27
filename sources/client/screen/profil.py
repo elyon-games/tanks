@@ -2,7 +2,7 @@ import pygame
 from client.lib.screen.base import Screen
 from client.lib.me import getData
 from client.composants import NavBar, showUsername
-from client.lib.screen.controller import getArgs
+from client.lib.screen.controller import getArgs, showScreen
 from client.style.fonts import getFont
 from client.lib.utils import getProfil
 from client.style.constants import EMERAUDE
@@ -16,6 +16,8 @@ class profilScreen(Screen):
         self.navbar = NavBar(window, self.user)
         self.profilID = getArgs("show_profil_id")
         self.user = getProfil(self.profilID)
+        if self.user is None:
+            showScreen("home")
         changeTitle(f"Profil | {str(self.user['username'])}")
 
     def UpdateView(self):

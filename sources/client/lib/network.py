@@ -1,18 +1,28 @@
-import requests
-import common.random
 from client.var import auth as authData
-from client.lib.utils import with_url_api
-from client.lib.utils import getHeadersWithToken
+from client.var import gateway as gatewayData
+from client.lib.utils import requestWithToken, with_url_api
 
-# Fonction pour créer une passerelle
-def create_gateway() -> dict:
-    try:
-        response = requests.post(with_url_api("/client/gateway/create"), headers=getHeadersWithToken(token=authData.get("token", False)))
-        response.raise_for_status()
-        res: dict = response.json()["data"]
-    except requests.exceptions.RequestException as e:
-        return {"error": True, "message": str(e)}
-    except ValueError:
-        return {"error": True, "message": "Invalid JSON response"}
+def connect_gateway(gateway_id: int, gateway_key: str) -> dict:
+    res = requestWithToken("POST", with_url_api("/client/gateway/connect"), {
+        "gateway_id": gateway_id,
+        "gateway_key": gateway_key,
+    })
+    if res.status_code == 200:
+        data = res.json()["data"]
+        gatewayData["id"] = gateway_id
+        gatewayData["key"] = gateway_key
+        print(data)
+        return data
+    return None
 
-    return res
+def update_gateway(data: dict):
+    res = requestWithToken("PUT", with_url_api("/client/gateway/update"), {
+        "gateway_id": gatewayData["id"],
+        "gateway_key": gatewayData["key"],
+    })
+    if res.status_code == 200:
+        data = res.json()["data"]
+        gatewayData["id"] = data["gateway_id"]
+        gatewayData["key"] = data["gateway_key"]
+        return data
+

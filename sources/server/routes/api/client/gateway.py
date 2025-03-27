@@ -9,16 +9,6 @@ from common.time import get_current_time_ms
 
 route_client_gateway = Blueprint("api-client-gateway", __name__)
 
-@route_client_gateway.route("/create", methods=["POST"])
-@login_required
-def create_gateway():
-    gateway = network.create_gateway(request.user_id)
-    print(f"Gateway {gateway.id} created by user {gateway.userID}")
-    return formatRes("CREATED", {
-        "gateway_id": gateway.id,
-        "gateway_key": gateway.SECRET_KEY
-    })
-
 @route_client_gateway.before_request
 def before_request():
     body: dict = request.get_json(silent=True)
@@ -53,6 +43,19 @@ def update_gateway():
 @route_client_gateway.route("/send", methods=["POST"])
 def send_message():
     gateway: Optional[Gateway] = session.get("gateway")
+    if gateway:
+        body: dict = request.get_json(silent=True)
+        if not body:
+            return formatErrorRes("INVALID_BODY", "Invalid body")
+        
+        message = body.get("message", None)
+        if not message:
+            return formatErrorRes("INVALID_MESSAGE", "Invalid message")
+        
+        gateway.send_message(message)
+        return formatRes("SENT", {})
+    else:
+        return formatErrorRes("GATEWAY_NOT_FOUND", "Gateway not found")
 
 
 @route_client_gateway.route("/connect", methods=["POST"])

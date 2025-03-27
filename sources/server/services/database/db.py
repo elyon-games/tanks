@@ -100,5 +100,16 @@ def get_classement(type: str, page: int = 1, limit: int = 10) -> list:
     
     return paginated_classement
 
-def get_user_item_buy(user_id: int) -> list:
-    return get_user(user_id).get("item_buy")
+def get_user_base(user_id: int):
+    user = users.get(user_id)
+    if not user:
+        raise ValueError("NOT_FOUND")
+    return {
+        "id": user["id"],
+        "username": user["username"],
+        "admin": user["admin"],
+        "points": user["points"],
+        "rank": get_rank(user["points"]),
+        "badges": user["badges"],
+        "created_at": user["created_at"]        
+    }

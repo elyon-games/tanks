@@ -53,8 +53,7 @@ class Users(BaseModel):
             "stats_kill": {"type": int, "default": 0},
             "stats_death": {"type": int, "default": 0},
             "stats_win": {"type": int, "default": 0},
-            "stats_lose": {"type": int, "default": 0},
-            "item_buy": {"type": list, "default": []},
+            "stats_lose": {"type": int, "default": 0}
         }, default_data=[{
             "id": 1,
             "username": "admin",
@@ -68,8 +67,7 @@ class Users(BaseModel):
             "stats_kill": 0,
             "stats_death": 0,
             "stats_win": 0,
-            "stats_lose": 0,
-            "item_buy": []
+            "stats_lose": 0
         }])
 
     def create(self, username: str, email: str, password: str, admin: bool = False):
@@ -149,21 +147,16 @@ class Parties(BaseModel):
             "max_players": {"type": int, "default": 2},
             "map": {"type": int, "required": True},
             "private": {"type": bool, "default": False},
-            "ranked": {"type": bool, "default": False},
             "started_at": {"type": str, "default": None},
             "ended_at": {"type": str, "default": None},
             "status": {"type": str, "default": "wait"},
             "created_at": {"type": str, "required": True},
         })
 
-    def create(self, owner: int, private: bool = False, ranked: bool = False, map: int = 0):
+    def create(self, owner: int, private: bool = False, map: int = 0):
         party = self.insert({
             "id": self.get_new_id(),
             "owner": owner,
-            "players": [
-                owner
-            ],
-            "ranked": ranked,
             "private": private,
             "map": map,
             "created_at": get_current_time()
@@ -180,19 +173,25 @@ class Parties(BaseModel):
     def get_new_id(self):
         return len(self.data) + 1
     
-    def get_all_partys_public(self):
-        return [{
-            "id": party.get("id"),
-            "map": party.get("map"),
-            "private": party.get("private"),
-            "owner": party.get("owner"),
-        } for party in self.get_by("private", False) if not self.is_full(party) and party.get("status") == "wait"]
+    def get_all_parties_public(self) -> list:
+        parties = [
+            {
+                "id": party.get("id"),
+                "map": party.get("map"),
+                "players": party.get("players"),
+                "max_players": party.get("max_players"),
+                "private": party.get("private"),
+            }
+            for party in self.get_all()
+            if party.get("private") == False and not self.is_full(party) and self.is_waiting(party) and not self.is_finished(party) and party.get("players") not in [None, []]
+        ]
+        return parties if parties else []
 
     def find_random_party_public(self):
-        parties = self.get_all_partys_public()
+        parties = self.get_all_parties_public()
         if not parties:
             return None
-        return random.choices(parties)
+        return random.choice(parties)
     
     def is_full(self, party):
         return len(party["players"]) >= party["max_players"]
@@ -231,3 +230,5 @@ class Parties(BaseModel):
             return party["ended_at"] - party["started_at"]
         return 0
     
+    def is_player_in_party(self, party, player):
+        return player in party["players"]
