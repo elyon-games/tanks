@@ -6,7 +6,7 @@ from client.game.bullet import Bullet  # Importation de la classe Bullet depuis 
 from client.game.map import getWalls
 from client.style.fonts import getFontSize
 from client.lib.assets import getAsset
-from client.lib.network import close_gateway, getStatus_gateway, send_message, receive_messages
+from sources.client.lib.gateway import close_gateway, getStatus_gateway, send_message, receive_messages
 # from client.lib.network import send_message, receive_messages, get_map
 
 import pygame

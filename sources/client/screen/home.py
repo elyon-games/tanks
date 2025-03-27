@@ -8,8 +8,7 @@ from client.style.fonts import getFontSize
 import webbrowser
 from client.lib.maps import getMaps
 from client.lib.screen.controller import showScreen
-from client.lib.parties import getPartysPublicShow
-from client.lib.parties import joinParty
+from client.lib.parties import getPartysPublicShow, joinParty
 class HomeScreen(Screen):
     def __init__(self, window):
         super().__init__(window, "home", "Accueil")

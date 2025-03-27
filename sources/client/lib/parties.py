@@ -1,6 +1,5 @@
-import requests
 from client.lib.utils import with_url_api, requestWithToken
-from client.lib.network import connect_gateway
+from client.lib.gateway import connect_gateway
 
 def getPartyInfo(id: int) -> dict:
     res = requestWithToken("GET", with_url_api(f"/parties/info/{id}"))
