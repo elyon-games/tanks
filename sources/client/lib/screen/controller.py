@@ -74,7 +74,7 @@ def showScreen(screen: str, args: dict = None) -> Screen:
     if actualScreen is not None and actualScreen.id == screen:
         return actualScreen
     elif actualScreen is None or actualScreen.id != screen:
-        if not args:
+        if args:
             for key, value in args.items():
                 setArgs(key, value)
         if actualScreen is not None:

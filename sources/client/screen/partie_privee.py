@@ -5,7 +5,7 @@ from client.composants import NavBar
 from client.style.fonts import getFont
 from client.style.constants import EMERAUDE, BLACK, GRAY, BLEU
 from client.style.fonts import getFontSize
-from client.lib.utils import getMaps
+from client.lib.maps import getMaps
 from client.style.constants import EMERAUDE, BLEU, WHITE, BLACK, GRAY, STEEL_BLUE, LIGHTER_BLUE, CARD_COLOR, CARD_BORDER_COLOR
 
 
@@ -79,8 +79,6 @@ class privatePartieScreen(Screen):
         
         self.create_party_rect = pygame.Rect(self.window.get_width()/2-175, self.window.get_height()/2, 150, 40)
         self.render_button(self.create_party_rect, "Créer")
-        
-        
         
 
     def HandleEvent(self, type, event):

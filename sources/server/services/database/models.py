@@ -157,9 +157,6 @@ class Parties(BaseModel):
         party = self.insert({
             "id": self.get_new_id(),
             "owner": owner,
-            "players": [
-                owner
-            ],
             "private": private,
             "map": map,
             "created_at": get_current_time()
@@ -176,14 +173,16 @@ class Parties(BaseModel):
     def get_new_id(self):
         return len(self.data) + 1
     
-    def get_all_partys_public(self):
-        return [{
-            "id": party.get("id"),
-            "map": party.get("map"),
-        } for party in self.get_by("private", False) if not self.is_full(party) and party.get("status") == "wait"]
+    def get_all_parties_public(self) -> list:
+        parties = [
+            {"id": party.get("id"), "map": party.get("map")}
+            for party in self.get_all()
+            if party.get("private") == False and not self.is_full(party) and self.is_waiting(party) and not self.is_finished(party)
+        ]
+        return parties if parties else []
 
     def find_random_party_public(self):
-        parties = self.get_all_partys_public()
+        parties = self.get_all_parties_public()
         if not parties:
             return None
         return random.choices(parties)

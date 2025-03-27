@@ -8,6 +8,7 @@ from client.style.fonts import getFontSize
 import webbrowser
 from client.lib.maps import getMaps
 from client.lib.screen.controller import showScreen
+from client.lib.parties import getPartysPublicShow
 
 class HomeScreen(Screen):
     def __init__(self, window):
@@ -19,6 +20,7 @@ class HomeScreen(Screen):
         self.is_private = False
         self.selected_map = None
         self.create_button = pygame.Rect(50, 50, 200, 50)
+        self.party_public_show = getPartysPublicShow()
         self.map_buttons = []
         self.dropdown_open = False
 
